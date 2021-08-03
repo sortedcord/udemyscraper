@@ -1,4 +1,5 @@
 # udemy-web-scraper
+
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
 ## Installation
@@ -14,12 +15,14 @@ virtualenv somerandomname
 
 ```
 
-Activating for *nix
+Activating for \*nix
+
 ```sh
 source somerandomname/bin/activate
 ```
 
 Activating for Windows
+
 ```
 somerandomname\Scripts\activate
 ```
@@ -29,5 +32,5 @@ somerandomname\Scripts\activate
 ```sh
 pip install beautifulsoup4
 pip install lxml
+pip install requests
 ```
-

@@ -1,13 +1,5 @@
-from bs4 import BeautifulSoup
+from fetch import fetchCourse
 
-with open('html/dummy.index.html', 'r') as f:
-    content = f.read()
-    # print(content)
-
-    soup = BeautifulSoup(content, 'lxml')
-    # print(soup.prettify())
-
-    titles = soup.find_all('h1')
-    
-    for title in titles:
-        print(title.text)
+search_term = input("Enter the search term here: ")
+course_title = fetchCourse(search_term)
+print(course_title)
