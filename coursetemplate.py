@@ -1,5 +1,6 @@
 class Course():
-    def __init__(self, title, description, author, rating, length, no_of_lectures):
+    def __init__(self, link, title, description, author, rating, length, no_of_lectures):
+        self.link = link
         self.title = title
         self.description = description
         self.author = author
