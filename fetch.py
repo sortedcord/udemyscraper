@@ -4,6 +4,16 @@ from selenium.webdriver.support.ui import WebDriverWait  # for implicit and expl
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 import time
 
+class Course():
+    def __init__(self, link, title, description, author, rating, length, no_of_lectures):
+        self.link = link
+        self.title = title
+        self.description = description
+        self.author = author
+        self.rating = rating
+        self.length = length
+        self.no_of_lectures = no_of_lectures
+
 def fetchCourse(query):
     url = f"https://www.udemy.com/courses/search/?src=ukw&q={query}"
     option = webdriver.ChromeOptions()
