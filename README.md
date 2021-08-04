@@ -30,7 +30,5 @@ somerandomname\Scripts\activate
 ### Package Installation
 
 ```sh
-pip install beautifulsoup4
-pip install lxml
-pip install requests
+pip install beautifulsoup4 lxml requests selenium
 ```
