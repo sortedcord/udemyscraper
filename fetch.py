@@ -3,13 +3,14 @@ from selenium import webdriver   # for webdriver
 from selenium.webdriver.support.ui import WebDriverWait  # for implicit and explict waits
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 import time
+import requests
 
 class Course():
     
     def __init__(self, query):
         self.query = query    
 
-    
+
     def fetchCourse(self):
         url = f"https://www.udemy.com/courses/search/?src=ukw&q={self.query}"
         option = webdriver.ChromeOptions()
@@ -43,3 +44,37 @@ class Course():
         self.rating = rating.text
         self.duration = duration.text
         self.no_of_lectures = no_of_lectures.text
+
+
+    def getCourseInfo(self):
+        url = self.link
+
+        page = requests.get(url)
+        content = page.content
+        soup = BeautifulSoup(content, "html.parser")
+
+        breadcrumbs = soup.find("div", class_="topic-menu udlite-breadcrumb")
+        raw_tags = breadcrumbs.find_all("a", class_="udlite-heading-sm")
+        tags = []
+        for tag in raw_tags:
+            tags.append(tag.text)
+        self.tags = tags
+
+        # This is come noob code. I didn't know of any other way, so please, if you have a better alternative, create a PR :pray:
+        self.no_of_rating = soup.find("span", class_="", string=lambda x: x and x.startswith('(')).text.replace("(", "").replace(" ratings)", "")
+
+        self.no_of_students = soup.find("div", attrs={"data-purpose": "enrollment"}).text.replace("\n","").replace(" students", "")
+
+        self.course_language = soup.find("div", class_="clp-lead__element-item clp-lead__locale").text
+
+        objectives = []
+        raw_obj = soup.find_all("span", class_="what-you-will-learn--objective-item--ECarc")
+        for objective in raw_obj:
+            objectives.append(objective.text)
+        self.objectives = objectives
+
+        
+
+
+
+
