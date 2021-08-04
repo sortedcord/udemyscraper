@@ -1,13 +1,28 @@
 from bs4 import BeautifulSoup
 import requests
 import os
+from selenium import webdriver   # for webdriver
+from selenium.webdriver.support.ui import WebDriverWait  # for implicit and explict waits
+from selenium.webdriver.chrome.options import Options  # for suppressing the browser
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
 
 
 url = 'https://www.udemy.com/course/the-complete-javascript-course/'
 
-
-page = requests.get(url)
-content = page.content
+option = webdriver.ChromeOptions()
+option.add_argument('headless')
+browser = webdriver.Chrome('chromedriver.exe', options=option)
+browser.set_window_size(1280,720)
+browser.get(url)
+action = ActionChains(browser) # initialize ActionChain object
+browser.execute_script("javascript:window.scrollBy(0,1500)")
+button = browser.find_element_by_xpath("//*[@data-purpose='show-more']")
+action.click(on_element = button)
+action.perform()
+content = browser.page_source
+browser.close()
 soup = BeautifulSoup(content, "html.parser")
 
 # with open('demo.html','w', encoding='utf-8') as file:
@@ -29,6 +44,7 @@ soup = BeautifulSoup(content, "html.parser")
 
 
 ## This does not show all of the sections, so I will be using selenium after all, firstly, to move the mouse to the get more sections one and then click on it. Which will be done in a later commit..
+
 sections = soup.find_all("div", class_="section--panel--1tqxC panel--panel--3NYBX")
 
 for section in sections:
