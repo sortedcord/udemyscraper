@@ -73,7 +73,42 @@ class Course():
             objectives.append(objective.text)
         self.objectives = objectives
 
+        class Section():
+            def __init__(self, name, no_of_lectures, duration):
+                self.name = name
+                self.no_of_lectures = no_of_lectures
+                self.duration = duration
         
+        sections = []
+        sections_raw = soup.find_all("span", class_="section--section-title--8blTh")
+        section_names = []
+        for section in sections_raw:
+            section_names.append(section.text)
+
+        section_info = soup.find_all("span", class_="udlite-text-sm section--hidden-on-mobile--171Q9 section--section-content--9kwnY")
+        section_lectures = []
+        section_duration = []
+        for section in section_info:
+            formatted_section_info = section.text.replace("•", "").replace(" lectures  ", " ").replace("hr ", "hr")
+            formatted_section_info = formatted_section_info.split(" ")
+            section_lectures.append(formatted_section_info[0])
+            section_duration.append(formatted_section_info[1])
+        
+        for section in range(len(sections_raw)):
+            sections.append(Section(section_names[section], section_lectures[section], section_duration[section]))
+        
+        self.sections = sections
+
+
+        # sections = []
+        # for i in range(len(sections_raw)):
+        #     sections.append(Section(section_names[i], ))
+
+
+
+
+
+
 
 
 
