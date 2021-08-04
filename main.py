@@ -6,5 +6,5 @@ udemy_course = Course(search_term)
 udemy_course.fetchCourse()
 udemy_course.getCourseInfo()
 
-print(udemy_course.sections[1].name)
+print(udemy_course.Sections[2].lessons[2].name)
 

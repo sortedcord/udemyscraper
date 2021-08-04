@@ -34,9 +34,11 @@ pip install -r requirements.txt
 ```
 
 ### Chrome setup
+
 Be sure to have chrome installed and install the corresponding version of chromedriver. I have already provided a windows binary file. If you want, you can install the linux binary for the chromedriver from its page.
 
 ## Approach
+
 It is fairly easy to webscrape sites, however, there are some sites that are not that scrape-friendly. Scraping sites, in itself is perfectly legal however there have been cases of lawsuits against web scraping, some companies \*cough Amazon \*cough consider web-scraping from its website illegal however, they themselves, web-scrape from other websites. And then there are some sites like udemy, that try to prevent people from scraping their site.
 
 Using BS4 in itself, doesn't give the required results back, so I had to use a browser engine by using selenium to fetch the courses information. Initially, even that didn't work out, but then I realised the courses were being fetch asynchronously so I had to add a bit of delay. So fetching the data can be a bit slow initially.
@@ -45,3 +47,40 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 
 As of this commit, the script can search udemy for the search term you input and get the courses link, and all the other overview details like description, instructor, duration, rating, etc.
 
+Here is a json representation of the data it can fetch as of now:-
+
+```json
+course: {
+    title:"Name of the course",
+    description:"Description of the course",
+    instructor:"Instructor of the course",
+    rating:"Rating of the course",
+    duration:"Duration of the course",
+    no_of_lectures: "Number of Lessons in the course",
+    sections: [
+        {
+            name: "Name of the section"
+            lessons: [
+                {
+                    name: "Name of the lesson1"
+                },
+                {
+                    name: "Name of the lesson2"
+                }...
+            ]
+        },
+        {
+            name: "Name of the section2"
+            lessons: [
+                {
+                    name: "Name of the lesson1"
+                },
+                {
+                    name: "Name of the lesson2"
+                }...
+            ]
+
+    ]
+
+}
+```

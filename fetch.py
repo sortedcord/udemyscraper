@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver   # for webdriver
 from selenium.webdriver.support.ui import WebDriverWait  # for implicit and explict waits
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 import requests
 
@@ -31,7 +32,7 @@ class Course():
 
         self.title = soup.find('div', class_="udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE")
         self.description = soup.find('p', class_="udlite-text-sm course-card--course-headline--yIrRk")
-        self.author = soup.find('div', class_="udlite-text-xs course-card--instructor-list--lIA4f")
+        self.instructor = soup.find('div', class_="udlite-text-xs course-card--instructor-list--lIA4f")
         self.rating = soup.find('span', class_="udlite-heading-sm star-rating--rating-number--3lVe8")
 
         other_info = soup.find_all('span', class_="course-card--row--1OMjg")
@@ -42,10 +43,42 @@ class Course():
 
 
     def getCourseInfo(self):
+        class Section():
+            def __init__(self, html):
+                class Lesson():
+                    def __init__(self, lesson_html):
+                        self.lesson_html = lesson_html
+
+                        self.name = lesson_html.find("span").text
+
+                self.html = html
+
+                self.name = html.find("span", class_="section--section-title--8blTh").text
+                self.lesson_blocks = html.find_all("div", class_="udlite-block-list-item-content")
+
+                self.lessons = []
+
+                for lesson in self.lesson_blocks:
+                    self.lessons.append(Lesson(lesson))
+
+
+
         url = self.link
 
-        page = requests.get(url)
-        content = page.content
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        browser = webdriver.Chrome('chromedriver.exe', options=option)
+        browser.set_window_size(1280,720)
+        browser.get(url)
+        action = ActionChains(browser) # initialize ActionChain object
+        browser.execute_script("javascript:window.scrollBy(0,1500)")
+        button = browser.find_element_by_xpath("//*[@data-purpose='show-more']")
+        action.click(on_element = button)
+        action.perform()
+        content = browser.page_source
+        browser.close()
+        soup = BeautifulSoup(content, "html.parser")
+        
         soup = BeautifulSoup(content, "html.parser")
 
         breadcrumbs = soup.find("div", class_="topic-menu udlite-breadcrumb")
@@ -66,47 +99,16 @@ class Course():
             objectives.append(objective.text)
         self.objectives = objectives
 
+        self.Sections = []
 
-        '''
-                                                                     WARNING
-                                                    If you value your life more than the udemy courses
-                                                    then please do not read the code below. Within 2 to
-                                                    3 minutes of reading the code below, you may develop
-                                                    the badCode syndrome. In order to protect your brain 
-                                                    from this condition, please do not read the code below.
-
-        '''        
-        class Section():
-            def __init__(self, name, no_of_lectures, duration):
-                self.name = name
-                self.no_of_lectures = no_of_lectures
-                self.duration = duration
+        sections = soup.find_all("div", class_="section--panel--1tqxC panel--panel--3NYBX")
+        
+        for section in sections:
+            self.Sections.append(Section(section))
             
-            class Lessons():
-                def __init__(self, name, duration, lesson_type):
-                    self.name = name
-                    self.duration = duration
-                    self.lesson_type = lesson_type
-        
-        sections = []
-        sections_raw = soup.find_all("span", class_="section--section-title--8blTh")
-        section_names = []
-        for section in sections_raw:
-            section_names.append(section.text)
 
-        section_info = soup.find_all("span", class_="udlite-text-sm section--hidden-on-mobile--171Q9 section--section-content--9kwnY")
-        section_lectures = []
-        section_duration = []
-        for section in section_info:
-            formatted_section_info = section.text.replace("•", "").replace(" lectures  ", " ").replace("hr ", "hr")
-            formatted_section_info = formatted_section_info.split(" ")
-            section_lectures.append(formatted_section_info[0])
-            section_duration.append(formatted_section_info[1])
+
         
-        for section in range(len(sections_raw)):
-            sections.append(Section(section_names[section], section_lectures[section], section_duration[section]))
-        
-        self.sections = sections
 
 
 
