@@ -2,6 +2,11 @@
 
 # Udemy Scraper
 
+![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
+![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
+![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.4-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
+
+
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
 ## Installation
