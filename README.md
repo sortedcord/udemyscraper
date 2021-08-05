@@ -50,37 +50,57 @@ As of this commit, the script can search udemy for the search term you input and
 Here is a json representation of the data it can fetch as of now:-
 
 ```json
-course: {
-    title:"Name of the course",
-    description:"Description of the course",
-    instructor:"Instructor of the course",
-    rating:"Rating of the course",
-    duration:"Duration of the course",
-    no_of_lectures: "Number of Lessons in the course",
-    sections: [
-        {
-            name: "Name of the section"
-            lessons: [
-                {
-                    name: "Name of the lesson1"
-                },
-                {
-                    name: "Name of the lesson2"
-                }...
-            ]
-        },
-        {
-            name: "Name of the section2"
-            lessons: [
-                {
-                    name: "Name of the lesson1"
-                },
-                {
-                    name: "Name of the lesson2"
-                }...
-            ]
-
-    ]
-
+{
+  "query": "The Complete Angular Course: Beginner to Advanced",
+  "link": "https://udemy.com/course/the-complete-angular-master-class/",
+  "title": "The Complete Angular Course: Beginner to Advanced",
+  "headline": "The most comprehensive Angular 4 (Angular 2+) course. Build a real e-commerce app with Angular, Firebase and Bootstrap 4",
+  "instructor": "Mosh Hamedani",
+  "rating": "4.5",
+  "duration": "29.5 total hours",
+  "no_of_lectures": "376 lectures",
+  "tags": ["Development", "Web Development", "Angular"],
+  "no_of_rating": "23,910",
+  "no_of_students": "96,174",
+  "course_language": "English",
+  "objectives": [
+    "Establish yourself as a skilled professional developer",
+    "Build real-world Angular applications on your own",
+    "Troubleshoot common Angular errors",
+    "Master the best practices",
+    "Write clean and elegant code like a professional developer"
+  ],
+  "Sections": [
+    {
+      "name": "Introduction",
+      "lessons": [{ "name": "Introduction" }, { "name": "What is Angular" }],
+      "no_of_lessons": 12
+    },
+    {
+      "name": "TypeScript Fundamentals",
+      "lessons": [
+        { "name": "Introduction" },
+        { "name": "What is TypeScript?" }
+      ],
+      "no_of_lessons": 18
+    },
+    {
+      "name": "Angular Fundamentals",
+      "lessons": [
+        { "name": "Introduction" },
+        { "name": "Building Blocks of Angular Apps" }
+      ],
+      "no_of_lessons": 10
+    }
+  ],
+  "requirements": [
+    "Basic familiarity with HTML, CSS and JavaScript",
+    "NO knowledge of Angular 1 or Angular 2 is required"
+  ],
+  "description": "\nAngular is one of the most popular frameworks for building client apps with HTML, CSS and TypeScript. If you want to establish yourself as a front-end or a full-stack developer, you need to learn Angular.\n\nIf you've been confused or frustrated jumping from one Angular 4 tutoria...",
+  "target_audience": [
+    "Developers who want to upgrade their skills and get better job opportunities",
+    "Front-end developers who want to stay up-to-date with the latest technology"
+  ]
 }
 ```
