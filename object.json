@@ -1,53 +1,267 @@
 {
-  "query": "The Complete Angular Course: Beginner to Advanced",
-  "link": "https://udemy.com/course/the-complete-angular-master-class/",
-  "title": "The Complete Angular Course: Beginner to Advanced",
-  "headline": "The most comprehensive Angular 4 (Angular 2+) course. Build a real e-commerce app with Angular, Firebase and Bootstrap 4",
-  "instructor": "Mosh Hamedani",
-  "rating": "4.5",
-  "duration": "29.5 total hours",
-  "no_of_lectures": "376 lectures",
-  "tags": ["Development", "Web Development", "Angular"],
-  "no_of_rating": "23,910",
-  "no_of_students": "96,174",
-  "course_language": "\n\n\n\n\n\nEnglish\n",
+  "query": "angular mosh hamedani",
+  "link": "https://udemy.com/course/angular-fundamentals-unit-integration-testing/",
+  "title": "Angular Fundamentals from Scratch & Unit/Integration Testing",
+  "headline": "Get into Web Development with solid understanding of Angular Basics and write Tests for your code to be White Box tester",
+  "instructor": "Rahul Shetty",
+  "rating": "4.9",
+  "duration": "11 total hours",
+  "no_of_lectures": "63 lectures",
+  "tags": ["Development", "Software Testing", "Unit Testing"],
+  "no_of_rating": "21",
+  "no_of_students": "665",
+  "course_language": "English",
   "objectives": [
-    "Establish yourself as a skilled professional developer",
-    "Build real-world Angular applications on your own",
-    "Troubleshoot common Angular errors",
-    "Master the best practices",
-    "Write clean and elegant code like a professional developer"
+    "NO Prior knowledge of Angular is required. Every Concept including TypeScript basics are taught from Scratch",
+    "Get the deep understanding of the Angular fundamentals to quickly establish yourself as a frontend developer",
+    "You will learn Angular Unit Testing and Integration Testing Best Practices",
+    "Knowledge on Unit Testing tools like Karma, Jest, Jasmine, Angular Bed etc",
+    "Understand how to perform Component Testing, Service Testing , Directives Testing with Angular",
+    "By end of this Course, You will Develop modern responsive and scalable web applications with Angular"
   ],
   "Sections": [
     {
-      "name": "Introduction",
-      "lessons": [{ "name": "Introduction" }, { "name": "What is Angular" }],
-      "no_of_lessons": 12
+      "name": "Introduction to Angular & Course FAQ's",
+      "lessons": [
+        { "name": "Introduction to Angular and Course FAQ's" },
+        {
+          "name": "Node.js and Visual Studio Code installation for Angular Setup"
+        },
+        { "name": "Please Note on sequence of Lectures" }
+      ],
+      "no_of_lessons": 3
     },
     {
-      "name": "TypeScript Fundamentals",
+      "name": "TypeScript Fundamentals for Beginners",
       "lessons": [
-        { "name": "Introduction" },
-        { "name": "What is TypeScript?" }
+        { "name": "What is Typescript? How different it is from JS?" },
+        { "name": "Importance of Let and Const keywords in Typescript" },
+        { "name": "Types Usage  in Typescript" },
+        { "name": "Understanding Classes,Methods and objects in Typescript" },
+        { "name": "Importance of Constructor in Typescript" },
+        { "name": "Exports,Imports and Functions usage in Typescript" },
+        { "name": "Interfaces and objects Importance in defining contracts" },
+        { "name": "Usage of Pipes for Anonymous Functions" },
+        { "name": "Code Download" }
       ],
-      "no_of_lessons": 18
+      "no_of_lessons": 9
     },
     {
-      "name": "Angular Fundamentals",
+      "name": "Building Angular Components for App development",
       "lessons": [
-        { "name": "Introduction" },
-        { "name": "Building Blocks of Angular Apps" }
+        { "name": "Demo of the App which we will develop in this course" },
+        { "name": "Where to download code files" },
+        { "name": "Install Angular CLI dependencies and create the Project" },
+        { "name": "What are Angular Components? Understand how to create one" },
+        { "name": "What is Interpolation in Angular and how this can be used" },
+        {
+          "name": "How to display Array of items into HTML with Angular Interpolation"
+        }
       ],
-      "no_of_lessons": 10
+      "no_of_lessons": 6
+    },
+    {
+      "name": "Structural Directives and ng Directives for Parent Child component relation",
+      "lessons": [
+        {
+          "name": "What are Built in Structural Directives and how it helps in populating data"
+        },
+        {
+          "name": "What are ng-directives and how it helps to put conditions in HTML"
+        },
+        {
+          "name": "Understand the concept of Child and Parent Components with Input Tag"
+        },
+        {
+          "name": "Example of Input and Output Directives to communicate with parent and child"
+        },
+        {
+          "name": "Understand the Event Binding and how to create Custom Events"
+        },
+        {
+          "name": "Updating HTML Attributes of Angular with the Property and event Binding"
+        }
+      ],
+      "no_of_lessons": 6
+    },
+    {
+      "name": "BootStrap CSS to bring Styling to Angular Component HTML Pages",
+      "lessons": [
+        {
+          "name": "What are ng-templates and ng-container and where to use it effectively"
+        },
+        {
+          "name": "Introduction to Boostrap and how it helps to build effective CSS"
+        },
+        { "name": "Bring the Custom Bootstrap template for Product List page" }
+      ],
+      "no_of_lessons": 3
+    },
+    {
+      "name": "Angular Routing for Page Navigations and Data Session Storage",
+      "lessons": [
+        {
+          "name": "What is Angular Routing and how it helps to navigate between pages"
+        },
+        {
+          "name": "Add Router Link to the Product details page to land on Product Shop page"
+        },
+        {
+          "name": "Implementing Route Params to get the specific Product date to render"
+        },
+        {
+          "name": "Get Bootstrap template to display Product Details page into Angular html"
+        },
+        {
+          "name": "Implement Add to Cart functionality and change Button properties on Select"
+        },
+        {
+          "name": "Implement Website Header Navigation Bars with Bootstrap template"
+        }
+      ],
+      "no_of_lessons": 6
+    },
+    {
+      "name": "Injecting Angular Service Providers for Data into Components",
+      "lessons": [
+        {
+          "name": "Understanding Angular Services and implementing process into Framework"
+        },
+        {
+          "name": "Build Cart Component and consume the date from Angular Service"
+        },
+        {
+          "name": "What are Template reference variables? And KeyUp event to listen user Input"
+        }
+      ],
+      "no_of_lessons": 3
+    },
+    {
+      "name": "Build Functional logic into Component methods and dynamically update from HTML",
+      "lessons": [
+        {
+          "name": "Implemeting Logic to retrieve Product Price from ng-init hook"
+        },
+        {
+          "name": "Implement logic to update the Product Quantity using ONKEY Event"
+        },
+        {
+          "name": "Implement logic to update the Product Total and apply routerLink to Checkout"
+        },
+        {
+          "name": "Implment logic for Removing Products from the Cart and cleanup the code"
+        }
+      ],
+      "no_of_lessons": 4
+    },
+    {
+      "name": "Create Angular Forms with ng-model two way Binding Directives",
+      "lessons": [
+        { "name": "What are Angular Forms- Getting Started with forms" },
+        {
+          "name": "What is ng-model Directive ? Apply ng-model to the Angular forms"
+        },
+        {
+          "name": "Submitting the Form and storing the details with ng-form directive"
+        },
+        {
+          "name": "Creating Domain class to store form data for reusing in any component"
+        }
+      ],
+      "no_of_lessons": 4
+    },
+    {
+      "name": "Consuming HTTP Rest Service Json data into Angular Components to render",
+      "lessons": [
+        {
+          "name": "Creating Thankyou Page Template and implement toggling to Hide and unhide"
+        },
+        {
+          "name": "How to Consume Rest API\"s data into Angular App - Example"
+        },
+        {
+          "name": "Created Book Interface to cast the API response to the book object"
+        },
+        {
+          "name": "Implement Library Page with Table using ng-for directive and API data"
+        },
+        {
+          "name": "Build Home page to App with proper router Navigations to respective pages"
+        }
+      ],
+      "no_of_lessons": 5
+    },
+    {
+      "name": "Unit Testing the Angular Components with Angular Test Bed Utilities",
+      "lessons": [
+        {
+          "name": "Introduction to Angular Unit /Integration Testing and its types"
+        },
+        {
+          "name": "What is Karma and Angular Test Bed and how it used for White box testing"
+        },
+        {
+          "name": "Build Unit Test for the method defined in the component classes"
+        },
+        {
+          "name": "Configuring Test Bed and creating HTML fixture to render the html on fly"
+        },
+        {
+          "name": "Test the Alert Details Component with ng-if condition logic validation"
+        },
+        {
+          "name": "How to load  Stub Data into instance to test component in isolated way"
+        }
+      ],
+      "no_of_lessons": 6
+    },
+    {
+      "name": "Use Stub Data for Testing Input Output Directives in the Angular Framework",
+      "lessons": [
+        {
+          "name": "Testing Input Output Event emmitters with Stub data required for the component"
+        },
+        {
+          "name": "Create Mock Service class for Cart data to Test Cart component in isolated"
+        },
+        {
+          "name": "Perform Integration testing by viewing the results on browser with nativeElement"
+        },
+        {
+          "name": "Use  SPY object to Implement Tests for Library Dashboard component"
+        }
+      ],
+      "no_of_lessons": 4
+    },
+    {
+      "name": "Integration Testing to test the components on UI & SPY object Usage",
+      "lessons": [
+        {
+          "name": "Use return value for created Spy object and inject into Test Data as Mocking"
+        },
+        {
+          "name": "Implement validations on Angular Forms and test on the browsers"
+        },
+        {
+          "name": "Understand how to fire DispatchEvents with QuerySelector for Integration testing"
+        }
+      ],
+      "no_of_lessons": 3
+    },
+    {
+      "name": "Project Code Download",
+      "lessons": [{ "name": "Download Code" }],
+      "no_of_lessons": 1
     }
   ],
-  "requirements": [
-    "Basic familiarity with HTML, CSS and JavaScript",
-    "NO knowledge of Angular 1 or Angular 2 is required"
-  ],
-  "description": "\nAngular is one of the most popular frameworks for building client apps with HTML, CSS and TypeScript. If you want to establish yourself as a front-end or a full-stack developer, you need to learn Angular.\n\nIf you've been confused or frustrated jumping from one Angular 4 tutoria...",
+  "requirements": ["Basic HTML knowledge helps"],
+  "description": "This course is exclusively designed for beginners to understand ANGULAR fundamentals for Front end Web Development and ability to perform white Box TESTING\u00a0such as Unit Testing ,\u00a0Integration testing for the code using various Testing Frameworks like Karma, Jest, AngularBed, Jasmine etc\nThis course is divided into 2 Phases\nPhase 1:\nIntroduction to Front end Development - Phase 1 explains the fundamentals of Angular including TypeScript Fundamentals to develop Front end Real time Apps from Scratch.\nNo programming Experience needed to start with this course. I have covered everything needed to make you familiar with every concept taught in the course\nPhase 2:\nUnit/Integration Testing - After Solid Understanding of Front end development using Angular in Phase 1, Phase 2 explains how to write Unit Tests and Integration Tests for the developed Phase 1 Code using Testing Frameworks like like Karma, Jest, AngularBed, Jasmine, Mock Services, classes etc\nAll Testing (White Box Testing) Frameworks concepts are also given with Scratch level explanation.\n*******************************************************************please note that This course will not deep dive into HTML learning but that will not affect you to learn ANGULAR.\n\nBy end of this course, one can start building Web Apps with Angular and write Solid Unit Tests and Integration tests to test their code as per Industry Standards\nThis course can be a great resource to Junior Developers and especially to SDET's to get involved into\u00a0 White Box testing Strategies to better understand code and write solid Unit/Integration Tests.\n",
   "target_audience": [
-    "Developers who want to upgrade their skills and get better job opportunities",
-    "Front-end developers who want to stay up-to-date with the latest technology",
-  ]
+    "developers",
+    "SDET",
+    "QA Automation Engineers",
+    "Front end devs",
+    "Software Engineers"
+  ],
+  "banner": "https://img-c.udemycdn.com/course/480x270/4188360_6b49.jpg"
 }

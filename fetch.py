@@ -12,17 +12,19 @@ class Course():
 
     def fetchCourse(self):
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
+
+        # Browser Options
         option = Options()
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
-
         browser = webdriver.Chrome(executable_path='chromedriver.exe',chrome_options=option)
-
-
         browser.get(url)
-        time.sleep(4)
+        time.sleep(3)
+
+        #Get page source
         content = browser.page_source
-        searchpage = BeautifulSoup(content, "html.parser")
+        searchpage = BeautifulSoup(content, "lxml")
+
 
         links = []
         for a in searchpage.find_all('a', class_='udlite-custom-focus-visible browse-course-card--link--3KIkQ', href=True): 
@@ -48,12 +50,11 @@ class Course():
                         self.lesson_html = lesson_html
                         self.name = lesson_html.find("span").text
                         
-                self.html = BeautifulSoup(html, "html.parser")
+                self.html = BeautifulSoup(html, "lxml")
                 self.name = self.html.find("span", class_="section--section-title--8blTh").text
                 self.lesson_blocks = self.html.find_all("div", class_="udlite-block-list-item-content")
 
                 self.lessons = []
-
                 for lesson in self.lesson_blocks:
                     self.lessons.append(Lesson(lesson))
                 self.no_of_lessons = len(self.lessons)
@@ -67,57 +68,48 @@ class Course():
 
         url = self.link
         browser.get(url)
-        time.sleep(5)
-        browser.execute_script("var zabutton = document.getElementsByClassName( 'udlite-btn udlite-btn-medium udlite-btn-secondary udlite-heading-sm curriculum--show-more--2tshH' )[0]; zabutton.click();")
-
+        time.sleep(3)
+        try:
+            browser.execute_script("var zabutton = document.getElementsByClassName('udlite-btn udlite-btn-medium udlite-btn-secondary udlite-heading-sm curriculum--show-more--2tshH' )[0]; zabutton.click();")
+        except WebDriverException:
+            print("More sections button could not be found. This course has less than 10 sections then.")
         content = browser.page_source
-        coursepage = BeautifulSoup(content, "html.parser")
-        breadcrumbs = coursepage.find("div", class_="topic-menu udlite-breadcrumb")
-        raw_tags = breadcrumbs.find_all("a", class_="udlite-heading-sm")
-        tags = []
-        for tag in raw_tags:
-            tags.append(tag.text)
-        self.tags = tags
+        browser.close()
+        coursepage = BeautifulSoup(content, "lxml")
+        self.tags = []
+        for tag in coursepage.find("div", class_="topic-menu udlite-breadcrumb").find_all("a", class_="udlite-heading-sm"):
+            self.tags.append(tag.text)
 
         # This is come noob code. I didn't know of any other way, so please, if you have a better alternative, create a PR :pray:
         self.no_of_rating = coursepage.find("span", class_="", string=lambda x: x and x.startswith('(')).text.replace("(", "").replace(" ratings)", "")
         self.no_of_students = coursepage.find("div", attrs={"data-purpose": "enrollment"}).text.replace("\n","").replace(" students", "")
-        self.course_language = coursepage.find("div", class_="clp-lead__element-item clp-lead__locale").text
+        self.course_language = coursepage.find("div", class_="clp-lead__element-item clp-lead__locale").text.replace("\n","")
 
-        objectives = []
-        raw_obj = coursepage.find_all("span", class_="what-you-will-learn--objective-item--ECarc")
-        for objective in raw_obj:
-            objectives.append(objective.text)
-        self.objectives = objectives
+        self.objectives = []
+        for objective in coursepage.find_all("span", class_="what-you-will-learn--objective-item--ECarc"):
+            self.objectives.append(objective.text)
 
         self.Sections = []
 
         string_section = []
-        sections = coursepage.find_all("div", class_="section--panel--1tqxC panel--panel--3NYBX")
-        for s in sections:
+        for s in coursepage.find_all("div", class_="section--panel--1tqxC panel--panel--3NYBX"):
             string_section.append(str(s))
         for section_block in string_section:
             self.Sections.append(Section(section_block))
 
-        requirements_block = coursepage.find("div", class_="ud-component--course-landing-page-udlite--requirements")
-        raw_requirements = requirements_block.find_all("div", class_="udlite-block-list-item udlite-block-list-item-small udlite-block-list-item-tight udlite-block-list-item-neutral udlite-text-sm")
         self.requirements = []
-        for requirement in raw_requirements:
+        for requirement in coursepage.find("div", class_="ud-component--course-landing-page-udlite--requirements").find_all("div", class_="udlite-block-list-item udlite-block-list-item-small udlite-block-list-item-tight udlite-block-list-item-neutral udlite-text-sm"):
             self.requirements.append(requirement.text)
 
-        description_box = coursepage.find("div", attrs={'data-purpose':'safely-set-inner-html:description:description'})
-        description_paragraps = description_box.find_all("p")
-
         self.description = ""
-        for parahraph in description_paragraps:
+        for parahraph in coursepage.find("div", attrs={'data-purpose':'safely-set-inner-html:description:description'}).find_all("p"):
             self.description += parahraph.text + "\n"
 
-        target_audience_block = coursepage.find("div", attrs={'data-purpose': 'target-audience'})
-        target_audience_pointers = target_audience_block.find_all("li")
-
         self.target_audience = []
-        for a in target_audience_pointers:
+        for a in coursepage.find("div", attrs={'data-purpose': 'target-audience'}).find_all("li"):
             self.target_audience.append(a.text)
+
+        self.banner = str(coursepage.find("div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135","480x270")
 
 
 def convertToJson(course):
