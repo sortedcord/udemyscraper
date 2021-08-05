@@ -1,4 +1,6 @@
-# udemy-web-scraper
+[scraper](docs/splash.jpg)
+
+# Udemy Scraper
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
