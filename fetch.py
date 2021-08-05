@@ -1,27 +1,23 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver   # for webdriver
-from selenium.webdriver.support.ui import WebDriverWait  # for implicit and explict waits
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
-from selenium.webdriver.common.action_chains import ActionChains
 import time
-import os
-import requests
 from selenium.common.exceptions import WebDriverException
 import json
 
 
 class Course():
-    
     def __init__(self, query):
-        self.query = query    
-
+        self.query = query
 
     def fetchCourse(self):
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
-        option = webdriver.ChromeOptions()
+        option = Options()
         option.add_argument('headless')
-        
-        browser = webdriver.Chrome('chromedriver.exe', options= option)
+        option.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+        browser = webdriver.Chrome(executable_path='chromedriver.exe',chrome_options=option)
+
 
         browser.get(url)
         time.sleep(4)
@@ -35,7 +31,7 @@ class Course():
         self.link = 'https://udemy.com' + (links[0])
 
         self.title = searchpage.find('div', class_="udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE").text
-        self.description = searchpage.find('p', class_="udlite-text-sm course-card--course-headline--yIrRk").text
+        self.headline = searchpage.find('p', class_="udlite-text-sm course-card--course-headline--yIrRk").text
         self.instructor = searchpage.find('div', class_="udlite-text-xs course-card--instructor-list--lIA4f").text
         self.rating = searchpage.find('span', class_="udlite-heading-sm star-rating--rating-number--3lVe8").text
 
@@ -71,23 +67,11 @@ class Course():
 
         url = self.link
         browser.get(url)
-        try:
-            action = ActionChains(browser) # initialize ActionChain object
-            classname = "udlite-btn udlite-btn-medium udlite-btn-secondary udlite-heading-sm curriculum--show-more--2tshH"
-            browser.execute_script(f"javascript:document.getElementsByClassName('{classname}')[0].scrollIntoView();")
-            button = browser.find_element_by_xpath("//*[@data-purpose='show-more']")
-            action.click(on_element = button)
-            action.perform()
-        except (ValueError, WebDriverException) as e:
-            print("looks like there aren't that many sections")
-
+        time.sleep(5)
+        browser.execute_script("var zabutton = document.getElementsByClassName( 'udlite-btn udlite-btn-medium udlite-btn-secondary udlite-heading-sm curriculum--show-more--2tshH' )[0]; zabutton.click();")
 
         content = browser.page_source
-        browser.close()
         coursepage = BeautifulSoup(content, "html.parser")
-        
-        coursepage = BeautifulSoup(content, "html.parser")
-
         breadcrumbs = coursepage.find("div", class_="topic-menu udlite-breadcrumb")
         raw_tags = breadcrumbs.find_all("a", class_="udlite-heading-sm")
         tags = []
@@ -116,6 +100,24 @@ class Course():
             self.Sections.append(Section(section_block))
 
         requirements_block = coursepage.find("div", class_="ud-component--course-landing-page-udlite--requirements")
+        raw_requirements = requirements_block.find_all("div", class_="udlite-block-list-item udlite-block-list-item-small udlite-block-list-item-tight udlite-block-list-item-neutral udlite-text-sm")
+        self.requirements = []
+        for requirement in raw_requirements:
+            self.requirements.append(requirement.text)
+
+        description_box = coursepage.find("div", attrs={'data-purpose':'safely-set-inner-html:description:description'})
+        description_paragraps = description_box.find_all("p")
+
+        self.description = ""
+        for parahraph in description_paragraps:
+            self.description += parahraph.text + "\n"
+
+        target_audience_block = coursepage.find("div", attrs={'data-purpose': 'target-audience'})
+        target_audience_pointers = target_audience_block.find_all("li")
+
+        self.target_audience = []
+        for a in target_audience_pointers:
+            self.target_audience.append(a.text)
 
 
 def convertToJson(course):
