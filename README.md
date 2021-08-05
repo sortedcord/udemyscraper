@@ -101,6 +101,7 @@ Here is a json representation of the data it can fetch as of now:-
   "target_audience": [
     "Developers who want to upgrade their skills and get better job opportunities",
     "Front-end developers who want to stay up-to-date with the latest technology"
-  ]
+  ],
+  "banner": "https://foo.com/somepicture.jpg"
 }
 ```

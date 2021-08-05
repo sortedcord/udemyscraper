@@ -1,9 +1,9 @@
-from fetch import Course
-from fetch import convertToJson
+from fetch import UdemyCourse
+from fetch import convert_to_json
 
 search_term = input("Enter Search Term: ")
 
-udemy_course = Course(search_term)
-udemy_course.fetchCourse()
+udemy_course = UdemyCourse(search_term)
+udemy_course.fetch_course()
 
-convertToJson(udemy_course)
+convert_to_json(udemy_course)
