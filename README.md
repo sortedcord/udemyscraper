@@ -105,3 +105,31 @@ Here is a json representation of the data it can fetch as of now:-
   "banner": "https://foo.com/somepicture.jpg"
 }
 ```
+
+## Usage
+
+In order to use the scraper, import it as a module and then create a new course class like so-
+
+```py
+from udemyscraper import UdemyCourse
+```
+
+This will import the `UdemyCourse` class and then you can create an instance of it and then pass the search query to it. Prefarably the exact course name.
+
+```py
+from udemyscraper import UdemyCourse
+
+javascript_course = UdemyCourse("Javascript course for beginners")
+```
+
+This will create an empty instance of `UdemyCourse`. To fetch the data, you need to call the `fetch_course` function.
+
+```py
+javascript_course.fetch_course()
+```
+
+Now that you have the course, you can access all of the courses' data as shown [here](#Functionality).
+
+```py
+print(javascript_course.Sections[2].lessons[1].name) # This will print out the 3rd Sections' 2nd Lesson's name
+```

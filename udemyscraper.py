@@ -136,7 +136,7 @@ class UdemyCourse():
         self.banner = str(course_page.find("div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135","480x270")
 
 
-def convert_to_json(course):
+def course_to_json(course):
     #Initialize a new Sections array which will contain coverted dictionaries instead of objects for json serialization
     new_section_list = []
 
