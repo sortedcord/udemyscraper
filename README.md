@@ -1,4 +1,4 @@
-![scraper](docs/screen.png)
+![scraper](docs/logo.png)
 
 # Udemy Scraper
 
