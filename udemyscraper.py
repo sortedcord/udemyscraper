@@ -45,23 +45,18 @@ class UdemyCourse():
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
         browser = webdriver.Chrome(executable_path='chromedriver.exe',chrome_options=option)
         browser.get(url)
-        time.sleep(3)
+        time.sleep(5)
 
         #Get page source
         content = browser.page_source
         search_page = BeautifulSoup(content, "lxml")
 
-        # Get course_page Link
-        links = []
-        for a in search_page.find_all('a', class_='udlite-custom-focus-visible browse-course-card--link--3KIkQ', href=True): 
-            if a.text: 
-                links.append(a['href'])
-    
         other_info = search_page.find_all('span', class_="course-card--row--1OMjg")
         truncated_info = other_info[0:3]
 
         # Get course basic metadata
-        self.link = 'https://udemy.com' + (links[0])
+        link_block = str(search_page.select('a[class*="browse-course-card--link--"]')[0])
+        self.link = 'https://udemy.com' + str(BeautifulSoup(link_block, 'lxml').find('a')['href'])
         self.title = search_page.find('div', class_="udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE").text
         self.headline = search_page.find('p', class_="udlite-text-sm course-card--course-headline--yIrRk").text
         self.instructor = search_page.find('div', class_="udlite-text-xs course-card--instructor-list--lIA4f").text
