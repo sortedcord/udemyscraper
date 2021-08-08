@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 #Selenium Libraries
 from selenium import webdriver   # for webdriver
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
-from selenium.common.exceptions import WebDriverException
 
 
 
@@ -50,7 +49,7 @@ class UdemyCourse():
         option = Options()
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
-        browser = webdriver.Chrome(executable_path='chromedriver.exe')
+        browser = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=option)
         browser.get(url)
         time.sleep(3)
 
