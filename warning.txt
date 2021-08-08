@@ -1,0 +1,5 @@
+Thank You for using udemyscraper
+Before fetching the course information be sure that you have google chrome >= 92.x.x installed on your machine. 
+Other chromium based browsers such as brave, edge, opera, vivaldi, etc will not work.
+In case you want to use firefox instead, please read through the other borwsers section in the readme.
+Happy Scraping!

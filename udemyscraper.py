@@ -10,6 +10,13 @@ from selenium.common.exceptions import WebDriverException
 
 
 class UdemyCourse():
+
+    with open('warning.txt') as file:
+        lines = file.readlines()
+        for line in lines:
+            print(line.replace("\n",""))
+            time.sleep(0.4)
+
     def __init__(self, query):
         self.query = query
 
@@ -43,51 +50,61 @@ class UdemyCourse():
         option = Options()
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
-        browser = webdriver.Chrome(executable_path='chromedriver.exe',chrome_options=option)
+        browser = webdriver.Chrome(executable_path='chromedriver.exe')
         browser.get(url)
-        time.sleep(5)
+        time.sleep(3)
 
         #Get page source
         content = browser.page_source
         search_page = BeautifulSoup(content, "lxml")
 
-        other_info = search_page.find_all('span', class_="course-card--row--1OMjg")
-        truncated_info = other_info[0:3]
-
         # Get course basic metadata
         link_block = str(search_page.select('a[class*="browse-course-card--link--"]')[0])
         self.link = 'https://udemy.com' + str(BeautifulSoup(link_block, 'lxml').find('a')['href'])
-        self.title = search_page.find('div', class_="udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE").text
-        self.headline = search_page.find('p', class_="udlite-text-sm course-card--course-headline--yIrRk").text
-        self.instructor = search_page.find('div', class_="udlite-text-xs course-card--instructor-list--lIA4f").text
-        self.rating = search_page.find('span', class_="udlite-heading-sm star-rating--rating-number--3lVe8").text
-        self.duration = truncated_info[0].text
-        self.number_of_lectures = truncated_info[1].text
 
         
         # Scrape Information on course_page
         url = self.link
         browser.get(url)
 
-        time.sleep(3) #Wait for the browser to completely load the page. You can change this depending on your internet speed.
-
-        #Try to click on show more sections button
-        try:
-            browser.execute_script("""var zabutton = document.getElementsByClassName('udlite-btn udlite-btn-medium 
-                                                                                    udlite-btn-secondary udlite-heading-sm 
-                                                                                    curriculum--show-more--2tshH' 
-                                                                                    )[0]; zabutton.click();""")
-        # If there are less than 10 sections
-        except WebDriverException:
-            print("More sections button could not be found. This course has less than 10 sections then.")
+        time.sleep(2) #Wait for the browser to completely load the page. You can change this depending on your internet speed.
 
         # Get the html
         content = browser.page_source
-        browser.close()
-
+        
         #Parse HTML
         course_page = BeautifulSoup(content, "lxml")
 
+        no_of_buttons = len(course_page.find_all("button", attrs={'data-purpose':'show-more'}))
+        #check if the show more button for sections exists or not.
+        if no_of_buttons > 0:
+            browser.execute_script("""var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
+        browser.close()
+        #Get the title
+        self.title = course_page.find("h1", class_="udlite-heading-xl clp-lead__title clp-lead__title--small").text
+
+        #Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
+        self.headline = course_page.find("div", attrs={'data-purpose':'lead-headline'}).text
+
+        # Get the rating
+        self.rating = course_page.find("span", attrs={'data-purpose':'rating-number'}).text
+
+        #Get number of ratings
+        self.no_of_ratings = course_page.find("div", class_="clp-lead__element-item clp-lead__element-item--row").find_all("span")[3].text.replace("(","").replace(" ratings)", "")
+
+        #Get the number of students
+        self.student_enrolls = course_page.find("div", attrs={'data-purpose':'enrollment'}).text.replace(" students", "")
+
+        # Get the instructors name
+        self.instructor = course_page.find("a", class_="udlite-btn udlite-btn-large udlite-btn-link udlite-heading-md udlite-text-sm udlite-instructor-links").find("span").text.replace("\n","")
+
+        # Get content information 
+        content_info = course_page.select('span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
+        self.duration = content_info[2].replace(" total length","")
+
+        self.no_of_lectures = content_info[1].replace(" lectures","")
+        
+        self.no_of_sections = content_info[0].replace(" sections", "")
         # Get breadcrumb tags
         self.tags = []
         for tag in course_page.find("div", class_="topic-menu udlite-breadcrumb").find_all("a", class_="udlite-heading-sm"):
