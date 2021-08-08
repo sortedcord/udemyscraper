@@ -31,7 +31,7 @@ class UdemyCourse():
                         self.name = lesson_html.find("span").text
                         
                 self.html = BeautifulSoup(html, "lxml")
-                self.name = self.html.find("span", class_="section--section-title--8blTh").text
+                self.name = self.html.select("span[class*='section--section-title--8blTh']")[0].text
                 self.lesson_blocks = self.html.find_all("div", class_="udlite-block-list-item-content")
 
                 self.lessons = []
@@ -123,7 +123,7 @@ class UdemyCourse():
         self.Sections = []
 
         string_section = []
-        for s in course_page.find_all("div", class_="section--panel--1tqxC panel--panel--3NYBX"):
+        for s in course_page.select("div[class*='section--panel--1tqxC panel--panel--']"):
             string_section.append(str(s))
         for section_block in string_section:
             self.Sections.append(Section(section_block))
