@@ -33,6 +33,7 @@ The following datatable contains all of the properties that can be fetched.
 |`rating`         |Integer      |Rating of the course out of 5                        |`course.rating`     |
 |`duration`       |String       |Duration of the course in hours and minutes          |`course.duration`   |
 |`no_of_lectures` |String       |Gives the number of lectures in the course (lessons) |`course.no_of_lectures` |
+|`no_of_sections` |String       |Gives the number of sections in the courses |`course.no_of_lectures` |
 
 ## Installation
 
