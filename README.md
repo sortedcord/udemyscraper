@@ -23,13 +23,16 @@ course.fetch_course()
 
 The following datatable contains all of the properties that can be fetched.
 
-|Name         |Type         |Description                                    |Usage               |
-|-------------|-------------|-----------------------------------------------|--------------------|
-|`query`      |String       |Search term which is searched in the website   |`course.query`      |
-|`link`       |URL (String) |url of the course.                             |`course.link`       |
-|`title`      |String       |Title of the course                            |`course.title`      |
-|`headline`   |String       |The headline usually displayed under the title |`course.headline`   |
-|`instructor` |String       |Name of the instructor of the course           |`course.instructor` |
+|Name             |Type         |Description                                          |Usage               |
+|-----------------|-------------|-----------------------------------------------------|--------------------|
+|`query`          |String       |Search term which is searched in the website         |`course.query`      |
+|`link`           |URL (String) |url of the course.                                   |`course.link`       |
+|`title`          |String       |Title of the course                                  |`course.title`      |
+|`headline`       |String       |The headline usually displayed under the title       |`course.headline`   |
+|`instructor`     |String       |Name of the instructor of the course                 |`course.instructor` |
+|`rating`         |Integer      |Rating of the course out of 5                        |`course.rating`     |
+|`duration`       |String       |Duration of the course in hours and minutes          |`course.duration`   |
+|`no_of_lectures` |String       |Gives the number of lectures in the course (lessons) |`course.no_of_lectures` |
 
 ## Installation
 
