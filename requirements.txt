@@ -27,3 +27,4 @@ w3lib              1.22.0
 webdriver-manager  3.4.2
 websockets         8.1
 wheel              0.36.2
+pyqt5
