@@ -31,11 +31,18 @@ The following datatable contains all of the properties that can be fetched.
 |`headline`       |String       |The headline usually displayed under the title |`course.headline`   |
 |`instructor`     |String       |Name of the instructor of the course           |`course.instructor` |
 |`rating`         |Integer      |Rating of the course out of 5                  |`course.rating`     |
-|`no_of_rating`   |Integer      |Number of rating the course has got            |`course.no_of_rating` |
+|`no_of_ratings`  |Integer      |Number of rating the course has got           |`course.no_of_ratings` |
 |`duration`       |String       |Duration of the course in hours and minutes    |`course.duration`   |
-|`no_of_lectures` |String       |Gives the number of lectures in the course (lessons) |`course.no_of_lectures` |
+|`no_of_lectures` |String       |Gives the number of lectures in the course (lessons) |`course.no
 |`no_of_sections` |String       |Gives the number of sections in the courses |`course.no_of_lectures` |
 |`tags`           |List         |Is the list of tags of the course (Breadcrumbs) |`course.tags[1]`    |
+|`student_enrolls` |Integer |Gives the total number of students enrolled in the course | `course.student_enrolls` |
+|`course_language` | String     |Gives the language of the course | `course.course_language` | 
+|`objectives` |List     |List containing all the objectives for the course | `course.objectives[2]`  |
+|`Sections`   |List      |List containing all the section objects for the course | `course.Sections[2]` |
+
+#### Sections Class
+
 
 ## Installation
 
