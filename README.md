@@ -43,11 +43,15 @@ The following datatable contains all of the properties that can be fetched.
 
 #### Sections Class
 
+|Name             |Type         |Description                                          |Usage               |
+|-----------------|-------------|-----------------------------------------------------|--------------------|
 |`name` |String  |Returns the name of the section of the course |`course.Sections[4].name` |
 |`lessons` |List |List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
 
 #### Lessons Class
 
+|Name             |Type         |Description                                          |Usage               |
+|-----------------|-------------|-----------------------------------------------------|--------------------|
 |`name` |String |Gives the name of the lesson |`course.Sections[4].lessons[2].name` |
 
 ## Installation
