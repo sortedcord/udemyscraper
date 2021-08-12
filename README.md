@@ -91,7 +91,7 @@ pip install -r requirements.txt
 
 ### Choosing Browser
 
-A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources. As of e459200e7ab1e725319893e3d897cb32aaf23303 the headless browser is a bit buggy when it comes to executing javascript commands, so it is possible that the browser process may not terminate properly so be sure to check for that either in Task Manager, HTOP, etc and end it.
+A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources. As of [commit 633ec08](https://github.com/sortedcord/udemy-web-scraper/commit/633ec0875cd6e61fcc4f9309bc2a099c3e7cf6fb) the headless browser is a bit buggy when it comes to executing javascript commands, so it is possible that the browser process may not terminate properly so be sure to check for that either in Task Manager, HTOP, etc and end it.
 
 This script works with firefox as well as chrome.
 
