@@ -14,8 +14,6 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
 - [Udemy Scraper](#udemy-scraper)
 - [Table Of Contents](#table-of-contents)
   - [Basic Usage](#basic-usage)
-      - [Sections Class](#sections-class)
-      - [Lessons Class](#lessons-class)
   - [Installation](#installation)
     - [Virtual Environment](#virtual-environment)
     - [Package Installation](#package-installation)
@@ -23,7 +21,15 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
     - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
     - [Running with Firefox](#running-with-firefox)
   - [Approach](#approach)
+    - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
   - [Functionality](#functionality)
+    - [Datatables](#datatables)
+      - [Course Class](#course-class)
+      - [Section Class](#section-class)
+      - [Lesson Class](#lesson-class)
+    - [Output/ Dumping data](#output-dumping-data)
+      - [Dumping as JSON](#dumping-as-json)
+  - [Features to-be implemented](#features-to-be-implemented)
 
 ## Basic Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
@@ -36,43 +42,6 @@ from udemyscraper import UdemyCourse
 course = UdemyCourse('learn javascript')
 course.fetch_course()
 ```
-
-The following datatable contains all of the properties that can be fetched.
-
-|Name             |Type         |Description                                          |Usage               |
-|-----------------|-------------|-----------------------------------------------------|--------------------|
-|`query`          |String       |Search term which is searched in the website   |`course.query`      |
-|`link`           |URL (String) |url of the course.                             |`course.link`       |
-|`title`          |String       |Title of the course                            |`course.title`      |
-|`headline`       |String       |The headline usually displayed under the title |`course.headline`   |
-|`instructor`     |String       |Name of the instructor of the course           |`course.instructor` |
-|`rating`         |Integer      |Rating of the course out of 5                  |`course.rating`     |
-|`no_of_ratings`  |Integer      |Number of rating the course has got           |`course.no_of_ratings` |
-|`duration`       |String       |Duration of the course in hours and minutes    |`course.duration`   |
-|`no_of_lectures` |String |Gives the number of lectures in the course (lessons) |`course.no_of_lectures`|
-|`no_of_sections` |String       |Gives the number of sections in the courses |`course.no_of_lectures` |
-|`tags`           |List         |Is the list of tags of the course (Breadcrumbs) |`course.tags[1]`    |
-|`student_enrolls` |Integer     |Gives the number of students enrolled | `course.student_enrolls` |
-|`course_language` | String     |Gives the language of the course | `course.course_language` | 
-|`objectives` |List     |List containing all the objectives for the course | `course.objectives[2]`  |
-|`Sections`   |List      |List containing all the section objects for the course | `course.Sections[2]` |
-|`requirements` |List    |List containing all the requirements for the course | `course.requirements` |
-|`description` |String   |Gives the description paragraphs of the course |`course.description` |
-|`target_audience` |List |List containing the points under Target Audience heading |`course.target_audience` |
-|`banner` |String |URL for the course banner image |`course.banner`
-
-#### Sections Class
-
-|Name             |Type         |Description                                          |Usage               |
-|-----------------|-------------|-----------------------------------------------------|--------------------|
-|`name` |String  |Returns the name of the section of the course |`course.Sections[4].name` |
-|`lessons` |List |List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
-
-#### Lessons Class
-
-|Name             |Type         |Description                                          |Usage               |
-|-----------------|-------------|-----------------------------------------------------|--------------------|
-|`name` |String |Gives the name of the lesson |`course.Sections[4].lessons[2].name` |
 
 ## Installation
 
@@ -152,65 +121,70 @@ It is fairly easy to webscrape sites, however, there are some sites that are not
 
 Using BS4 in itself, doesn't give the required results back, so I had to use a browser engine by using selenium to fetch the courses information. Initially, even that didn't work out, but then I realised the courses were being fetch asynchronously so I had to add a bit of delay. So fetching the data can be a bit slow initially.
 
+### Why not just use the Udemy's API?
+
+Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
+
 ## Functionality
 
 As of this commit, the script can search udemy for the search term you input and get the courses link, and all the other overview details like description, instructor, duration, rating, etc.
+### Datatables
 
-Here is a json representation of the data it can fetch as of now:-
+The following datatable contains all of the properties that can be fetched.
 
-```json
-{
-  "query": "The Complete Angular Course: Beginner to Advanced",
-  "link": "https://udemy.com/course/the-complete-angular-master-class/",
-  "title": "The Complete Angular Course: Beginner to Advanced",
-  "headline": "The most comprehensive Angular 4 (Angular 2+) course. Build a real e-commerce app with Angular, Firebase and Bootstrap 4",
-  "instructor": "Mosh Hamedani",
-  "rating": "4.5",
-  "duration": "29.5 total hours",
-  "no_of_lectures": "376 lectures",
-  "tags": ["Development", "Web Development", "Angular"],
-  "no_of_rating": "23,910",
-  "no_of_students": "96,174",
-  "course_language": "English",
-  "objectives": [
-    "Establish yourself as a skilled professional developer",
-    "Build real-world Angular applications on your own",
-    "Troubleshoot common Angular errors",
-    "Master the best practices",
-    "Write clean and elegant code like a professional developer"
-  ],
-  "Sections": [
-    {
-      "name": "Introduction",
-      "lessons": [{ "name": "Introduction" }, { "name": "What is Angular" }],
-      "no_of_lessons": 12
-    },
-    {
-      "name": "TypeScript Fundamentals",
-      "lessons": [
-        { "name": "Introduction" },
-        { "name": "What is TypeScript?" }
-      ],
-      "no_of_lessons": 18
-    },
-    {
-      "name": "Angular Fundamentals",
-      "lessons": [
-        { "name": "Introduction" },
-        { "name": "Building Blocks of Angular Apps" }
-      ],
-      "no_of_lessons": 10
-    }
-  ],
-  "requirements": [
-    "Basic familiarity with HTML, CSS and JavaScript",
-    "NO knowledge of Angular 1 or Angular 2 is required"
-  ],
-  "description": "\nAngular is one of the most popular frameworks for building client apps with HTML, CSS and TypeScript. If you want to establish yourself as a front-end or a full-stack developer, you need to learn Angular.\n\nIf you've been confused or frustrated jumping from one Angular 4 tutoria...",
-  "target_audience": [
-    "Developers who want to upgrade their skills and get better job opportunities",
-    "Front-end developers who want to stay up-to-date with the latest technology"
-  ],
-  "banner": "https://foo.com/somepicture.jpg"
-}
+#### Course Class
+
+| Name              | Type         | Description                                              | Usage                    |
+|-------------------|--------------|----------------------------------------------------------|--------------------------|
+| `query`           | String       | Search term which is searched in the website             | `course.query`           |
+| `link`            | URL (String) | url of the course.                                       | `course.link`            |
+| `title`           | String       | Title of the course                                      | `course.title`           |
+| `headline`        | String       | The headline usually displayed under the title           | `course.headline`        |
+| `instructor`      | String       | Name of the instructor of the course                     | `course.instructor`      |
+| `rating`          | Integer      | Rating of the course out of 5                            | `course.rating`          |
+| `no_of_ratings`   | Integer      | Number of rating the course has got                      | `course.no_of_ratings`   |
+| `duration`        | String       | Duration of the course in hours and minutes              | `course.duration`        |
+| `no_of_lectures`  | String       | Gives the number of lectures in the course (lessons)     | `course.no_of_lectures`  |
+| `no_of_sections`  | String       | Gives the number of sections in the courses              | `course.no_of_lectures`  |
+| `tags`            | List         | Is the list of tags of the course (Breadcrumbs)          | `course.tags[1]`         |
+| `student_enrolls` | Integer      | Gives the number of students enrolled                    | `course.student_enrolls` |
+| `course_language` | String       | Gives the language of the course                         | `course.course_language` |
+| `objectives`      | List         | List containing all the objectives for the course        | `course.objectives[2]`   |
+| `Sections`        | List         | List containing all the section objects for the course   | `course.Sections[2]`     |
+| `requirements`    | List         | List containing all the requirements for the course      | `course.requirements`    |
+| `description`     | String       | Gives the description paragraphs of the course           | `course.description`     |
+| `target_audience` | List         | List containing the points under Target Audience heading | `course.target_audience` |
+| `banner`          | String       |URL for the course banner image                           |`course.banner`           |
+
+#### Section Class
+
+| Name      | Type   | Description                                      | Usage                           |
+|-----------|--------|--------------------------------------------------|---------------------------------|
+| `name`    | String | Returns the name of the section of the course    | `course.Sections[4].name`       |
+| `lessons` | List   | List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
+
+#### Lesson Class
+
+| Name   | Type   | Description                  | Usage                                |
+|--------|--------|------------------------------|--------------------------------------|
+| `name` | String | Gives the name of the lesson | `course.Sections[4].lessons[2].name` |
+
+### Output/ Dumping data
+
+#### Dumping as JSON
+
+Currently, the script can convert the entire course into a dictionary, parse it into a json file and then dump it to a json file. You can do this by calling the `course_to_json()` function like so:
+
+```py
+from udemyscraper import course_to_json
+
+# Assuming you have already created a course object and fetched the data
+course_to_json(course)
 ```
+
+This will dump the data to `object.json` file in the same directory. If you want to change the filename, then you can do so by editing [this code](udemyscraper.py#L206).
+
+## Features to-be implemented 
+
+Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
+
