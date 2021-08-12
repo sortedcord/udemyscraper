@@ -26,6 +26,7 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
     - [Section Class](#section-class)
     - [Lesson Class](#lesson-class)
   - [Output/ Dumping data](#output-dumping-data)
+    - [Converting to Dictionary](#converting-to-dictionary)
     - [Dumping as JSON](#dumping-as-json)
 - [Features to-be implemented](#features-to-be-implemented)
 
@@ -168,6 +169,17 @@ The following datatable contains all of the properties that can be fetched.
 | `name` | String | Gives the name of the lesson | `course.Sections[4].lessons[2].name` |
 
 ### Output/ Dumping data
+
+#### Converting to Dictionary
+
+The entire course object is converted into a dictionary by using nested object to dictionary conversion iterations.
+
+```py
+from udemyscraper import course_to_dict
+
+# Assuming you have already created a course object and fetched the data
+dictionary_course = course_to_dict(course)
+```
 
 #### Dumping as JSON
 
