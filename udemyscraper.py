@@ -8,7 +8,6 @@ from selenium import webdriver   # for webdriver
 # for suppressing the browser
 from selenium.webdriver.chrome.options import Options
 
-
 class UdemyCourse():
 
     with open('warning.txt') as file:
@@ -172,8 +171,7 @@ class UdemyCourse():
         self.banner = str(course_page.find(
             "div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135", "480x270")
 
-
-def course_to_json(course):
+def course_to_dict(course):
     # Initialize a new Sections array which will contain coverted dictionaries instead of objects for json serialization
     new_section_list = []
 
@@ -202,7 +200,15 @@ def course_to_json(course):
     # Update the sections object array with the new sections dictionary array
     course.Sections = new_section_list
 
+    # return the dictionary
+    return course.__dict__
+
+
+def course_to_json(course):
+    # Convert the course to dictionary
+    course = course_to_dict(course)
+
     # Dump the python object as a json in 'object.json' file. You can change this to whatever you want
     with open('object.json', 'w') as file:
         # Convert the course to dictionary and dump.
-        file.write(json.dumps(course.__dict__))
+        file.write(json.dumps(course))
