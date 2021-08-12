@@ -53,7 +53,7 @@ class UdemyCourse():
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
         browser = webdriver.Chrome(
-            executable_path='chromedriver.exe', )  # chrome_options=option
+            executable_path='chromedriver.exe', chrome_options=option) 
         browser.get(url)
         time.sleep(3)
 

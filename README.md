@@ -89,9 +89,46 @@ somerandomname\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Chrome setup
+### Choosing Browser
 
-Be sure to have chrome installed and install the corresponding version of chromedriver. I have already provided a windows binary file. If you want, you can install the linux binary for the chromedriver from its page.
+A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources. As of e459200e7ab1e725319893e3d897cb32aaf23303 the headless browser is a bit buggy when it comes to executing javascript commands, so it is possible that the browser process may not terminate properly so be sure to check for that either in Task Manager, HTOP, etc and end it.
+
+This script works with firefox as well as chrome.
+
+#### Running with Chrome (or chromium)
+
+To run this script you need to have chrom(ium) installed on the machine as well as the chromedriver binary which can be downloaded from this [page](https://chromedriver.chromium.org/downloads). Make sure that the binary you have installed works on your platform/ architecture and the the driver version corresponds to the version of the browser you have downloaded.
+
+I have already provided a windows binary of the driver in the repo itself which supports chrom(ium) 92. You can use that or you can get your specific driver from the link above.
+
+#### Running with Firefox
+
+In order to run this script this firefox, you need to have firefox installed as well as the `gekodriver` executable file in this directory or in your path.
+You can download the gekodriver from [here](https://github.com/mozilla/geckodriver/releases).
+
+Once you have finished setting up the driver, you need to make a few changes in the srcipt to use firefox instead of chrome.
+
+This is what the file currently looks like. As you can see, it uses the chrome engine by default.
+```py
+# udemyscraper.py
+
+option = Options()
+option.add_argument('headless')
+option.add_experimental_option('excludeSwitches', ['enable-logging'])
+browser = webdriver.Chrome(
+    executable_path='chromedriver.exe', chrome_options=option) 
+```
+
+And these are the changes you would have to make to use firefox.
+```py
+fireFoxOptions = webdriver.FirefoxOptions()
+brower = webdriver.Firefox(firefox_options=fireFoxOptions)
+```
+
+If you want to use Firefox `headless` then add the following line before initializing the browser variable
+```py
+fireFoxOptions.set_headless()
+```
 
 ## Approach
 
