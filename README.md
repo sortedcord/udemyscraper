@@ -9,6 +9,22 @@
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
+# Table Of Contents
+
+- [Udemy Scraper](#udemy-scraper)
+- [Table Of Contents](#table-of-contents)
+  - [Basic Usage](#basic-usage)
+      - [Sections Class](#sections-class)
+      - [Lessons Class](#lessons-class)
+  - [Installation](#installation)
+    - [Virtual Environment](#virtual-environment)
+    - [Package Installation](#package-installation)
+  - [Choosing Browser](#choosing-browser)
+    - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
+    - [Running with Firefox](#running-with-firefox)
+  - [Approach](#approach)
+  - [Functionality](#functionality)
+
 ## Basic Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
 
