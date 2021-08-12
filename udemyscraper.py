@@ -8,6 +8,7 @@ from selenium import webdriver   # for webdriver
 # for suppressing the browser
 from selenium.webdriver.chrome.options import Options
 
+
 class UdemyCourse():
 
     with open('warning.txt') as file:
@@ -52,9 +53,9 @@ class UdemyCourse():
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
         browser = webdriver.Chrome(
-            executable_path='chromedriver.exe', chrome_options=option) 
+            executable_path='chromedriver.exe', chrome_options=option)
         browser.get(url)
-        time.sleep(3)
+        browser.implicitly_wait(3)
 
         # Get page source
         content = browser.page_source
@@ -71,7 +72,7 @@ class UdemyCourse():
         browser.get(url)
 
         # Wait for the browser to completely load the page. You can change this depending on your internet speed.
-        time.sleep(4)
+        browser.implicitly_wait(4)
 
         # Get the html
         content = browser.page_source
@@ -81,7 +82,7 @@ class UdemyCourse():
 
         no_of_buttons = len(course_page.find_all(
             "button", attrs={'data-purpose': 'show-more'}))
-        time.sleep(3)
+        browser.implicitly_wait(3)
         # check if the show more button for sections exists or not.
         if no_of_buttons > 0:
             browser.execute_script(
@@ -170,6 +171,7 @@ class UdemyCourse():
         # Get the url of the course
         self.banner = str(course_page.find(
             "div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135", "480x270")
+
 
 def course_to_dict(course):
     # Initialize a new Sections array which will contain coverted dictionaries instead of objects for json serialization
