@@ -1,6 +1,5 @@
 ![scraper](docs/logo.png)
 
-# Udemy Scraper
 
 ![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
 ![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
@@ -9,27 +8,26 @@
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
-# Table Of Contents
+## Table Of Contents
 
-- [Udemy Scraper](#udemy-scraper)
 - [Table Of Contents](#table-of-contents)
-  - [Basic Usage](#basic-usage)
-  - [Installation](#installation)
-    - [Virtual Environment](#virtual-environment)
-    - [Package Installation](#package-installation)
-  - [Choosing Browser](#choosing-browser)
-    - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
-    - [Running with Firefox](#running-with-firefox)
-  - [Approach](#approach)
-    - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
-  - [Functionality](#functionality)
-    - [Datatables](#datatables)
-      - [Course Class](#course-class)
-      - [Section Class](#section-class)
-      - [Lesson Class](#lesson-class)
-    - [Output/ Dumping data](#output-dumping-data)
-      - [Dumping as JSON](#dumping-as-json)
-  - [Features to-be implemented](#features-to-be-implemented)
+- [Basic Usage](#basic-usage)
+- [Installation](#installation)
+  - [Virtual Environment](#virtual-environment)
+  - [Package Installation](#package-installation)
+- [Choosing Browser](#choosing-browser)
+  - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
+  - [Running with Firefox](#running-with-firefox)
+- [Approach](#approach)
+  - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
+- [Functionality](#functionality)
+  - [Datatables](#datatables)
+    - [Course Class](#course-class)
+    - [Section Class](#section-class)
+    - [Lesson Class](#lesson-class)
+  - [Output/ Dumping data](#output-dumping-data)
+    - [Dumping as JSON](#dumping-as-json)
+- [Features to-be implemented](#features-to-be-implemented)
 
 ## Basic Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
