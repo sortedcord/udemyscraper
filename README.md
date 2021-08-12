@@ -40,6 +40,10 @@ The following datatable contains all of the properties that can be fetched.
 |`course_language` | String     |Gives the language of the course | `course.course_language` | 
 |`objectives` |List     |List containing all the objectives for the course | `course.objectives[2]`  |
 |`Sections`   |List      |List containing all the section objects for the course | `course.Sections[2]` |
+|`requirements` |List    |List containing all the requirements for the course | `course.requirements` |
+|`description` |String   |Gives the description paragraphs of the course |`course.description` |
+|`target_audience` |List |List containing the points under Target Audience heading |`course.target_audience` |
+|`banner` |String |URL for the course banner image |`course.banner`
 
 #### Sections Class
 
