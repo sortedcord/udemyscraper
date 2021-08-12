@@ -89,19 +89,19 @@ somerandomname\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Choosing Browser
+## Choosing Browser
 
 A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources. As of [commit 633ec08](https://github.com/sortedcord/udemy-web-scraper/commit/633ec0875cd6e61fcc4f9309bc2a099c3e7cf6fb) the headless browser is a bit buggy when it comes to executing javascript commands, so it is possible that the browser process may not terminate properly so be sure to check for that either in Task Manager, HTOP, etc and end it.
 
 This script works with firefox as well as chrome.
 
-#### Running with Chrome (or chromium)
+### Running with Chrome (or chromium)
 
 To run this script you need to have chrom(ium) installed on the machine as well as the chromedriver binary which can be downloaded from this [page](https://chromedriver.chromium.org/downloads). Make sure that the binary you have installed works on your platform/ architecture and the the driver version corresponds to the version of the browser you have downloaded.
 
 I have already provided a windows binary of the driver in the repo itself which supports chrom(ium) 92. You can use that or you can get your specific driver from the link above.
 
-#### Running with Firefox
+### Running with Firefox
 
 In order to run this script this firefox, you need to have firefox installed as well as the `gekodriver` executable file in this directory or in your path.
 You can download the gekodriver from [here](https://github.com/mozilla/geckodriver/releases).
