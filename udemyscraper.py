@@ -3,14 +3,13 @@ import json
 from bs4 import BeautifulSoup
 
 # Selenium Libraries
-from selenium import webdriver   # for webdriver
+from selenium import webdriver  # for webdriver
 
 # for suppressing the browser
 from selenium.webdriver.chrome.options import Options
 
 
 class UdemyCourse():
-
     with open('warning.txt') as file:
         lines = file.readlines()
         for line in lines:
@@ -42,8 +41,8 @@ class UdemyCourse():
 
                 self.no_of_lessons = len(self.lessons)
 
-                other_info_block = self.html.find_all(
-                    "span", class_="udlite-text-sm section--hidden-on-mobile--171Q9 section--section-content--9kwnY")
+                self.duration = self.html.find(
+                    'span', attrs={'data-purpose': 'section-content'}).text.split(' • ')[1].replace(' ', '')
 
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
@@ -55,7 +54,7 @@ class UdemyCourse():
         browser = webdriver.Chrome(
             executable_path='chromedriver.exe', chrome_options=option)
         browser.get(url)
-        browser.implicitly_wait(3)
+        time.sleep(3)
 
         # Get page source
         content = browser.page_source
@@ -72,7 +71,7 @@ class UdemyCourse():
         browser.get(url)
 
         # Wait for the browser to completely load the page. You can change this depending on your internet speed.
-        browser.implicitly_wait(4)
+        time.sleep(4)
 
         # Get the html
         content = browser.page_source
@@ -82,7 +81,7 @@ class UdemyCourse():
 
         no_of_buttons = len(course_page.find_all(
             "button", attrs={'data-purpose': 'show-more'}))
-        browser.implicitly_wait(3)
+        time.sleep(3)
         # check if the show more button for sections exists or not.
         if no_of_buttons > 0:
             browser.execute_script(

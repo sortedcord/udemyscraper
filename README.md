@@ -153,14 +153,15 @@ The following datatable contains all of the properties that can be fetched.
 | `requirements`    | List         | List containing all the requirements for the course      | `course.requirements`    |
 | `description`     | String       | Gives the description paragraphs of the course           | `course.description`     |
 | `target_audience` | List         | List containing the points under Target Audience heading | `course.target_audience` |
-| `banner`          | String       |URL for the course banner image                           |`course.banner`           |
+| `banner`          | String       | URL for the course banner image                          | `course.banner`          |
 
 #### Section Class
 
-| Name      | Type   | Description                                      | Usage                           |
-|-----------|--------|--------------------------------------------------|---------------------------------|
-| `name`    | String | Returns the name of the section of the course    | `course.Sections[4].name`       |
-| `lessons` | List   | List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
+| Name       | Type   | Description                                      | Usage                           |
+|------------|--------|--------------------------------------------------|---------------------------------|
+| `name`     | String | Returns the name of the section of the course    | `course.Sections[4].name`       |
+| `duration` | String | The duration of the specific course              | `course.Sections[4].duration`   |
+| `lessons`  | List   | List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
 
 #### Lesson Class
 
