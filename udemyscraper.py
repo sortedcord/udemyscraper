@@ -8,6 +8,12 @@ from selenium import webdriver  # for webdriver
 # for suppressing the browser
 from selenium.webdriver.chrome.options import Options
 
+# to wait until page loads
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+
 
 class UdemyCourse():
     with open('warning.txt') as file:
@@ -54,7 +60,15 @@ class UdemyCourse():
         browser = webdriver.Chrome(
             executable_path='chromedriver.exe', chrome_options=option)
         browser.get(url)
-        time.sleep(3)
+
+        # Wait until the search box loads
+        try:
+            element_present = EC.presence_of_element_located(
+                (By.CLASS_NAME, 'course-directory--container--5ZPhr'))
+            WebDriverWait(browser, 3).until(element_present)
+        except TimeoutException:
+            print("Timed out waiting for page to load")
+            exit()
 
         # Get page source
         content = browser.page_source
@@ -70,8 +84,14 @@ class UdemyCourse():
         url = self.link
         browser.get(url)
 
-        # Wait for the browser to completely load the page. You can change this depending on your internet speed.
-        time.sleep(4)
+        # Wait till the price div loads
+        try:
+            element_present = EC.presence_of_element_located(
+                (By.CLASS_NAME, 'price-text--container--103D9'))
+            WebDriverWait(browser, 4).until(element_present)
+        except TimeoutException:
+            print("Timed out waiting for page to load")
+            exit()
 
         # Get the html
         content = browser.page_source
