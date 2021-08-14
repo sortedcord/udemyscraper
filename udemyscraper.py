@@ -136,6 +136,10 @@ class UdemyCourse():
         for tag in course_page.find("div", class_="topic-menu udlite-breadcrumb").find_all("a", class_="udlite-heading-sm"):
             self.tags.append(tag.text)
 
+        #Get course price
+        self.price = course_page.select(
+            'div[class*="price-text--price-part--"] > span')[1].text
+
         # This is come noob code. I didn't know of any other way, so please, if you have a better alternative, create a PR :pray:
         self.no_of_rating = course_page.find("span", class_="", string=lambda x: x and x.startswith(
             '(')).text.replace("(", "").replace(" ratings)", "")
