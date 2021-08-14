@@ -1,3 +1,4 @@
+import platform
 import time
 import json
 from bs4 import BeautifulSoup
@@ -51,8 +52,13 @@ class UdemyCourse():
         option = Options()
         option.add_argument('headless')
         option.add_experimental_option('excludeSwitches', ['enable-logging'])
-        browser = webdriver.Chrome(
-            executable_path='chromedriver.exe', chrome_options=option)
+
+        if platform.system() == "Windows":
+            browser = webdriver.Chrome(
+                executable_path='chromedriver.exe', chrome_options=option)
+        else:
+            browser = webdriver.Chrome(chrome_options=option)
+
         browser.get(url)
         time.sleep(3)
 
