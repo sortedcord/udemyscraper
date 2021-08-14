@@ -146,6 +146,7 @@ The following datatable contains all of the properties that can be fetched.
 | `no_of_lectures`  | String       | Gives the number of lectures in the course (lessons)     | `course.no_of_lectures`  |
 | `no_of_sections`  | String       | Gives the number of sections in the courses              | `course.no_of_lectures`  |
 | `tags`            | List         | Is the list of tags of the course (Breadcrumbs)          | `course.tags[1]`         |
+| `price`           | String       | Price of the course in local currency                    | `course.price`           |
 | `student_enrolls` | Integer      | Gives the number of students enrolled                    | `course.student_enrolls` |
 | `course_language` | String       | Gives the language of the course                         | `course.course_language` |
 | `objectives`      | List         | List containing all the objectives for the course        | `course.objectives[2]`   |
