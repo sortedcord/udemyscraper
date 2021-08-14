@@ -28,6 +28,9 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
   - [Output/ Dumping data](#output-dumping-data)
     - [Converting to Dictionary](#converting-to-dictionary)
     - [Dumping as JSON](#dumping-as-json)
+    - [Dumping as CSV](#dumping-as-csv)
+    - [Dumping as XML](#dumping-as-xml)
+      - [For Jellyfin users](#for-jellyfin-users)
 - [Features to-be implemented](#features-to-be-implemented)
 
 ## Basic Usage
@@ -193,6 +196,15 @@ from udemyscraper import course_to_json
 # Assuming you have already created a course object and fetched the data
 course_to_json(course)
 ```
+
+#### Dumping as CSV
+Currently not implemented yet.
+
+#### Dumping as XML
+Currently not implemented yet.
+
+##### For Jellyfin users
+Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only have one resource which is the poster of the file. It might be possible to write a custom XML structure for jellyfin. Currently in development.
 
 This will dump the data to `object.json` file in the same directory. If you want to change the filename, then you can do so by editing [this code](udemyscraper.py#L206).
 
