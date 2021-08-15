@@ -64,7 +64,7 @@ class UdemyCourse():
         # Wait until the search box loads
         try:
             element_present = EC.presence_of_element_located(
-                (By.CLASS_NAME, 'course-directory--container--5ZPhr'))
+                (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
             WebDriverWait(browser, 3).until(element_present)
         except TimeoutException:
             print("Timed out waiting for page to load")
