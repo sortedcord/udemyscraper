@@ -9,7 +9,7 @@ warn = True
 argumentList = sys.argv[1:]
 
 # Options
-options = "hvn:"
+options = "hvn"
 
 # Long options
 long_options = ["help", "version", "no-warn"]
