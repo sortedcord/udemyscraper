@@ -89,7 +89,7 @@ class UdemyCourse():
                 (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
             WebDriverWait(browser, 3).until(element_present)
         except TimeoutException:
-            print("Timed out waiting for page to load")
+            print("Timed out waiting for page to load or could not find a matching course")
             exit()
 
         # Get page source
@@ -109,7 +109,7 @@ class UdemyCourse():
         # Wait till the price div loads
         try:
             element_present = EC.presence_of_element_located(
-                (By.CLASS_NAME, 'price-text--container--103D9'))
+                (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
             WebDriverWait(browser, 4).until(element_present)
         except TimeoutException:
             print("Timed out waiting for page to load")
