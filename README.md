@@ -21,6 +21,8 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
   - [Suppressing Browser](#suppressing-browser)
 - [Approach](#approach)
   - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
+- [Standalone Usage](#standalone-usage)
+  - [List of Commands](#list-of-commands)
 - [Functionality](#functionality)
   - [Datatables](#datatables)
     - [Course Class](#course-class)
@@ -52,7 +54,7 @@ course.fetch_course()
 
 Firstly, it is recommended to install and run this inside of a virtual environment. You can do so by using the `virtualenv` library and then activating it.
 
-```sh
+```bash
 pip install virtualenv
 
 virtualenv somerandomname
@@ -61,7 +63,7 @@ virtualenv somerandomname
 
 Activating for \*nix
 
-```sh
+```bash
 source somerandomname/bin/activate
 ```
 
@@ -73,13 +75,13 @@ somerandomname\Scripts\activate
 
 ### Package Installation
 
-```sh
+```bash
 pip install -r requirements.txt
 ```
 
 ## Choosing Browser
 
-A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources. As of [commit 633ec08](https://github.com/sortedcord/udemy-web-scraper/commit/633ec0875cd6e61fcc4f9309bc2a099c3e7cf6fb) the headless browser is a bit buggy when it comes to executing javascript commands, so it is possible that the browser process may not terminate properly so be sure to check for that either in Task Manager, HTOP, etc and end it.
+A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources.
 
 This script works with firefox as well as chrome.
 
@@ -95,7 +97,7 @@ To set chrome as default you can pass in an argument while initializing the clas
 mycourse = UdemyCourse(browser_preference="CHROME")
 ```
 Or you can pass in a argument while using `main.py`
-```sh
+```bash
 python3 main.py -b chrome
 ```
 
@@ -110,7 +112,7 @@ To use firefox instead of chrome,  you can pass in an argument while initializin
 mycourse = UdemyCourse(browser_preference="FIREFOX")
 ```
 Or you can pass in a argument while using `main.py`
-```sh
+```bash
 python3 main.py -b firefox
 ```
 ### Suppressing Browser
@@ -121,7 +123,7 @@ mycourse = UdemyCourse(headless=False)
 ```
 
 Or specify the same for `main.py`
-```sh
+```bash
 python3 main.py -h false
 ```
 
@@ -134,6 +136,28 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 ### Why not just use the Udemy's API?
 
 Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
+
+## Standalone Usage
+In case you do not wish to use the module in your own python file but you just need to dump the data, you can do so by running the main.py file along with passing the required arguments.
+
+``` bash
+python3 main.py <command>    
+```
+
+### List of Commands
+
+```
+    -h  --help          Displays information about udemyscraper and its usage
+    -v  --version       Displays the version of the tool
+    -n  --no-warn       Disables the warning when initializing the udemyscourse class
+    -q  --query         You can pass the search query directly. If the search query
+                        is of multiple words then be sure to enclose the entire string
+                        in quotes.
+    -b  --browser       Allows you to select the browser you would like to use for Scraping
+                        Values: "chrome" or "firefox". Defaults to chrome if no argument is passed.
+    -l  --headless      Can be used to disable/enable suppressing of the browser. Can be set to `true`
+                        or `false`. Defaults to `true` if no argument is passed.
+```
 
 ## Functionality
 
@@ -180,6 +204,7 @@ The following datatable contains all of the properties that can be fetched.
 | Name   | Type   | Description                  | Usage                                |
 |--------|--------|------------------------------|--------------------------------------|
 | `name` | String | Gives the name of the lesson | `course.Sections[4].lessons[2].name` |
+
 
 ### Output/ Dumping data
 
