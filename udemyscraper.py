@@ -17,7 +17,7 @@ from selenium.webdriver.common.by import By
 
 
 def display_warn():
-    with open('warning.txt') as file:
+    with open('texts/warning.txt') as file:
         lines = file.readlines()
         for line in lines:
             print(line.replace("\n", ""))
@@ -70,14 +70,15 @@ class UdemyCourse():
 
             if platform.system() == "Windows":
                 browser = webdriver.Chrome(
-                    executable_path='chromedriver.exe', chrome_options=option)
+                    executable_path='drivers/chromedriver.exe', chrome_options=option)
             else:
                 browser = webdriver.Chrome(chrome_options=option)
         elif self.browser_preference == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
             if self.headless == True:
                 fireFoxOptions.set_headless()
-            browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+            browser = webdriver.Firefox(
+                executable_path="drivers/gekodriver.exe", firefox_options=fireFoxOptions)
         else:
             print("Don't know how this happened ¯\_(ツ)_/¯")
 
@@ -89,7 +90,8 @@ class UdemyCourse():
                 (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
             WebDriverWait(browser, 3).until(element_present)
         except TimeoutException:
-            print("Timed out waiting for page to load or could not find a matching course")
+            print(
+                "Timed out waiting for page to load or could not find a matching course")
             exit()
 
         # Get page source

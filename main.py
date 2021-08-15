@@ -28,7 +28,7 @@ try:
     for currentArgument, currentValue in arguments:
 
         if currentArgument in ("-h", "--help"):
-            with open('help.txt') as file:
+            with open('texts/help.txt') as file:
                 lines = file.readlines()
                 for line in lines:
                     print(line.replace("\n", ""))
