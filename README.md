@@ -32,7 +32,7 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
     - [Dumping as CSV](#dumping-as-csv)
     - [Dumping as XML](#dumping-as-xml)
       - [For Jellyfin users](#for-jellyfin-users)
-- [Features to-be implemented](#features-to-be-implemented)
+- [Contributing](#contributing)
 
 ## Basic Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
@@ -217,7 +217,9 @@ Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only h
 
 
 
-## Features to-be implemented 
+## Contributing
+Issues and PRs as well as discussions are always welcomes, but please make an issue of a feature/code that you would be modifying before starting a PR.
 
 Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
 
+For further instructions, do read [contributing.md](CONTRIBUTING.md).
