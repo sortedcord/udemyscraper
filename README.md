@@ -18,6 +18,7 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
 - [Choosing Browser](#choosing-browser)
   - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
   - [Running with Firefox](#running-with-firefox)
+  - [Suppressing Browser](#suppressing-browser)
 - [Approach](#approach)
   - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
 - [Functionality](#functionality)
@@ -111,6 +112,17 @@ mycourse = UdemyCourse(browser_preference="FIREFOX")
 Or you can pass in a argument while using `main.py`
 ```sh
 python3 main.py -b firefox
+```
+### Suppressing Browser
+The `headless` option is enabled by default. But in case you want to disable it for debugging purposes, you may do so by passing the `headless` argument to `false`
+
+```py
+mycourse = UdemyCourse(headless=False)
+```
+
+Or specify the same for `main.py`
+```sh
+python3 main.py -h false
 ```
 
 ## Approach
