@@ -11,3 +11,7 @@ Most Used Commands:
     -h  --help          Displays information about udemyscraper and its usage
     -v  --version       Displays the version of the tool
     -n  --no-warn       Disables the warning when initializing the udemyscourse class
+    -q  --query         You can pass the search query directly. If the search query
+                        is of multiple words then be sure to enclose the entire string
+                        in quotes.
+
