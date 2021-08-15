@@ -8,16 +8,19 @@ import sys
 argumentList = sys.argv[1:]
 
 # Options
-options = "hvnq:b:l:"
+options = "hvnq:b:l:d:o:"
 
 # Long options
-long_options = ["help", "version", "no-warn", "query", "browser", "headless"]
+long_options = ["help", "version", "no-warn",
+                "query", "browser", "headless", "dump", "output"]
 
 # Tool Defaults
 warn = True
 search_query = ""
 browser_preference = "CHROME"
 headless = True
+dump = ""
+output = "course.json"
 
 
 try:
@@ -56,6 +59,17 @@ try:
                 headless = False
             else:
                 print("\n", "headless takes either of the two values: True or False.")
+        elif currentArgument in ("-d", "--dump"):
+            if currentValue.lower() == 'json':
+                dump = "json"
+            elif currentValue.lower() == 'xml':
+                dump = "xml"
+            elif currentValue.lower() == 'csv':
+                dump = "csv"
+            else:
+                print(currentValue, " is not a valid dump format.")
+        elif currentArgument in ("-o", "--output"):
+            output = currentValue
 
 
 except getopt.error as err:
@@ -66,3 +80,11 @@ if search_query == "":
     search_query = input("Enter the search query: ")
 course = UdemyCourse(search_query, warn, browser_preference, headless)
 course.fetch_course()
+
+if dump != "":
+    if dump == "json":
+        course_to_json(course, output)
+    elif dump == "csv":
+        print("I'm working on it :P")
+    elif dump == "xml":
+        print("I'm working on it :P")

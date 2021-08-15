@@ -253,11 +253,11 @@ def course_to_dict(course):
     return course.__dict__
 
 
-def course_to_json(course):
+def course_to_json(course, output_file='output.json'):
     # Convert the course to dictionary
     course = course_to_dict(course)
 
     # Dump the python object as a json in 'object.json' file. You can change this to whatever you want
-    with open('object.json', 'w') as file:
+    with open(output_file, 'w') as file:
         # Convert the course to dictionary and dump.
         file.write(json.dumps(course))

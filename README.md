@@ -157,6 +157,10 @@ python3 main.py <command>
                         Values: "chrome" or "firefox". Defaults to chrome if no argument is passed.
     -l  --headless      Can be used to disable/enable suppressing of the browser. Can be set to `true`
                         or `false`. Defaults to `true` if no argument is passed.
+    -d  --dump          Dump the course object to the specified format. Available formats current 
+                        include `json`
+    -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
+                        json.   
 ```
 
 ## Functionality
