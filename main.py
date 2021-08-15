@@ -38,7 +38,7 @@ try:
                     time.sleep(0.1)
 
         elif currentArgument in ("-v", "--version"):
-            print("Udemyscraper version 0.0.3", "\n")
+            print("Udemyscraper version 0.0.4", "\n")
 
         elif currentArgument in ("-n", "--no-warn"):
             warn = False
@@ -87,4 +87,4 @@ if dump != "":
     elif dump == "csv":
         print("I'm working on it :P")
     elif dump == "xml":
-        print("I'm working on it :P")
+        course_to_xml(course,)

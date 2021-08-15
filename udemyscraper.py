@@ -1,6 +1,9 @@
 import platform
 import time
+
+from dict2xml import *
 import json
+
 from bs4 import BeautifulSoup
 
 # Selenium Libraries
@@ -257,7 +260,18 @@ def course_to_json(course, output_file='output.json'):
     # Convert the course to dictionary
     course = course_to_dict(course)
 
-    # Dump the python object as a json in 'object.json' file. You can change this to whatever you want
-    with open(output_file, 'w') as file:
+    # Dump the python object as a json file.
+    with open(output_file, 'w', encoding="utf-8") as file:
         # Convert the course to dictionary and dump.
         file.write(json.dumps(course))
+
+
+def course_to_xml(course, output_file='output.xml',):
+    # Convert the course to dictionary
+    course = course_to_dict(course)
+
+    # Dump the python object as a xml file.
+    with open(output_file, 'w', encoding="utf-8") as file:
+        # Convert the course to dictionary and dump.
+        xml = dict2xml(course, wrap='course')
+        file.write(xml)

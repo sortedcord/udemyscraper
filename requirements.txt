@@ -30,3 +30,4 @@ wheel
 pyqt5
 getopt
 alive-progress
+dict2xml
