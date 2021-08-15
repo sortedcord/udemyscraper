@@ -19,9 +19,10 @@ def display_warn():
 
 
 class UdemyCourse():
-    def __init__(self, query, warn=True, browser_preference="CHROME"):
+    def __init__(self, query, warn=True, browser_preference="CHROME", headless=True):
         self.query = query
         self.browser_preference = browser_preference
+        self.headless = headless
         if warn == True:
             display_warn()
 
@@ -56,7 +57,8 @@ class UdemyCourse():
         if self.browser_preference == "CHROME":
             # Browser Options
             option = Options()
-            option.add_argument('headless')
+            if self.headless == True:
+                option.add_argument('headless')
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
 
@@ -67,7 +69,8 @@ class UdemyCourse():
                 browser = webdriver.Chrome(chrome_options=option)
         elif self.browser_preference == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
-            fireFoxOptions.set_headless()
+            if self.headless == True:
+                fireFoxOptions.set_headless()
             browser = webdriver.Firefox(firefox_options=fireFoxOptions)
         else:
             print("Don't know how this happened ¯\_(ツ)_/¯")

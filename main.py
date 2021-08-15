@@ -8,14 +8,16 @@ import sys
 argumentList = sys.argv[1:]
 
 # Options
-options = "hvnq:b:"
+options = "hvnq:b:l:"
 
 # Long options
-long_options = ["help", "version", "no-warn", "query", "browser"]
+long_options = ["help", "version", "no-warn", "query", "browser", "headless"]
 
 # Tool Defaults
 warn = True
 search_query = ""
+browser_preference = "CHROME"
+headless = True
 
 
 try:
@@ -47,6 +49,14 @@ try:
             elif currentValue.lower() == "firefox":
                 browser_preference = "FIREFOX"
 
+        elif currentArgument in ("-l", "--headless"):
+            if currentValue.lower() == "true":
+                headless = True
+            elif currentValue.lower() == "false":
+                headless = False
+            else:
+                print("\n", "headless takes either of the two values: True or False.")
+
 
 except getopt.error as err:
     # output error, and return with an error code
@@ -54,5 +64,5 @@ except getopt.error as err:
 
 if search_query == "":
     search_query = input("Enter the search query: ")
-course = UdemyCourse(search_query, warn)
+course = UdemyCourse(search_query, warn, browser_preference, headless)
 course.fetch_course()
