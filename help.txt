@@ -14,4 +14,7 @@ Most Used Commands:
     -q  --query         You can pass the search query directly. If the search query
                         is of multiple words then be sure to enclose the entire string
                         in quotes.
-
+    -b  --browser       Allows you to select the browser you would like to use for Scraping
+                        Values: "chrome" or "firefox". Defaults to chrome if no argument is passed.
+    -l  --headless      Can be used to disable/enable suppressing of the browser. Can be set to `true`
+                        or `false`. Defaults to `true` if no argument is passed.
