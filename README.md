@@ -158,7 +158,7 @@ python3 main.py <command>
     -l  --headless      Can be used to disable/enable suppressing of the browser. Can be set to `true`
                         or `false`. Defaults to `true` if no argument is passed.
     -d  --dump          Dump the course object to the specified format. Available formats current 
-                        include `json`
+                        include `json` and `xml`
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
                         json.   
 ```
@@ -233,13 +233,20 @@ from udemyscraper import course_to_json
 # Assuming you have already created a course object and fetched the data
 course_to_json(course)
 ```
-This will dump the data to `object.json` file in the same directory. If you want to change the filename, then you can do so by editing [this code](udemyscraper.py#L206).
+This will dump the data to `object.json` file in the same directory be default which can be changed.
 
 #### Dumping as CSV
 Currently not implemented yet.
 
 #### Dumping as XML
-Currently not implemented yet.
+Currently, the script can convert the entire course into a dictionary, parse it into a xml file and then dump it to a xml file. You can do this by calling the `course_to_xml()` function like so:
+
+```py
+from udemyscraper import course_to_json
+
+# Assuming you have already created a course object and fetched the data
+course_to_xml(course)
+```
 
 ##### For Jellyfin users
 Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only have one resource which is the poster of the file. It might be possible to write a custom XML structure for jellyfin. Currently in development.
