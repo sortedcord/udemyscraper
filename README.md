@@ -88,33 +88,29 @@ To run this script you need to have chrom(ium) installed on the machine as well 
 
 I have already provided a windows binary of the driver in the repo itself which supports chrom(ium) 92. You can use that or you can get your specific driver from the link above.
 
+To set chrome as default you can pass in an argument while initializing the class though it is set to chrome by default.
+
+```py
+mycourse = UdemyCourse(browser_preference="CHROME")
+```
+Or you can pass in a argument while using `main.py`
+```sh
+python3 main.py -b chrome
+```
+
 ### Running with Firefox
 
 In order to run this script this firefox, you need to have firefox installed as well as the `gekodriver` executable file in this directory or in your path.
-You can download the gekodriver from [here](https://github.com/mozilla/geckodriver/releases).
+You can download the gekodriver from [here](https://github.com/mozilla/geckodriver/releases). Or use the one provided with the source code.
 
-Once you have finished setting up the driver, you need to make a few changes in the srcipt to use firefox instead of chrome.
+To use firefox instead of chrome,  you can pass in an argument while initializing the class:
 
-This is what the file currently looks like. As you can see, it uses the chrome engine by default.
 ```py
-# udemyscraper.py
-
-option = Options()
-option.add_argument('headless')
-option.add_experimental_option('excludeSwitches', ['enable-logging'])
-browser = webdriver.Chrome(
-    executable_path='chromedriver.exe', chrome_options=option) 
+mycourse = UdemyCourse(browser_preference="FIREFOX")
 ```
-
-And these are the changes you would have to make to use firefox.
-```py
-fireFoxOptions = webdriver.FirefoxOptions()
-brower = webdriver.Firefox(firefox_options=fireFoxOptions)
-```
-
-If you want to use Firefox `headless` then add the following line before initializing the browser variable
-```py
-fireFoxOptions.set_headless()
+Or you can pass in a argument while using `main.py`
+```sh
+python3 main.py -b firefox
 ```
 
 ## Approach
