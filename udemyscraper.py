@@ -44,7 +44,7 @@ class UdemyCourse():
 
                 self.html = BeautifulSoup(html, "lxml")
                 self.name = self.html.select(
-                    "span[class*='section--section-title--8blTh']")[0].text
+                    "span[class*='section--section-title--']")[0].text
                 self.lesson_blocks = self.html.find_all(
                     "div", class_="udlite-block-list-item-content")
 
