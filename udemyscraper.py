@@ -10,15 +10,20 @@ from selenium import webdriver  # for webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-class UdemyCourse():
+def display_warn():
     with open('warning.txt') as file:
         lines = file.readlines()
         for line in lines:
             print(line.replace("\n", ""))
             time.sleep(0.4)
 
-    def __init__(self, query):
+
+class UdemyCourse():
+    def __init__(self, query, warn=True):
         self.query = query
+        if warn == True:
+            display_warn()
+        
 
     def fetch_course(self):
         # Course class will contain an array with section classes
@@ -136,7 +141,7 @@ class UdemyCourse():
         for tag in course_page.find("div", class_="topic-menu udlite-breadcrumb").find_all("a", class_="udlite-heading-sm"):
             self.tags.append(tag.text)
 
-        #Get course price
+        # Get course price
         self.price = course_page.select(
             'div[class*="price-text--price-part--"] > span')[1].text
 

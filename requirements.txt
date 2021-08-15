@@ -28,3 +28,4 @@ webdriver-manager
 websockets 
 wheel         
 pyqt5
+getopt

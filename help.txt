@@ -1,0 +1,17 @@
+udemyscraper 0.0.3 (cli)
+Usage: main.py [options] command
+
+udemyscraper is a free and open source tool beautiful soup, 
+that fetches udemy course information. Get udemy course 
+information and convert it to json, csv or xml file, 
+without authentication.
+
+Most Used Commands:
+
+    -h  --help          Displays information about udemyscraper and its usage
+    -v  --version       Displays the version of the tool
+    -n  --no-warn       Disables the warning when initializing the udemyscourse class
+    -q  --query         You can pass the search query directly. If the search query
+                        is of multiple words then be sure to enclose the entire string
+                        in quotes.
+
