@@ -19,11 +19,11 @@ def display_warn():
 
 
 class UdemyCourse():
-    def __init__(self, query, warn=True):
+    def __init__(self, query, warn=True, browser_preference="CHROME"):
         self.query = query
+        self.browser_preference = browser_preference
         if warn == True:
             display_warn()
-        
 
     def fetch_course(self):
         # Course class will contain an array with section classes
@@ -53,16 +53,24 @@ class UdemyCourse():
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
 
-        # Browser Options
-        option = Options()
-        option.add_argument('headless')
-        option.add_experimental_option('excludeSwitches', ['enable-logging'])
+        if self.browser_preference == "CHROME":
+            # Browser Options
+            option = Options()
+            option.add_argument('headless')
+            option.add_experimental_option(
+                'excludeSwitches', ['enable-logging'])
 
-        if platform.system() == "Windows":
-            browser = webdriver.Chrome(
-                executable_path='chromedriver.exe', chrome_options=option)
+            if platform.system() == "Windows":
+                browser = webdriver.Chrome(
+                    executable_path='chromedriver.exe', chrome_options=option)
+            else:
+                browser = webdriver.Chrome(chrome_options=option)
+        elif self.browser_preference == "FIREFOX":
+            fireFoxOptions = webdriver.FirefoxOptions()
+            fireFoxOptions.set_headless()
+            browser = webdriver.Firefox(firefox_options=fireFoxOptions)
         else:
-            browser = webdriver.Chrome(chrome_options=option)
+            print("Don't know how this happened ¯\_(ツ)_/¯")
 
         browser.get(url)
         time.sleep(3)

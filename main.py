@@ -8,14 +8,15 @@ import sys
 argumentList = sys.argv[1:]
 
 # Options
-options = "hvnq:"
+options = "hvnq:b:"
 
 # Long options
-long_options = ["help", "version", "no-warn", "query"]
+long_options = ["help", "version", "no-warn", "query", "browser"]
 
 # Tool Defaults
 warn = True
 search_query = ""
+
 
 try:
     # Parsing argument
@@ -39,6 +40,12 @@ try:
 
         elif currentArgument in ("-q", "--query"):
             search_query = currentValue
+
+        elif currentArgument in ("-b", "--browser"):
+            if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
+                browser_preference = "CHROME"
+            elif currentValue.lower() == "firefox":
+                browser_preference = "FIREFOX"
 
 
 except getopt.error as err:
