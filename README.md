@@ -242,7 +242,7 @@ Currently not implemented yet.
 Currently, the script can convert the entire course into a dictionary, parse it into a xml file and then dump it to a xml file. You can do this by calling the `course_to_xml()` function like so:
 
 ```py
-from udemyscraper import course_to_json
+from udemyscraper import course_to_xml
 
 # Assuming you have already created a course object and fetched the data
 course_to_xml(course)
