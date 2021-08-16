@@ -25,11 +25,10 @@ def display_warn():
 
 
 class UdemyCourse():
-    def __init__(self, query, warn=True, browser_preference="CHROME", headless=True):
+    def __init__(self, query, Options):
         self.query = query
-        self.browser_preference = browser_preference
-        self.headless = headless
-        if warn == True:
+        self.Options = Options
+        if self.Options['warn'] == True:
             display_warn()
 
     def fetch_course(self):
@@ -44,7 +43,7 @@ class UdemyCourse():
 
                 self.html = BeautifulSoup(html, "lxml")
                 self.name = self.html.select(
-                    "span[class*='section--section-title--8blTh']")[0].text
+                    "span[class*='section--section-title--']")[0].text
                 self.lesson_blocks = self.html.find_all(
                     "div", class_="udlite-block-list-item-content")
 
@@ -60,10 +59,10 @@ class UdemyCourse():
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
 
-        if self.browser_preference == "CHROME":
+        if self.Options['browser_preference'] == "CHROME":
             # Browser Options
             option = Options()
-            if self.headless == True:
+            if self.Options['headless'] == True:
                 option.add_argument('headless')
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
@@ -73,9 +72,9 @@ class UdemyCourse():
                     executable_path='drivers/chromedriver.exe', chrome_options=option)
             else:
                 browser = webdriver.Chrome(chrome_options=option)
-        elif self.browser_preference == "FIREFOX":
+        elif self.Options['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
-            if self.headless == True:
+            if self.Options['headless'] == True:
                 fireFoxOptions.set_headless()
             browser = webdriver.Firefox(
                 executable_path="drivers/gekodriver.exe", firefox_options=fireFoxOptions)

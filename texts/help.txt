@@ -1,4 +1,4 @@
-udemyscraper 0.0.3 (cli)
+udemyscraper 0.0.4 (cli)
 Usage: main.py [options] command
 
 udemyscraper is a free and open source tool beautiful soup, 
