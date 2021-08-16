@@ -15,13 +15,16 @@ long_options = ["help", "version", "no-warn",
                 "query", "browser", "headless", "dump", "output"]
 
 # Tool Defaults
-warn = True
-search_query = ""
-browser_preference = "CHROME"
-headless = True
-dump = ""
-output = "course.json"
+Options = {
+    'warn': True,
+    'browser_preference': "CHROME",
+    'headless': True,
+    'dump_format': "",
+    'output_file': ""
 
+}
+
+search_query = ""
 
 try:
     # Parsing argument
@@ -36,40 +39,44 @@ try:
                 for line in lines:
                     print(line.replace("\n", ""))
                     time.sleep(0.1)
+                exit()
 
         elif currentArgument in ("-v", "--version"):
             print("Udemyscraper version 0.0.3", "\n")
 
         elif currentArgument in ("-n", "--no-warn"):
-            warn = False
+            Options['warn'] = False
 
         elif currentArgument in ("-q", "--query"):
             search_query = currentValue
 
         elif currentArgument in ("-b", "--browser"):
             if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
-                browser_preference = "CHROME"
+                Options['browser_preference'] = "CHROME"
             elif currentValue.lower() == "firefox":
-                browser_preference = "FIREFOX"
+                Options['browser_preference'] = "FIREFOX"
 
         elif currentArgument in ("-l", "--headless"):
             if currentValue.lower() == "true":
-                headless = True
+                Options['headless'] = True
             elif currentValue.lower() == "false":
-                headless = False
+                Options['headless'] = False
             else:
                 print("\n", "headless takes either of the two values: True or False.")
         elif currentArgument in ("-d", "--dump"):
             if currentValue.lower() == 'json':
-                dump = "json"
+                Options['dump_format'] = "json"
+                Options['output_file'] = 'course.json'
             elif currentValue.lower() == 'xml':
-                dump = "xml"
+                Options['dump_format'] = "xml"
+                Options['output_file'] = 'course.xml'
             elif currentValue.lower() == 'csv':
-                dump = "csv"
+                Options['dump_format'] = "csv"
+                Options['output_file'] = 'course.csv'
             else:
                 print(currentValue, " is not a valid dump format.")
         elif currentArgument in ("-o", "--output"):
-            output = currentValue
+            Options['output_file'] = currentValue
 
 
 except getopt.error as err:
@@ -78,13 +85,14 @@ except getopt.error as err:
 
 if search_query == "":
     search_query = input("Enter the search query: ")
-course = UdemyCourse(search_query, warn, browser_preference, headless)
+course = UdemyCourse(search_query, Options)
 course.fetch_course()
 
-if dump != "":
-    if dump == "json":
-        course_to_json(course, output)
-    elif dump == "csv":
-        print("I'm working on it :P")
-    elif dump == "xml":
-        print("I'm working on it :P")
+
+if Options['dump_format'] != "":
+    if Options['dump_format'] == 'json':
+        course_to_json(course, Options['output_file'])
+    elif Options['dump_format'] == 'csv':
+        print("\n", "WARN: 'CSV' dump format is currently not supported.")
+    elif Options['dump_format'] == 'xml':
+        print("\n", "WARN: 'XML' dump format is currently not supported.")
