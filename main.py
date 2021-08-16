@@ -42,7 +42,7 @@ try:
                 exit()
 
         elif currentArgument in ("-v", "--version"):
-            print("Udemyscraper version 0.0.3", "\n")
+            print("Udemyscraper version 0.0.4", "\n")
 
         elif currentArgument in ("-n", "--no-warn"):
             Options['warn'] = False
