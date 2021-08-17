@@ -26,14 +26,14 @@ def display_warn():
 
 
 class UdemyCourse():
-    def __init__(self, query, Options):
+    def __init__(self, query, Preferences):
         self.query = query
-        self.Options = Options
+        self.Preferences = Preferences
         
-        if self.Options['warn'] == True:
+        if self.Preferences['warn'] == True:
             display_warn()
 
-        if Options['debug'] == True:
+        if Preferences['debug'] == True:
             logging.basicConfig(level=logging.DEBUG)
 
     def fetch_course(self):
@@ -72,10 +72,10 @@ class UdemyCourse():
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
 
         logging.debug("Setting Up browser headers and preferences")
-        if self.Options['browser_preference'] == "CHROME":
+        if self.Preferences['browser_preference'] == "CHROME":
             # Browser Options
             option = Options()
-            if self.Options['headless'] == True:
+            if self.Preferences['headless'] == True:
                 option.add_argument('headless')
                 logging.debug("Headless enabled")
             option.add_experimental_option(
@@ -86,9 +86,9 @@ class UdemyCourse():
                     executable_path='drivers/chromedriver.exe', chrome_options=option)
             else:
                 browser = webdriver.Chrome(chrome_options=option)
-        elif self.Options['browser_preference'] == "FIREFOX":
+        elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
-            if self.Options['headless'] == True:
+            if self.Preferences['headless'] == True:
                 logging.debug("Headless enabled")
                 fireFoxOptions.set_headless()
             browser = webdriver.Firefox(
@@ -319,6 +319,7 @@ def course_to_json(course, output_file='output.json'):
         file.write(json.dumps(course))
         logging.debug(f"File course dumped as {output_file}")
 
+#When evoked directly
 if __name__ == "__main__":
 
     # Remove 1st argument from the
@@ -333,7 +334,7 @@ if __name__ == "__main__":
                     "query", "browser", "headless", "dump", "output", "debug", "quiet"]
 
     # Tool Defaults
-    Options = {
+    Preferences = {
         'warn': True,
         'browser_preference': "CHROME",
         'headless': True,
@@ -353,6 +354,7 @@ if __name__ == "__main__":
         # checking each argument
         for currentArgument, currentValue in arguments:
 
+            # Help argument
             if currentArgument in ("-h", "--help"):
                 with open('texts/help.txt') as file:
                     lines = file.readlines()
@@ -361,55 +363,67 @@ if __name__ == "__main__":
                         time.sleep(0.1)
                     exit()
 
+            # Version argument
             elif currentArgument in ("-v", "--version"):
                 print("Udemyscraper version 0.0.4", "\n")
                 exit()
 
+            # Disable warning 
             elif currentArgument in ("-n", "--no-warn"):
-                Options['warn'] = False
+                Preferences['warn'] = False
 
+            # Search query
             elif currentArgument in ("-q", "--query"):
                 search_query = currentValue
 
+            # Select Browser
             elif currentArgument in ("-b", "--browser"):
                 if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
-                    Options['browser_preference'] = "CHROME"
+                    Preferences['browser_preference'] = "CHROME"
                 elif currentValue.lower() == "firefox":
-                    Options['browser_preference'] = "FIREFOX"
+                    Preferences['browser_preference'] = "FIREFOX"
 
+            # Disable/Enable headless
             elif currentArgument in ("-l", "--headless"):
                 if currentValue.lower() == "true":
-                    Options['headless'] = True
+                    Preferences['headless'] = True
                 elif currentValue.lower() == "false":
-                    Options['headless'] = False
+                    Preferences['headless'] = False
                 else:
                     print("\n", "headless takes either of the two values: True or False.")
+            
+            # Select dump format
             elif currentArgument in ("-d", "--dump"):
                 if currentValue.lower() == 'json':
-                    Options['dump_format'] = "json"
-                    Options['output_file'] = 'course.json'
+                    Preferences['dump_format'] = "json"
+                    Preferences['output_file'] = 'course.json'
                 elif currentValue.lower() == 'xml':
-                    Options['dump_format'] = "xml"
-                    Options['output_file'] = 'course.xml'
+                    Preferences['dump_format'] = "xml"
+                    Preferences['output_file'] = 'course.xml'
                 elif currentValue.lower() == 'csv':
-                    Options['dump_format'] = "csv"
-                    Options['output_file'] = 'course.csv'
+                    Preferences['dump_format'] = "csv"
+                    Preferences['output_file'] = 'course.csv'
                 else:
                     print(currentValue, " is not a valid dump format.")
-            elif currentArgument in ("-o", "--output"):
-                Options['output_file'] = currentValue
-            elif currentArgument in ("-e", "--debug"):
-                Options['debug'] = True
 
+            # Specify output file
+            elif currentArgument in ("-o", "--output"):
+                Preferences['output_file'] = currentValue
+            
+            # Enable Debug Logging
+            elif currentArgument in ("-e", "--debug"):
+                Preferences['debug'] = True
+
+            # Enable quiet mode
             elif currentArgument in ("--quiet"):
-                Options['quiet'] = True
+                Preferences['quiet'] = True
 
 
     except getopt.error as err:
         # output error, and return with an error code
         print(str(err))
 
-    if Options['quiet'] == False:
+    if Preferences['quiet'] == False:
         print(Fore.MAGENTA + """
 ██╗   ██╗██████╗ ███████╗███╗   ███╗██╗   ██╗    ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗ 
 ██║   ██║██╔══██╗██╔════╝████╗ ████║╚██╗ ██╔╝    ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
@@ -420,21 +434,21 @@ if __name__ == "__main__":
         print(Style.RESET_ALL)
 
         print(f"Version: {__version__}")
-        print(f"Using Preferences: {Options}")
+        print(f"Using Preferences: {Preferences}")
 
     if search_query == "":
         search_query = input("Enter the search query: ")
     else:
-        if Options['quiet'] == False:
+        if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
-    course = UdemyCourse(search_query, Options)
+    course = UdemyCourse(search_query, Preferences)
     course.fetch_course()
 
 
-    if Options['dump_format'] != "":
-        if Options['dump_format'] == 'json':
-            course_to_json(course, Options['output_file'])
-        elif Options['dump_format'] == 'csv':
+    if Preferences['dump_format'] != "":
+        if Preferences['dump_format'] == 'json':
+            course_to_json(course, Preferences['output_file'])
+        elif Preferences['dump_format'] == 'csv':
             print("\n", "WARN: 'CSV' dump format is currently not supported.")
-        elif Options['dump_format'] == 'xml':
+        elif Preferences['dump_format'] == 'xml':
             print("\n", "WARN: 'XML' dump format is currently not supported.")
