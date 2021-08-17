@@ -4,45 +4,44 @@
 ![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
 ![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
+![Chromium](https://img.shields.io/badge/UDEMYSCRAPER-0.0.5-magenta?style=for-the-badge&logo=udemy&logoColor=white)
 
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
 ## Table Of Contents
 
-- [Table Of Contents](#table-of-contents)
 - [Usage](#usage)
   - [As a Module](#as-a-module)
   - [As a Script](#as-a-script)
+    - [List of Commands](#list-of-commands)
 - [Installation](#installation)
   - [Virtual Environment](#virtual-environment)
-  - [Package Installation](#package-installation)
-- [Choosing Browser](#choosing-browser)
-  - [Running with Chrome (or chromium)](#running-with-chrome-or-chromium)
-  - [Running with Firefox](#running-with-firefox)
+  - [Dependencies  Installation](#dependencies--installation)
+- [Browser Setup](#browser-setup)
+  - [Chrome (or chromium)](#chrome-or-chromium)
+  - [Firefox](#firefox)
   - [Suppressing Browser](#suppressing-browser)
 - [Approach](#approach)
   - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
-- [Standalone Usage](#standalone-usage)
-  - [List of Commands](#list-of-commands)
-- [Functionality](#functionality)
-  - [Datatables](#datatables)
-    - [Course Class](#course-class)
-    - [Section Class](#section-class)
-    - [Lesson Class](#lesson-class)
-  - [Output/ Dumping data](#output-dumping-data)
-    - [Quick Display](#quick-display)
-    - [Converting to Dictionary](#converting-to-dictionary)
-    - [Dumping as JSON](#dumping-as-json)
-    - [Dumping as CSV](#dumping-as-csv)
-    - [Dumping as XML](#dumping-as-xml)
-      - [For Jellyfin users](#for-jellyfin-users)
+  - [Functionality](#functionality)
+- [Data](#data)
+  - [Course Class](#course-class)
+  - [Section Class](#section-class)
+  - [Lesson Class](#lesson-class)
+- [Output/ Dumping data](#output-dumping-data)
+  - [Quick Display](#quick-display)
+  - [Converting to Dictionary](#converting-to-dictionary)
+  - [Dumping as JSON](#dumping-as-json)
+  - [Dumping as CSV](#dumping-as-csv)
+  - [Dumping as XML](#dumping-as-xml)
+    - [For Jellyfin users](#for-jellyfin-users)
 - [Contributing](#contributing)
 
-## Usage
+# Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
 
-### As a Module
+## As a Module
 
 Udemyscraper contains a `UdemyCourse` class which can be imported into your file it takes just one argument which is `query` which is the seach query. It has a method called `fetch_course` which you can call after creating a UdemyCourse object.
 
@@ -53,20 +52,32 @@ course = UdemyCourse('learn javascript')
 course.fetch_course()
 ```
 
-### As a Script
+## As a Script
 
-`udemyscraper.py` file can be directly invoked and can also be executed along with many arguments.
+In case you do not wish to use the module in your own python file but you just need to dump the data, `udemyscraper.py` file can be directly invoked and can also be executed along with a variety of arguments and options.
+
+You can do so by running the udemyscraper.py file along with passing the required arguments.
+
+``` bash
+python3 udemyscraper.py <command>    
+```
+Here is an example of dumping the data as a json file.
 
 ```bash
 python3 udemyscraper.py -d json -q "German course for beginners"
 ```
-A full list of arguments is given [here](#list-of-commands).
 
-## Installation
+### List of Commands
 
-### Virtual Environment
+![Commands](docs/command.svg)
 
-Firstly, it is recommended to install and run this inside of a virtual environment. You can do so by using the `virtualenv` library and then activating it.
+# Installation
+## Virtual Environment
+Before installing the dependencies it is recommended to setup a virtual environment. 
+
+<details>
+
+You can setup a virtual environment on your machine by using the `virtualenv` library and then activating it.
 
 ```bash
 pip install virtualenv
@@ -86,20 +97,23 @@ Activating for Windows
 ```
 somerandomname\Scripts\activate
 ```
+</details>
 
-### Package Installation
+
+## Dependencies  Installation
+You are required to install all of the modules listed in `requirements.txt` file.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Choosing Browser
+# Browser Setup
 
 A browser window may not pop-up as I have enabled the  `headless` option so the entire process takes minimal resources.
 
 This script works with firefox as well as chrome.
 
-### Running with Chrome (or chromium)
+## Chrome (or chromium)
 
 To run this script you need to have chrom(ium) installed on the machine as well as the chromedriver binary which can be downloaded from this [page](https://chromedriver.chromium.org/downloads). Make sure that the binary you have installed works on your platform/ architecture and the the driver version corresponds to the version of the browser you have downloaded.
 
@@ -115,7 +129,7 @@ Or you can pass in a argument while using as a script
 python3 udemyscraper.py -b chrome
 ```
 
-### Running with Firefox
+## Firefox
 
 In order to run this script this firefox, you need to have firefox installed as well as the `gekodriver` executable file in this directory or in your path.
 You can download the gekodriver from [here](https://github.com/mozilla/geckodriver/releases). Or use the one provided with the source code.
@@ -129,7 +143,7 @@ Or you can pass in a argument while using `udemyscraper.py`
 ```bash
 python3 udemyscraper.py -b firefox
 ```
-### Suppressing Browser
+## Suppressing Browser
 The `headless` option is enabled by default. But in case you want to disable it for debugging purposes, you may do so by passing the `headless` argument to `false`
 
 ```py
@@ -141,35 +155,29 @@ Or specify the same for `udemyscraper.py`
 python3 udemyscraper.py -h false
 ```
 
-## Approach
+# Approach
 
 It is fairly easy to webscrape sites, however, there are some sites that are not that scrape-friendly. Scraping sites, in itself is perfectly legal however there have been cases of lawsuits against web scraping, some companies \*cough Amazon \*cough consider web-scraping from its website illegal however, they themselves, web-scrape from other websites. And then there are some sites like udemy, that try to prevent people from scraping their site.
 
 Using BS4 in itself, doesn't give the required results back, so I had to use a browser engine by using selenium to fetch the courses information. Initially, even that didn't work out, but then I realised the courses were being fetch asynchronously so I had to add a bit of delay. So fetching the data can be a bit slow initially.
 
-### Why not just use the Udemy's API?
+## Why not just use the Udemy's API?
 
 Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
 
-## Standalone Usage
-In case you do not wish to use the module in your own python file but you just need to dump the data, you can do so by running the udemyscraper.py file along with passing the required arguments.
-
-``` bash
-python3 udemyscraper.py <command>    
-```
-
-### List of Commands
-
-![Commands](docs/command.svg)
 
 ## Functionality
 
 As of this commit, the script can search udemy for the search term you input and get the courses link, and all the other overview details like description, instructor, duration, rating, etc.
-### Datatables
+# Data
 
-The following datatable contains all of the properties that can be fetched.
+The following datatable contains all of the data that can be fetched.
 
-#### Course Class
+## Course Class
+This is the data of the parent class which is the course class itself.
+
+<details>
+<summary>View Table</summary>
 
 | Name              | Type         | Description                                              | Usage                    |
 |-------------------|--------------|----------------------------------------------------------|--------------------------|
@@ -194,7 +202,9 @@ The following datatable contains all of the properties that can be fetched.
 | `target_audience` | List         | List containing the points under Target Audience heading | `course.target_audience` |
 | `banner`          | String       | URL for the course banner image                          | `course.banner`          |
 
-#### Section Class
+</details>
+
+## Section Class
 
 | Name       | Type   | Description                                      | Usage                           |
 |------------|--------|--------------------------------------------------|---------------------------------|
@@ -202,18 +212,20 @@ The following datatable contains all of the properties that can be fetched.
 | `duration` | String | The duration of the specific course              | `course.Sections[4].duration`   |
 | `lessons`  | List   | List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
 
-#### Lesson Class
+## Lesson Class
 
 | Name   | Type   | Description                  | Usage                                |
 |--------|--------|------------------------------|--------------------------------------|
 | `name` | String | Gives the name of the lesson | `course.Sections[4].lessons[2].name` |
 
 
-### Output/ Dumping data
+# Output/ Dumping data
 
-#### Quick Display
+## Quick Display
 
 When executing the file as a script, this is the default output mode and perhaps the most breif one.
+
+<details>
 
 ```bash
 (env) F:\Github\udemy-web-scraper> python udemyscraper.py -q "Learn Python" --quiet -n
@@ -221,7 +233,8 @@ When executing the file as a script, this is the default output mode and perhaps
 
 Learn Python Programming Masterclass
 
-This Python For Beginners Course Teaches You The Python Language Fast. Includes Python Online Training With Python 3
+This Python For Beginners Course Teaches You The Python 
+Language Fast. Includes Python Online Training With Python 3
 
 URL: https://udemy.com/course/python-the-complete-python-developer-course/
 Instructed by Tim Buchalka
@@ -239,20 +252,31 @@ from udemyscraper import *
 quick_display(course)
 ```
 
-#### Converting to Dictionary
+</details>
+
+
+
+## Converting to Dictionary
 
 The entire course object is converted into a dictionary by using nested object to dictionary conversion iterations.
 
+<details>
+
 ```py
 from udemyscraper import course_to_dict
-
 # Assuming you have already created a course object and fetched the data
 dictionary_course = course_to_dict(course)
 ```
+**Note** : This way of returning data does not work when evoked directly due to obvious reasons.
 
-#### Dumping as JSON
+</details>
 
-Currently, the script can convert the entire course into a dictionary, parse it into a json file and then dump it to a json file. You can do this by calling the `course_to_json()` function like so:
+
+## Dumping as JSON
+
+Currently, the script can convert the entire course into a dictionary, parse it into a json file and then dump it to a json file. You can do this by calling the `course_to_json()` function.
+
+<details>
 
 ```py
 from udemyscraper import course_to_json
@@ -260,20 +284,30 @@ from udemyscraper import course_to_json
 # Assuming you have already created a course object and fetched the data
 course_to_json(course)
 ```
-This will dump the data to `object.json` file in the same directory. If you want to change the filename, then you can do so by editing [this code](udemyscraper.py#L206).
+This will dump the data to `object.json` file in the same directory. You can also specify the name of the file by passing in the corresponding argument
 
-#### Dumping as CSV
+```py
+course_to_json(course, 'course.json')
+```
+The object will now be stored on `course.json` file.
+
+
+</details>
+
+
+
+## Dumping as CSV
 Currently not implemented yet.
 
-#### Dumping as XML
-Currently not implemented yet.
+## Dumping as XML
+Currently in development. Kindly check out Pull Request #21 for more information and progress.
 
-##### For Jellyfin users
+### For Jellyfin users
 Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only have one resource which is the poster of the file. It might be possible to write a custom XML structure for jellyfin. Currently in development.
 
 
 
-## Contributing
+# Contributing
 Issues and PRs as well as discussions are always welcomes, but please make an issue of a feature/code that you would be modifying before starting a PR.
 
 Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
