@@ -11,7 +11,9 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
-- [Basic Usage](#basic-usage)
+- [Usage](#usage)
+  - [As a Module](#as-a-module)
+  - [As a Script](#as-a-script)
 - [Installation](#installation)
   - [Virtual Environment](#virtual-environment)
   - [Package Installation](#package-installation)
@@ -36,8 +38,10 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
       - [For Jellyfin users](#for-jellyfin-users)
 - [Contributing](#contributing)
 
-## Basic Usage
+## Usage
 This section shows the basic usage of this script. Before this be sure to [install](#installation) this first before importing it in your file.
+
+### As a Module
 
 Udemyscraper contains a `UdemyCourse` class which can be imported into your file it takes just one argument which is `query` which is the seach query. It has a method called `fetch_course` which you can call after creating a UdemyCourse object.
 
@@ -47,6 +51,15 @@ from udemyscraper import UdemyCourse
 course = UdemyCourse('learn javascript')
 course.fetch_course()
 ```
+
+### As a Script
+
+`udemyscraper.py` file can be directly invoked and can also be executed along with many arguments.
+
+```bash
+python3 udemyscraper.py -d json -q "German course for beginners"
+```
+A full list of arguments is given [here](#list-of-commands).
 
 ## Installation
 
@@ -96,9 +109,9 @@ To set chrome as default you can pass in an argument while initializing the clas
 ```py
 mycourse = UdemyCourse(browser_preference="CHROME")
 ```
-Or you can pass in a argument while using `main.py`
+Or you can pass in a argument while using as a script
 ```bash
-python3 main.py -b chrome
+python3 udemyscraper.py -b chrome
 ```
 
 ### Running with Firefox
@@ -111,9 +124,9 @@ To use firefox instead of chrome,  you can pass in an argument while initializin
 ```py
 mycourse = UdemyCourse(browser_preference="FIREFOX")
 ```
-Or you can pass in a argument while using `main.py`
+Or you can pass in a argument while using `udemyscraper.py`
 ```bash
-python3 main.py -b firefox
+python3 udemyscraper.py -b firefox
 ```
 ### Suppressing Browser
 The `headless` option is enabled by default. But in case you want to disable it for debugging purposes, you may do so by passing the `headless` argument to `false`
@@ -122,9 +135,9 @@ The `headless` option is enabled by default. But in case you want to disable it 
 mycourse = UdemyCourse(headless=False)
 ```
 
-Or specify the same for `main.py`
+Or specify the same for `udemyscraper.py`
 ```bash
-python3 main.py -h false
+python3 udemyscraper.py -h false
 ```
 
 ## Approach
@@ -138,10 +151,10 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
 
 ## Standalone Usage
-In case you do not wish to use the module in your own python file but you just need to dump the data, you can do so by running the main.py file along with passing the required arguments.
+In case you do not wish to use the module in your own python file but you just need to dump the data, you can do so by running the udemyscraper.py file along with passing the required arguments.
 
 ``` bash
-python3 main.py <command>    
+python3 udemyscraper.py <command>    
 ```
 
 ### List of Commands
