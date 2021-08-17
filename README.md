@@ -147,6 +147,7 @@ python3 udemyscraper.py -b firefox
 | **Headless Disabled**                 | **Headless Enabled**                   |
 |---------------------------------------|----------------------------------------|
 | ![Headless disabled](docs/header.gif) | ![Headless enabled](docs/headless.gif) |
+| 19 Seconds                            | 12 Seconds                             |
 
 In the above comparison you can clearly see that the image on the right (headless) completed way faster than the one with headless disabled. By suppressing the browser not only do you save time, but you also save system resources.
 
@@ -294,6 +295,8 @@ course_to_json(course, 'course.json')
 ```
 The object will now be stored on `course.json` file.
 
+Here is an example of how the file will look like. (The file has been trunacted)
+![output.json](docs/json.svg)
 
 </details>
 

@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 docs/licecap128-install.exe
+course.json
