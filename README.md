@@ -146,7 +146,7 @@ python3 main.py <command>
 
 ### List of Commands
 
-![Commands](docs/commands.svg)
+![Commands](docs/command.svg)
 
 ## Functionality
 
