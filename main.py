@@ -1,7 +1,9 @@
 from udemyscraper import *
 import getopt
 import sys
+from colorama import Fore, Style
 
+__version__ = "0.0.4"
 
 # Remove 1st argument from the
 # list of command line arguments
@@ -12,7 +14,7 @@ options = "hvnq:b:l:d:o:e"
 
 # Long options
 long_options = ["help", "version", "no-warn",
-                "query", "browser", "headless", "dump", "output", "debug"]
+                "query", "browser", "headless", "dump", "output", "debug", "quiet"]
 
 # Tool Defaults
 Options = {
@@ -21,10 +23,12 @@ Options = {
     'headless': True,
     'dump_format': "",
     'output_file': "",
-    'debug' : False
+    'debug': False,
+    'quiet': False,
 }
 
 search_query = ""
+
 
 try:
     # Parsing argument
@@ -81,13 +85,33 @@ try:
         elif currentArgument in ("-e", "--debug"):
             Options['debug'] = True
 
+        elif currentArgument in ("--quiet"):
+            Options['quiet'] = True
+
 
 except getopt.error as err:
     # output error, and return with an error code
     print(str(err))
 
+if Options['quiet'] == False:
+    print(Fore.MAGENTA + """
+██╗   ██╗██████╗ ███████╗███╗   ███╗██╗   ██╗    ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗ 
+██║   ██║██╔══██╗██╔════╝████╗ ████║╚██╗ ██╔╝    ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
+██║   ██║██║  ██║█████╗  ██╔████╔██║ ╚████╔╝     ███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝
+██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║  ╚██╔╝      ╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗
+╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║   ██║       ███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║  ██║
+╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝   ╚═╝       ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝""")
+    print(Style.RESET_ALL)
+
+    print(f"Version: {__version__}")
+    print(f"Using Preferences: {Options}")
+
+
 if search_query == "":
     search_query = input("Enter the search query: ")
+else:
+    if Options['quiet'] == False:
+        print(f"Search with query: {search_query}")
 course = UdemyCourse(search_query, Options)
 course.fetch_course()
 

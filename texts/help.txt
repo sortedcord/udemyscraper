@@ -22,4 +22,5 @@ Most Used Commands:
                         include `json`
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
                         json.
-    -e  --debug         Enable Debug Logging      
+    -e  --debug         Enable Debug Logging
+        --quiet         Disables the logo and the intro when running the `main.py` file.      
