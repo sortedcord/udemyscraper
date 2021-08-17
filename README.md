@@ -160,7 +160,8 @@ python3 main.py <command>
     -d  --dump          Dump the course object to the specified format. Available formats current 
                         include `json`
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
-                        json.   
+                        json.
+    -e  --debug         Enable Debug Logging         
 ```
 
 ## Functionality

@@ -8,11 +8,11 @@ import sys
 argumentList = sys.argv[1:]
 
 # Options
-options = "hvnq:b:l:d:o:"
+options = "hvnq:b:l:d:o:e"
 
 # Long options
 long_options = ["help", "version", "no-warn",
-                "query", "browser", "headless", "dump", "output"]
+                "query", "browser", "headless", "dump", "output", "debug"]
 
 # Tool Defaults
 Options = {
@@ -20,8 +20,8 @@ Options = {
     'browser_preference': "CHROME",
     'headless': True,
     'dump_format': "",
-    'output_file': ""
-
+    'output_file': "",
+    'debug' : False
 }
 
 search_query = ""
@@ -78,6 +78,8 @@ try:
                 print(currentValue, " is not a valid dump format.")
         elif currentArgument in ("-o", "--output"):
             Options['output_file'] = currentValue
+        elif currentArgument in ("-e", "--debug"):
+            Options['debug'] = True
 
 
 except getopt.error as err:
