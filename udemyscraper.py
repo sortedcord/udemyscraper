@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 import platform
 import json
 import logging
+from logging import *
 import getopt
 import sys
 from colorama import Fore, Style
@@ -48,7 +49,7 @@ class UdemyCourse():
             display_warn()
 
         if Preferences['debug'] == True:
-            logging.basicConfig(level=logging.DEBUG)
+            logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self):
         # Course class will contain an array with section classes
@@ -59,25 +60,25 @@ class UdemyCourse():
                     def __init__(self, lesson_html):
                         self.lesson_html = lesson_html
                         self.name = lesson_html.find("span").text
-                        logging.debug("Scraped Lesson HTML")
+                        logging.info("Scraped Lesson HTML")
 
                 self.html = BeautifulSoup(html, "lxml")
-                logging.debug("Parsed Section HTML")
+                logging.info("Parsed Section HTML")
 
                 self.name = self.html.select(
                     "span[class*='section--section-title--']")[0].text
-                logging.debug("Scraped name")
+                logging.info("Scraped name")
 
                 self.duration = self.html.find(
                     'span', attrs={'data-purpose': 'section-content'}).text.split(' • ')[1].replace(' ', '')
-                logging.debug('Scraped Section duration')
+                logging.info('Scraped Section duration')
 
                 self.lesson_blocks = self.html.find_all(
                     "div", class_="udlite-block-list-item-content")
                 self.lessons = []
                 for lesson in self.lesson_blocks:
                     self.lessons.append(Lesson(lesson))
-                    logging.debug(
+                    logging.info(
                         f"Lesson {len(self.lessons)} scraped successfully")
 
                 self.no_of_lessons = len(self.lessons)
@@ -85,165 +86,157 @@ class UdemyCourse():
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
 
-        logging.debug("Setting Up browser headers and preferences")
+        logging.info("Setting Up browser headers and preferences")
         if self.Preferences['browser_preference'] == "CHROME":
             # Browser Options
             option = Options()
             if self.Preferences['headless'] == True:
                 option.add_argument('headless')
-                logging.debug("Headless enabled")
+                logging.info("Headless enabled")
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
 
             if platform.system() == "Windows":
                 browser = webdriver.Chrome(
-                    executable_path='drivers/chromedriver.exe', chrome_options=option)
+                    executable_path='drivers/chromedriver.exe', options=option)
             else:
                 browser = webdriver.Chrome(chrome_options=option)
         elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
             if self.Preferences['headless'] == True:
-                logging.debug("Headless enabled")
+                logging.info("Headless enabled")
                 fireFoxOptions.set_headless()
             browser = webdriver.Firefox(
                 firefox_options=fireFoxOptions)
-        else:
-            print("Don't know how this happened ¯\_(ツ)_/¯")
 
-        logging.debug(
-            "Starting up headless browser and redirecting to the searchpage")
+        logging.info(
+            "Redirecting to the searchpage")
         browser.get(url)
 
         # Wait until the search box loads
         try:
-            logging.debug(
+            logging.info(
                 "Waiting for the browser to load the search results. This depends on your network responsiveness")
             element_present = EC.presence_of_element_located(
                 (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
-            WebDriverWait(browser, 5).until(element_present)
+            WebDriverWait(browser, 25).until(element_present)
         except TimeoutException:
             print(
                 "Timed out waiting for page to load or could not find a matching course")
             exit()
-        logging.debug("Search results found")
+        logging.info("Search results found")
 
         # Get page source
         content = browser.page_source
-        logging.debug("Fetched page source")
+        logging.info("Fetched page source")
         search_page = BeautifulSoup(content, "lxml")
-        logging.debug("Page source parsed")
+        logging.info("Page source parsed")
 
         # Get course basic metadata
-        link_block = str(search_page.select(
-            'a[class*="browse-course-card--link--"]')[0])
-        logging.debug("Scraped first result's URL")
-        self.link = 'https://udemy.com' + \
-            str(BeautifulSoup(link_block, 'lxml').find('a')['href'])
+        self.link = 'https://udemy.com' + search_page.select_one(
+            'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
+        logging.info("Found course link")
 
         # Scrape Information on course_page
-        url = self.link
-        logging.debug("Redirecting to Course Page")
-        browser.get(url)
-        logging.debug("Redirection successful")
+        logging.info("Redirecting to Course Page")
+        browser.get(self.link)
+        logging.info("Redirection successful")
 
         # Wait till the price div loads
         try:
-            logging.debug("Waiting for the entire page to load")
+            logging.info("Waiting for the entire page to load")
             element_present = EC.presence_of_element_located(
                 (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
-            logging.debug("Page loading complete")
-            WebDriverWait(browser, 10).until(element_present)
+            logging.info("Page loading complete")
+            WebDriverWait(browser, 25).until(element_present)
         except TimeoutException:
             print("Timed out waiting for page to load")
+            exit()
 
         # Get the html
         content = browser.page_source
-        logging.debug("Fetched page url")
+        logging.info("Fetched page url")
 
         # Parse HTML
         course_page = BeautifulSoup(content, "lxml")
-        logging.debug("Parsing complete")
-
-        logging.debug("Searching for 'show more' button")
-        no_of_buttons = len(course_page.find_all(
-            "button", attrs={'data-purpose': 'show-more'}))
-        # check if the show more button for sections exists or not.
-        if no_of_buttons > 0:
-            browser.execute_script(
-                """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
-            logging.debug(
-                "Clicked show more button to reveal all the sections")
-
-        # Get the html
-        content = browser.page_source
-        logging.debug("Updated page source with revealed sections")
-        browser.close()
-        logging.debug("Browser Closed")
-
-        # Parse HTML
-        course_page = BeautifulSoup(content, "lxml")
-        logging.debug("Page source parsed")
-
-        # Get the title
-        logging.debug("Searching for title")
-        self.title = course_page.find(
-            "h1", class_="udlite-heading-xl clp-lead__title clp-lead__title--small").text.replace("\n", "")
-        logging.debug("Title Scraped")
-
-        # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
-        logging.debug("Searching for headline")
-        self.headline = course_page.find(
-            "div", attrs={'data-purpose': 'lead-headline'}).text
-        logging.debug("Headline Scraped")
-
-        # Get the rating
-        logging.debug("Searching for course rating")
-        self.rating = course_page.find(
-            "span", attrs={'data-purpose': 'rating-number'}).text
-        logging.debug("Course rating scraped")
-
-        # Get number of ratings
-        logging.debug("Searching for number of ratings")
-        self.no_of_ratings = course_page.find("div", class_="clp-lead__element-item clp-lead__element-item--row").find_all(
-            "span")[3].text.replace("(", "").replace(" ratings)", "")
-        logging.debug("Number of ratings scraped")
-
-        # Get the number of students
-        logging.debug(
-            "Searching for number of students enrolled in the course")
-        self.student_enrolls = course_page.find(
-            "div", attrs={'data-purpose': 'enrollment'}).text.replace(" students", "")
-        logging.debug("Value scraped")
-
-        # Get the instructors name
-        self.instructor = course_page.find(
-            "a", class_="udlite-btn udlite-btn-large udlite-btn-link udlite-heading-md udlite-text-sm udlite-instructor-links").find("span").text.replace("\n", "")
-        logging.debug("Instructor name scraped")
+        logging.info("Parsing complete")
 
         # Get content information
         content_info = course_page.select(
             'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
         self.duration = content_info[2].replace(" total length", "")
-        logging.debug("Course duration scraped")
+        logging.info("Course duration scraped")
 
         self.no_of_lectures = content_info[1].replace(" lectures", "")
-        logging.debug("No of Lecutres scraped")
+        logging.info("No of Lecutres scraped")
 
-        self.no_of_sections = content_info[0].replace(" sections", "")
-        logging.debug("Number Of Lectures scraped")
+        self.no_of_sections = int(content_info[0].replace(
+            " sections", "").replace(" section", ""))
+        logging.info("Number Of Sections scraped")
+
+        # check if the show more button for sections exists or not.
+        if self.no_of_sections > 10:
+            browser.execute_script(
+                """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
+            logging.info(
+                "Clicked show more button to reveal all the sections")
+
+        # Get the html
+        content = browser.page_source
+        logging.info("Updated page source with revealed sections")
+        browser.close()
+        logging.info("Browser Closed")
+
+        # Parse HTML
+        course_page = BeautifulSoup(content, "lxml")
+        logging.info("Page source parsed")
+
+        # Get the title
+        self.title = course_page.select_one(
+            'h1[class*="udlite-heading-xl clp-lead__title clp-lead__title--small"]').text.replace("\n", "")
+        logging.info("Title Scraped")
+
+        # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
+        self.headline = course_page.select_one(
+            "div[data-purpose='lead-headline']").text.replace("\n", "")
+        logging.info("Headline Scraped")
+
+        clpblock_elements = course_page.select_one(
+            "div[class='clp-lead__badge-ratings-enrollment']")
+        logging.info("Step 1 done")
+
+        # Get the rating
+        self.rating = float(clpblock_elements.select_one(
+            'span[data-purpose="rating-number"]').text)
+        logging.info("Course rating scraped")
+
+        # Get number of ratings
+        self.no_of_ratings = int(clpblock_elements.select(
+            "span")[-1].text.replace("(", "").replace(" ratings)", "").replace(",", ""))
+
+        # Get the number of students
+        self.student_enrolls = course_page.select_one(
+            'div[data-purpose="enrollment"]')
+        logging.info("Enrollments scraped")
+
+        # Get the instructors name
+        self.instructor = course_page.find(
+            "a", class_="udlite-btn udlite-btn-large udlite-btn-link udlite-heading-md udlite-text-sm udlite-instructor-links").find("span").text.replace("\n", "")
+        logging.info("Instructor name scraped")
+
         # Get breadcrumb tags
         self.tags = []
         for tag in course_page.find("div", class_="topic-menu udlite-breadcrumb").find_all("a", class_="udlite-heading-sm"):
             self.tags.append(tag.text)
-        logging.debug("Tags Scraped")
+        logging.info("Tags Scraped")
 
         # Get course price
         self.price = course_page.select(
             'div[class*="price-text--price-part--"] > span')[1].text
-        logging.debug("Price scraped")
+        logging.info("Price scraped")
 
         # Get course Language
-        logging.debug("Language scraped")
+        logging.info("Language scraped")
         self.course_language = course_page.find(
             "div", class_="clp-lead__element-item clp-lead__locale").text.replace("\n", "")
 
@@ -251,7 +244,30 @@ class UdemyCourse():
         self.objectives = []
         for objective in course_page.find_all("span", class_="what-you-will-learn--objective-item--ECarc"):
             self.objectives.append(objective.text)
-        logging.debug("Objectives scraped")
+        logging.info("Objectives scraped")
+
+        # Get the requirements section
+        self.requirements = []
+        for requirement in course_page.find("div", class_="ud-component--course-landing-page-udlite--requirements").find_all("div", class_="udlite-block-list-item udlite-block-list-item-small udlite-block-list-item-tight udlite-block-list-item-neutral udlite-text-sm"):
+            self.requirements.append(requirement.text)
+        logging.info("Requirements scraped")
+
+        # Get the long description section. Each paragraph is concatenated to the description string separated by a "\n" or a new line.
+        self.description = ""
+        for parahraph in course_page.find("div", attrs={'data-purpose': 'safely-set-inner-html:description:description'}).find_all("p"):
+            self.description += parahraph.text + "\n"
+        logging.info("Description scraped")
+
+        # Get the information in the target section section
+        self.target_audience = []
+        for a in course_page.find("div", attrs={'data-purpose': 'target-audience'}).find_all("li"):
+            self.target_audience.append(a.text)
+        logging.info("Target Audience text scraped")
+
+        # Get the banner url of the course
+        self.banner = str(course_page.find(
+            "div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135", "480x270")
+        logging.info("Banner URL scraped")
 
         # This is the sections array which will contain Section classes
         self.Sections = []
@@ -261,33 +277,10 @@ class UdemyCourse():
             string_section.append(str(s))
             _x = 1
         for section_block in string_section:
-            logging.debug(f"Scraping section {str(_x)}")
+            logging.info(f"Scraping section {str(_x)}")
             self.Sections.append(Section(section_block))
-            logging.debug(f"Section {str(_x)} scraped successfully")
+            logging.info(f"Section {str(_x)} scraped successfully")
             _x += 1
-
-        # Get the requirements section
-        self.requirements = []
-        for requirement in course_page.find("div", class_="ud-component--course-landing-page-udlite--requirements").find_all("div", class_="udlite-block-list-item udlite-block-list-item-small udlite-block-list-item-tight udlite-block-list-item-neutral udlite-text-sm"):
-            self.requirements.append(requirement.text)
-        logging.debug("Requirements scraped")
-
-        # Get the long description section. Each paragraph is concatenated to the description string separated by a "\n" or a new line.
-        self.description = ""
-        for parahraph in course_page.find("div", attrs={'data-purpose': 'safely-set-inner-html:description:description'}).find_all("p"):
-            self.description += parahraph.text + "\n"
-        logging.debug("Description scraped")
-
-        # Get the information in the target section section
-        self.target_audience = []
-        for a in course_page.find("div", attrs={'data-purpose': 'target-audience'}).find_all("li"):
-            self.target_audience.append(a.text)
-        logging.debug("Target Audience text scraped")
-
-        # Get the banner url of the course
-        self.banner = str(course_page.find(
-            "div", class_="intro-asset--asset--1eSsi").find("img").attrs['src']).replace("240x135", "480x270")
-        logging.debug("Banner URL scraped")
 
 
 def course_to_dict(course):
@@ -318,7 +311,7 @@ def course_to_dict(course):
 
     # Update the sections object array with the new sections dictionary array
     course.Sections = new_section_list
-    logging.debug("Successfully parsed to a dicitonary")
+    logging.info("Successfully parsed to a dicitonary")
     # return the dictionary
     return course.__dict__
 
@@ -331,7 +324,7 @@ def course_to_json(course, output_file='output.json'):
     with open(output_file, 'w') as file:
         # Convert the course to dictionary and dump.
         file.write(json.dumps(course))
-        logging.debug(f"File course dumped as {output_file}")
+        logging.info(f"File course dumped as {output_file}")
 
 
 """
@@ -388,7 +381,7 @@ if __name__ == "__main__":
         'output_file': "",
         'debug': False,
         'quiet': False,
-        'time' : True,
+        'time': True,
     }
 
     search_query = ""
@@ -500,5 +493,5 @@ if __name__ == "__main__":
     else:
         quick_display(course)
 
-    if Preferences['quiet'] == False and Preferences['time'] == True:
-        print('It took', time.time()-__starttime__, 'seconds.')
+    # if Preferences['quiet'] == False and Preferences['time'] == True:
+    print('It took', time.time()-__starttime__, 'seconds.')
