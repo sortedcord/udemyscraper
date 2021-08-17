@@ -143,6 +143,13 @@ Or you can pass in a argument while using `udemyscraper.py`
 python3 udemyscraper.py -b firefox
 ```
 ## Suppressing Browser
+
+| **Headless Disabled**                 | **Headless Enabled**                   |
+|---------------------------------------|----------------------------------------|
+| ![Headless disabled](docs/header.gif) | ![Headless enabled](docs/headless.gif) |
+
+In the above comparison you can clearly see that the image on the right (headless) completed way faster than the one with headless disabled. By suppressing the browser not only do you save time, but you also save system resources.
+
 The `headless` option is enabled by default. But in case you want to disable it for debugging purposes, you may do so by passing the `headless` argument to `false`
 
 ```py
