@@ -12,8 +12,6 @@ import time
 import json
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-
 
 def display_warn():
     with open('texts/warning.txt') as file:
@@ -27,8 +25,12 @@ class UdemyCourse():
     def __init__(self, query, Options):
         self.query = query
         self.Options = Options
+        
         if self.Options['warn'] == True:
             display_warn()
+
+        if Options['debug'] == True:
+            logging.basicConfig(level=logging.DEBUG)
 
     def fetch_course(self):
         # Course class will contain an array with section classes
@@ -39,21 +41,28 @@ class UdemyCourse():
                     def __init__(self, lesson_html):
                         self.lesson_html = lesson_html
                         self.name = lesson_html.find("span").text
+                        logging.debug("Scraped Lesson HTML")
 
                 self.html = BeautifulSoup(html, "lxml")
+                logging.debug("Parsed Section HTML")
+
                 self.name = self.html.select(
                     "span[class*='section--section-title--']")[0].text
-                self.lesson_blocks = self.html.find_all(
-                    "div", class_="udlite-block-list-item-content")
-
-                self.lessons = []
-                for lesson in self.lesson_blocks:
-                    self.lessons.append(Lesson(lesson))
-
-                self.no_of_lessons = len(self.lessons)
+                logging.debug("Scraped name")
 
                 self.duration = self.html.find(
                     'span', attrs={'data-purpose': 'section-content'}).text.split(' • ')[1].replace(' ', '')
+                logging.debug('Scraped Section duration')
+
+                self.lesson_blocks = self.html.find_all(
+                    "div", class_="udlite-block-list-item-content")
+                self.lessons = []
+                for lesson in self.lesson_blocks:
+                    self.lessons.append(Lesson(lesson))
+                    logging.debug(
+                        f"Lesson {len(self.lessons)} scraped successfully")
+
+                self.no_of_lessons = len(self.lessons)
 
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + self.query
@@ -291,7 +300,7 @@ def course_to_dict(course):
 
     # Update the sections object array with the new sections dictionary array
     course.Sections = new_section_list
-
+    logging.debug("Successfully parsed to a dicitonary")
     # return the dictionary
     return course.__dict__
 
@@ -304,3 +313,4 @@ def course_to_json(course, output_file='output.json'):
     with open(output_file, 'w') as file:
         # Convert the course to dictionary and dump.
         file.write(json.dumps(course))
+        logging.debug(f"File course dumped as {output_file}")
