@@ -1,5 +1,5 @@
-udemyscraper 0.0.4 (cli)
-Usage: main.py [options] command
+udemyscraper 0.0.5 (cli)
+Usage: udemyscraper.py [options] command
 
 udemyscraper is a free and open source tool beautiful soup, 
 that fetches udemy course information. Get udemy course 

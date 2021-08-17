@@ -422,7 +422,6 @@ if __name__ == "__main__":
         print(f"Version: {__version__}")
         print(f"Using Preferences: {Options}")
 
-
     if search_query == "":
         search_query = input("Enter the search query: ")
     else:
