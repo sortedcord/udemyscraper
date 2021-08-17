@@ -1,3 +1,6 @@
+import time
+__starttime__ = time.time()
+
 # Selenium Libraries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # to wait until page loads
@@ -8,7 +11,6 @@ from selenium import webdriver  # for webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from bs4 import BeautifulSoup
 import platform
-import time
 import json
 import logging
 import getopt
@@ -332,6 +334,37 @@ def course_to_json(course, output_file='output.json'):
         logging.debug(f"File course dumped as {output_file}")
 
 
+"""
+
+                                                                                                            
+                                                                                                            
+   SSSSSSSSSSSSSSS                                          iiii                              tttt          
+ SS:::::::::::::::S                                        i::::i                          ttt:::t          
+S:::::SSSSSS::::::S                                         iiii                           t:::::t          
+S:::::S     SSSSSSS                                                                        t:::::t          
+S:::::S                ccccccccccccccccrrrrr   rrrrrrrrr  iiiiiiippppp   ppppppppp   ttttttt:::::ttttttt    
+S:::::S              cc:::::::::::::::cr::::rrr:::::::::r i:::::ip::::ppp:::::::::p  t:::::::::::::::::t    
+ S::::SSSS          c:::::::::::::::::cr:::::::::::::::::r i::::ip:::::::::::::::::p t:::::::::::::::::t    
+  SS::::::SSSSS    c:::::::cccccc:::::crr::::::rrrrr::::::ri::::ipp::::::ppppp::::::ptttttt:::::::tttttt    
+    SSS::::::::SS  c::::::c     ccccccc r:::::r     r:::::ri::::i p:::::p     p:::::p      t:::::t          
+       SSSSSS::::S c:::::c              r:::::r     rrrrrrri::::i p:::::p     p:::::p      t:::::t          
+            S:::::Sc:::::c              r:::::r            i::::i p:::::p     p:::::p      t:::::t          
+            S:::::Sc::::::c     ccccccc r:::::r            i::::i p:::::p    p::::::p      t:::::t    tttttt
+SSSSSSS     S:::::Sc:::::::cccccc:::::c r:::::r           i::::::ip:::::ppppp:::::::p      t::::::tttt:::::t
+S::::::SSSSSS:::::S c:::::::::::::::::c r:::::r           i::::::ip::::::::::::::::p       tt::::::::::::::t
+S:::::::::::::::SS   cc:::::::::::::::c r:::::r           i::::::ip::::::::::::::pp          tt:::::::::::tt
+ SSSSSSSSSSSSSSS       cccccccccccccccc rrrrrrr           iiiiiiiip::::::pppppppp              ttttttttttt  
+                                                                  p:::::p                                   
+                                                                  p:::::p                                   
+                                                                 p:::::::p                                  
+                                                                 p:::::::p                                  
+                                                                 p:::::::p                                  
+                                                                 ppppppppp                                  
+                                                                                                            
+
+"""
+
+
 # When evoked directly
 if __name__ == "__main__":
 
@@ -340,11 +373,11 @@ if __name__ == "__main__":
     argumentList = sys.argv[1:]
 
     # Options
-    options = "hvnq:b:l:d:o:e"
+    options = "hvnq:b:l:d:o:et"
 
     # Long options
     long_options = ["help", "version", "no-warn",
-                    "query", "browser", "headless", "dump", "output", "debug", "quiet"]
+                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time"]
 
     # Tool Defaults
     Preferences = {
@@ -355,6 +388,7 @@ if __name__ == "__main__":
         'output_file': "",
         'debug': False,
         'quiet': False,
+        'time' : True,
     }
 
     search_query = ""
@@ -465,3 +499,6 @@ if __name__ == "__main__":
             print("\n", "WARN: 'XML' dump format is currently not supported.")
     else:
         quick_display(course)
+
+    if Preferences['quiet'] == False and Preferences['time'] == True:
+        print('It took', time.time()-__starttime__, 'seconds.')

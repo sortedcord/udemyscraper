@@ -24,7 +24,6 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
   - [Suppressing Browser](#suppressing-browser)
 - [Approach](#approach)
   - [Why not just use the Udemy's API?](#why-not-just-use-the-udemys-api)
-  - [Functionality](#functionality)
 - [Data](#data)
   - [Course Class](#course-class)
   - [Section Class](#section-class)
@@ -166,9 +165,6 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
 
 
-## Functionality
-
-As of this commit, the script can search udemy for the search term you input and get the courses link, and all the other overview details like description, instructor, duration, rating, etc.
 # Data
 
 The following datatable contains all of the data that can be fetched.
@@ -300,7 +296,7 @@ The object will now be stored on `course.json` file.
 Currently not implemented yet.
 
 ## Dumping as XML
-Currently in development. Kindly check out Pull Request #21 for more information and progress.
+Currently in development. Kindly check out [Pull Request #21](https://github.com/sortedcord/udemy-web-scraper/pull/21) for more information and progress.
 
 ### For Jellyfin users
 Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only have one resource which is the poster of the file. It might be possible to write a custom XML structure for jellyfin. Currently in development.

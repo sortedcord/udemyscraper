@@ -23,4 +23,6 @@ Most Used Commands:
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
                         json.
     -e  --debug         Enable Debug Logging
-        --quiet         Disables the logo and the intro when running the `main.py` file.      
+        --quiet         Disables the logo and the intro when running the `main.py` file.
+    -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
+                        quiet mode is disabled.   
