@@ -17,6 +17,18 @@ from colorama import Fore, Style
 
 __version__ = "0.0.5"
 
+
+def quick_display(course):
+    print("===================== Fetched Course =====================", "\n")
+    print(course.title)
+    print(course.headline)
+    print(f"URL: {course.link}")
+    print(f"Instructed by {course.instructor}")
+    print(f"{course.rating} out of 5 ({course.no_of_ratings})")
+    print(f"Duration: {course.duration}")
+    print(f"{course.no_of_lectures} Lessons and {course.no_of_sections} Sections")
+
+
 def display_warn():
     with open('texts/warning.txt') as file:
         lines = file.readlines()
@@ -29,7 +41,7 @@ class UdemyCourse():
     def __init__(self, query, Preferences):
         self.query = query
         self.Preferences = Preferences
-        
+
         if self.Preferences['warn'] == True:
             display_warn()
 
@@ -173,7 +185,7 @@ class UdemyCourse():
         # Get the title
         logging.debug("Searching for title")
         self.title = course_page.find(
-            "h1", class_="udlite-heading-xl clp-lead__title clp-lead__title--small").text
+            "h1", class_="udlite-heading-xl clp-lead__title clp-lead__title--small").text.replace("\n", "")
         logging.debug("Title Scraped")
 
         # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
@@ -319,7 +331,8 @@ def course_to_json(course, output_file='output.json'):
         file.write(json.dumps(course))
         logging.debug(f"File course dumped as {output_file}")
 
-#When evoked directly
+
+# When evoked directly
 if __name__ == "__main__":
 
     # Remove 1st argument from the
@@ -338,14 +351,13 @@ if __name__ == "__main__":
         'warn': True,
         'browser_preference': "CHROME",
         'headless': True,
-        'dump_format': "",
+        'dump_format': None,
         'output_file': "",
         'debug': False,
         'quiet': False,
     }
 
     search_query = ""
-
 
     try:
         # Parsing argument
@@ -368,7 +380,7 @@ if __name__ == "__main__":
                 print("Udemyscraper version 0.0.4", "\n")
                 exit()
 
-            # Disable warning 
+            # Disable warning
             elif currentArgument in ("-n", "--no-warn"):
                 Preferences['warn'] = False
 
@@ -390,8 +402,9 @@ if __name__ == "__main__":
                 elif currentValue.lower() == "false":
                     Preferences['headless'] = False
                 else:
-                    print("\n", "headless takes either of the two values: True or False.")
-            
+                    print(
+                        "\n", "headless takes either of the two values: True or False.")
+
             # Select dump format
             elif currentArgument in ("-d", "--dump"):
                 if currentValue.lower() == 'json':
@@ -409,7 +422,7 @@ if __name__ == "__main__":
             # Specify output file
             elif currentArgument in ("-o", "--output"):
                 Preferences['output_file'] = currentValue
-            
+
             # Enable Debug Logging
             elif currentArgument in ("-e", "--debug"):
                 Preferences['debug'] = True
@@ -417,7 +430,6 @@ if __name__ == "__main__":
             # Enable quiet mode
             elif currentArgument in ("--quiet"):
                 Preferences['quiet'] = True
-
 
     except getopt.error as err:
         # output error, and return with an error code
@@ -444,11 +456,12 @@ if __name__ == "__main__":
     course = UdemyCourse(search_query, Preferences)
     course.fetch_course()
 
-
-    if Preferences['dump_format'] != "":
+    if Preferences['dump_format'] != None:
         if Preferences['dump_format'] == 'json':
             course_to_json(course, Preferences['output_file'])
         elif Preferences['dump_format'] == 'csv':
             print("\n", "WARN: 'CSV' dump format is currently not supported.")
         elif Preferences['dump_format'] == 'xml':
             print("\n", "WARN: 'XML' dump format is currently not supported.")
+    else:
+        quick_display(course)

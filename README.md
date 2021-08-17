@@ -31,6 +31,7 @@ A Web Scraper built with beautiful soup, that fetches udemy course information.
     - [Section Class](#section-class)
     - [Lesson Class](#lesson-class)
   - [Output/ Dumping data](#output-dumping-data)
+    - [Quick Display](#quick-display)
     - [Converting to Dictionary](#converting-to-dictionary)
     - [Dumping as JSON](#dumping-as-json)
     - [Dumping as CSV](#dumping-as-csv)
@@ -209,6 +210,34 @@ The following datatable contains all of the properties that can be fetched.
 
 
 ### Output/ Dumping data
+
+#### Quick Display
+
+When executing the file as a script, this is the default output mode and perhaps the most breif one.
+
+```bash
+(env) F:\Github\udemy-web-scraper> python udemyscraper.py -q "Learn Python" --quiet -n
+===================== Fetched Course ===================== 
+
+Learn Python Programming Masterclass
+
+This Python For Beginners Course Teaches You The Python Language Fast. Includes Python Online Training With Python 3
+
+URL: https://udemy.com/course/python-the-complete-python-developer-course/
+Instructed by Tim Buchalka
+4.5 out of 5 (79,526)
+Duration: 64h 33m
+469 Lessons and 25 Sections
+```
+
+The `quick_display` fucntion can also be called when using udemyscraper as a module.
+
+```py
+from udemyscraper import *
+
+# Assuming you have already created a course object and fetched the data
+quick_display(course)
+```
 
 #### Converting to Dictionary
 
