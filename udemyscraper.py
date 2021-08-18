@@ -18,10 +18,11 @@ import getopt
 import sys
 from colorama import Fore, Style
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 
 def loginfo(message):
+    # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
 
 
@@ -43,6 +44,59 @@ def display_warn():
             print(line.replace("\n", ""))
             time.sleep(0.4)
 
+# Section class will contain an array with lesson classes
+
+
+class Lesson():
+    def __init__(self, lesson_html):
+
+        # Since the structure of previewable 
+        # lessons is different from that of the 
+        # ones that are not:
+
+        if "Preview" in lesson_html.select_one("div").text:
+            self.demo = True
+            self.title = lesson_html.select_one(
+                "button").text
+        else:
+            self.demo = False
+            self.title = lesson_html.select_one(
+                "span[class*='section--item-title--']").text
+
+        # Fetches the type of the lesson
+        if "play" in str(lesson_html.select_one("use").attrs['xlink:href']):
+            self.type = "Video"
+            self.duration = lesson_html.select_one(
+                "span[class*='section--hidden-on-mobile--171Q9 section--item-content-summary--']").text
+        elif "quiz" in str(lesson_html.select_one("use").attrs['xlink:href']):
+            self.type = "quiz"
+            self.duration = None
+        elif "article" in str(lesson_html.select_one("use").attrs['xlink:href']) == "#icon-article":
+            self.type = "article"
+            self.duration = lesson_html.select_one(
+                "span[class*='section--hidden-on-mobile--171Q9 section--item-content-summary--']").text
+
+
+# Course class will contain an array with section classes
+class Section():
+    def __init__(self, section_html):
+        self.name = section_html.select_one(
+            "span[class*='section--section-title--']").text
+        loginfo("Scraped name")
+
+        self.duration = section_html.select_one(
+            "span[data-purpose='section-content']").text.split(' • ')[1].replace(' ', '')
+        loginfo('Scraped Section duration')
+
+        self.Lessons = []
+        for lesson in section_html.select("ul > li > div"):
+            self.Lessons.append(Lesson(lesson))
+            loginfo(
+                f"Lesson {len(self.Lessons)} scraped successfully")
+        self.no_of_lessons = len(self.Lessons)
+        self.duration = section_html.select_one(
+            "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
+
 
 class UdemyCourse():
     def __init__(self, Preferences={
@@ -62,31 +116,6 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
-        # Course class will contain an array with section classes
-        class Section():
-            def __init__(self, section_html):
-                # Section class will contain an array with lesson classes
-                class Lesson():
-                    def __init__(self, lesson_html):
-                        self.name = lesson_html.select_one("span").text
-                        loginfo("Scraped Lesson HTML")
-
-                self.name = section_html.select_one(
-                    "span[class*='section--section-title--']").text
-                loginfo("Scraped name")
-
-                self.duration = section_html.select_one(
-                    "span[data-purpose='section-content']").text.split(' • ')[1].replace(' ', '')
-                loginfo('Scraped Section duration')
-
-                self.Lessons = []
-                for lesson in section_html.select("div[class='udlite-block-list-item-content']"):
-                    self.Lessons.append(Lesson(lesson))
-                    loginfo(
-                        f"Lesson {len(self.Lessons)} scraped successfully")
-
-                self.no_of_lessons = len(self.Lessons)
-
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 

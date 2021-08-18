@@ -1,4 +1,4 @@
-udemyscraper 0.6.0 (cli)
+udemyscraper 0.7.0 (cli)
 Usage: udemyscraper.py [options] command
 
 udemyscraper is a free and open source tool beautiful soup, 

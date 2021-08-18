@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
 ![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
-![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.6.0-magenta?style=for-the-badge&logo=udemy&logoColor=white)
+![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.7.0-magenta?style=for-the-badge&logo=udemy&logoColor=white)
 
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
@@ -212,15 +212,18 @@ This is the data of the parent class which is the course class itself.
 | Name            | Type    | Description                                           | Usage                              |
 |-----------------|---------|-------------------------------------------------------|------------------------------------|
 | `name`          | String  | Returns the name of the section of the course         | `course.Sections[4].name`          |
-| `duration`      | String  | The duration of the specific course                   | `course.Sections[4].duration`      |
+| `duration`      | String  | The duration of the specific section                  | `course.Sections[4].duration`      |
 | `Lessons`       | List    | List with all the lesson objects for the section      | `course.Sections[4].Lessons[2]`    |
 | `no_of_lessons` | Integer | Gives the number of lessons in the particular Section | `course.Sections[4].no_of_lessons` |
 
 ## Lesson Class
 
-| Name   | Type   | Description                  | Usage                                |
-|--------|--------|------------------------------|--------------------------------------|
-| `name` | String | Gives the name of the lesson | `course.Sections[4].Lessons[2].name` |
+| Name       | Type    | Description                                             | Usage                                    |
+|------------|---------|---------------------------------------------------------|------------------------------------------|
+| `name`     | String  | Gives the name of the lesson                            | `course.Sections[4].Lessons[2].name`     |
+| `demo`     | Boolean | Whether the lesson can be previewed or not              | `course.Sections[4].Lessons[2].demo`     |
+| `duration` | String  | The duration of the specific lesson                     | `course.Sections[4].Lessons[2].duration` |
+| `type`     | String  | Tells what type of lesson it is. (Video, Article, Quiz) | `course.Sections[4].Lessons[2].type`     |
 
 
 # Output/ Dumping data
