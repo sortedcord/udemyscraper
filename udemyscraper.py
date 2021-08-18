@@ -48,9 +48,6 @@ def display_warn():
 
 class Lesson():
     def __init__(self, lesson_html):
-        # self.name = lesson_html.select_one("span").text
-        # loginfo("Scraped Lesson HTML")
-
         if "Preview" in lesson_html.select_one("div").text:
             self.demo = True
             self.title = lesson_html.select_one(
@@ -75,6 +72,7 @@ class Lesson():
             self.type = "error fetching type"
             self.duration = "Nada :)"
 
+
 # Course class will contain an array with section classes
 
 
@@ -93,8 +91,10 @@ class Section():
             self.Lessons.append(Lesson(lesson))
             loginfo(
                 f"Lesson {len(self.Lessons)} scraped successfully")
-
         self.no_of_lessons = len(self.Lessons)
+        self.duration = section_html.select_one(
+            "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
+
 
 
 class UdemyCourse():
