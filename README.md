@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
 ![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
-![Chromium](https://img.shields.io/badge/UDEMYSCRAPER-0.0.5-magenta?style=for-the-badge&logo=udemy&logoColor=white)
+![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.6.0-magenta?style=for-the-badge&logo=udemy&logoColor=white)
 
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
@@ -185,20 +185,19 @@ This is the data of the parent class which is the course class itself.
 
 | Name              | Type         | Description                                              | Usage                    |
 |-------------------|--------------|----------------------------------------------------------|--------------------------|
-| `query`           | String       | Search term which is searched in the website             | `course.query`           |
 | `link`            | URL (String) | url of the course.                                       | `course.link`            |
 | `title`           | String       | Title of the course                                      | `course.title`           |
 | `headline`        | String       | The headline usually displayed under the title           | `course.headline`        |
-| `instructor`      | String       | Name of the instructor of the course                     | `course.instructor`      |
-| `rating`          | Integer      | Rating of the course out of 5                            | `course.rating`          |
+| `instructors`     | String       | Name of the instructor of the course                     | `course.instructors`     |
+| `rating`          | Float        | Rating of the course out of 5                            | `course.rating`          |
 | `no_of_ratings`   | Integer      | Number of rating the course has got                      | `course.no_of_ratings`   |
 | `duration`        | String       | Duration of the course in hours and minutes              | `course.duration`        |
-| `no_of_lectures`  | String       | Gives the number of lectures in the course (lessons)     | `course.no_of_lectures`  |
-| `no_of_sections`  | String       | Gives the number of sections in the courses              | `course.no_of_lectures`  |
+| `no_of_lectures`  | Integer      | Gives the number of lectures in the course (lessons)     | `course.no_of_lectures`  |
+| `no_of_sections`  | Integer      | Gives the number of sections in the courses              | `course.no_of_lectures`  |
 | `tags`            | List         | Is the list of tags of the course (Breadcrumbs)          | `course.tags[1]`         |
-| `price`           | String       | Price of the course in local currency                    | `course.price`           |
+| `price`           | Float        | Price of the course in local currency                    | `course.price`           |
 | `student_enrolls` | Integer      | Gives the number of students enrolled                    | `course.student_enrolls` |
-| `course_language` | String       | Gives the language of the course                         | `course.course_language` |
+| `language`        | String       | Gives the language of the course                         | `course.language`        |
 | `objectives`      | List         | List containing all the objectives for the course        | `course.objectives[2]`   |
 | `Sections`        | List         | List containing all the section objects for the course   | `course.Sections[2]`     |
 | `requirements`    | List         | List containing all the requirements for the course      | `course.requirements`    |
@@ -210,17 +209,18 @@ This is the data of the parent class which is the course class itself.
 
 ## Section Class
 
-| Name       | Type   | Description                                      | Usage                           |
-|------------|--------|--------------------------------------------------|---------------------------------|
-| `name`     | String | Returns the name of the section of the course    | `course.Sections[4].name`       |
-| `duration` | String | The duration of the specific course              | `course.Sections[4].duration`   |
-| `lessons`  | List   | List with all the lesson objects for the section | `course.Sections[4].lessons[2]` |
+| Name            | Type    | Description                                           | Usage                              |
+|-----------------|---------|-------------------------------------------------------|------------------------------------|
+| `name`          | String  | Returns the name of the section of the course         | `course.Sections[4].name`          |
+| `duration`      | String  | The duration of the specific course                   | `course.Sections[4].duration`      |
+| `Lessons`       | List    | List with all the lesson objects for the section      | `course.Sections[4].Lessons[2]`    |
+| `no_of_lessons` | Integer | Gives the number of lessons in the particular Section | `course.Sections[4].no_of_lessons` |
 
 ## Lesson Class
 
 | Name   | Type   | Description                  | Usage                                |
 |--------|--------|------------------------------|--------------------------------------|
-| `name` | String | Gives the name of the lesson | `course.Sections[4].lessons[2].name` |
+| `name` | String | Gives the name of the lesson | `course.Sections[4].Lessons[2].name` |
 
 
 # Output/ Dumping data
