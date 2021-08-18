@@ -10,7 +10,6 @@ from selenium.webdriver.chrome.options import Options  # for suppressing the bro
 from selenium import webdriver  # for webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from bs4 import BeautifulSoup
-import platform
 import json
 import logging
 from logging import *
@@ -128,12 +127,7 @@ class UdemyCourse():
                 loginfo("Headless enabled")
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
-
-            if platform.system() == "Windows":
-                browser = webdriver.Chrome(
-                    executable_path='drivers/chromedriver.exe', options=option)
-            else:
-                browser = webdriver.Chrome(chrome_options=option)
+            browser = webdriver.Chrome(chrome_options=option)
         elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
             if self.Preferences['headless'] == True:
