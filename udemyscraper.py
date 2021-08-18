@@ -22,6 +22,7 @@ __version__ = "0.6.0"
 
 
 def loginfo(message):
+    # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
 
 
@@ -48,6 +49,11 @@ def display_warn():
 
 class Lesson():
     def __init__(self, lesson_html):
+
+        # Since the structure of previewable 
+        # lessons is different from that of the 
+        # ones that are not:
+
         if "Preview" in lesson_html.select_one("div").text:
             self.demo = True
             self.title = lesson_html.select_one(
@@ -57,6 +63,7 @@ class Lesson():
             self.title = lesson_html.select_one(
                 "span[class*='section--item-title--']").text
 
+        # Fetches the type of the lesson
         if "play" in str(lesson_html.select_one("use").attrs['xlink:href']):
             self.type = "Video"
             self.duration = lesson_html.select_one(
@@ -68,14 +75,9 @@ class Lesson():
             self.type = "article"
             self.duration = lesson_html.select_one(
                 "span[class*='section--hidden-on-mobile--171Q9 section--item-content-summary--']").text
-        else:
-            self.type = "error fetching type"
-            self.duration = "Nada :)"
 
 
 # Course class will contain an array with section classes
-
-
 class Section():
     def __init__(self, section_html):
         self.name = section_html.select_one(
@@ -94,7 +96,6 @@ class Section():
         self.no_of_lessons = len(self.Lessons)
         self.duration = section_html.select_one(
             "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
-
 
 
 class UdemyCourse():

@@ -212,15 +212,18 @@ This is the data of the parent class which is the course class itself.
 | Name            | Type    | Description                                           | Usage                              |
 |-----------------|---------|-------------------------------------------------------|------------------------------------|
 | `name`          | String  | Returns the name of the section of the course         | `course.Sections[4].name`          |
-| `duration`      | String  | The duration of the specific course                   | `course.Sections[4].duration`      |
+| `duration`      | String  | The duration of the specific section                  | `course.Sections[4].duration`      |
 | `Lessons`       | List    | List with all the lesson objects for the section      | `course.Sections[4].Lessons[2]`    |
 | `no_of_lessons` | Integer | Gives the number of lessons in the particular Section | `course.Sections[4].no_of_lessons` |
 
 ## Lesson Class
 
-| Name   | Type   | Description                  | Usage                                |
-|--------|--------|------------------------------|--------------------------------------|
-| `name` | String | Gives the name of the lesson | `course.Sections[4].Lessons[2].name` |
+| Name       | Type    | Description                                             | Usage                                    |
+|------------|---------|---------------------------------------------------------|------------------------------------------|
+| `name`     | String  | Gives the name of the lesson                            | `course.Sections[4].Lessons[2].name`     |
+| `demo`     | Boolean | Whether the lesson can be previewed or not              | `course.Sections[4].Lessons[2].demo`     |
+| `duration` | String  | The duration of the specific lesson                     | `course.Sections[4].Lessons[2].duration` |
+| `type`     | String  | Tells what type of lesson it is. (Video, Article, Quiz) | `course.Sections[4].Lessons[2].type`     |
 
 
 # Output/ Dumping data
