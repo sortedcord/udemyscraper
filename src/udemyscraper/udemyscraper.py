@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from bs4 import BeautifulSoup
 import json
@@ -154,7 +155,7 @@ class UdemyCourse():
             display_warn()
 
         if Preferences['debug'] == True:
-            logging.basicConfig(level=logging.INFO)
+            logging.basicConfig(level=logging.DEBUG)
 
     def fetch_course(self, query):
         # Get the url of the search query
@@ -169,11 +170,13 @@ class UdemyCourse():
                 loginfo("Headless enabled")
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
-            try:
-                browser = webdriver.Chrome(options=option)
-            except WebDriverException:
-                print("Chrome driver not found. Make sure it is in your path")
-                exit()
+            browser = webdriver.Chrome(ChromeDriverManager().install(), options=option)
+
+            # try:
+            #     browser = webdriver.Chrome('F:\WebDrivers\chromedriver.exe', options=option)
+            # except WebDriverException:
+            #     print("Chrome driver not found. Make sure it is in your path")
+            #     exit()
         elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
             if self.Preferences['headless'] == True:

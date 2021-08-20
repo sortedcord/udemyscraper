@@ -28,5 +28,5 @@ webdriver-manager
 websockets 
 wheel         
 pyqt5
-getopt
+getopt2
 alive-progress
