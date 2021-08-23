@@ -8,8 +8,8 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -18,13 +18,12 @@ import getopt
 import sys
 from colorama import Fore, Style
 
-__version__ = "0.7.1"
+__version__ = "0.7.2"
 
 
-def loginfo(message):
+def loginfo(message, level):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
-
 
 def quick_display(course):
     print("===================== Fetched Course =====================", "\n")
@@ -80,15 +79,14 @@ Most Used Commands:
                         include `json`
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
                         json.
-    -e  --debug         Enable Debug Logging
+    -e  --debug         Enable Debug Logging. Takes value as 'False', 'True', 'info' and 'debug'.
+                        Check this page for more info - https://www.digitalocean.com/community/tutorials/how-to-use-logging-in-python-3
         --quiet         Disables the logo and the intro when running the `main.py` file.
     -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
                         quiet mode is disabled.   
 """)
 
 # Section class will contain an array with lesson classes
-
-
 class Lesson():
     def __init__(self, lesson_html):
 
@@ -156,6 +154,8 @@ class UdemyCourse():
 
         if Preferences['debug'] == True:
             logging.basicConfig(level=logging.DEBUG)
+        elif Preferences['debug'] == "info":
+            logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
         # Get the url of the search query
@@ -170,13 +170,11 @@ class UdemyCourse():
                 loginfo("Headless enabled")
             option.add_experimental_option(
                 'excludeSwitches', ['enable-logging'])
-            browser = webdriver.Chrome(ChromeDriverManager().install(), options=option)
+            try:
+                browser = webdriver.Chrome(options=option)
+            except ValueError:
+                print(f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
 
-            # try:
-            #     browser = webdriver.Chrome('F:\WebDrivers\chromedriver.exe', options=option)
-            # except WebDriverException:
-            #     print("Chrome driver not found. Make sure it is in your path")
-            #     exit()
         elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
             if self.Preferences['headless'] == True:
@@ -431,7 +429,7 @@ if __name__ == "__main__":
     argumentList = sys.argv[1:]
 
     # Options
-    options = "hvnq:b:l:d:o:et"
+    options = "hvnq:b:l:d:o:e:t"
 
     # Long options
     long_options = ["help", "version", "no-warn",
@@ -454,6 +452,7 @@ if __name__ == "__main__":
     try:
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
+        print(arguments, values)
 
         # checking each argument
         for currentArgument, currentValue in arguments:
@@ -512,7 +511,14 @@ if __name__ == "__main__":
 
             # Enable Debug Logging
             elif currentArgument in ("-e", "--debug"):
-                Preferences['debug'] = True
+                if currentValue == True:
+                    Preferences['debug'] = True
+                elif currentValue == False:
+                    Preferences['debug'] = False
+                elif currentValue.lower == "info":
+                    Preferences['debug'] = "info"
+                elif currentValue.lower == "debug":
+                    Preferences['debug'] = True
 
             # Enable quiet mode
             elif currentArgument in ("--quiet"):
