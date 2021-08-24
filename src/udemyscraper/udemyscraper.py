@@ -150,7 +150,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-    }):
+    }): # Set default preferences when none provided
         self.Preferences = Preferences
 
         if self.Preferences['warn'] == True:
@@ -162,7 +162,7 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
-        with alive_bar(25, title="Scraping Course", bar="smooth") as br:
+        with alive_bar(title="Scraping Course", bar="smooth") as br:
             # Get the url of the search query
             url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 
