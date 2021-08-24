@@ -1,6 +1,8 @@
 import time
 __starttime__ = time.time()
 
+from alive_progress import alive_bar
+
 # Selenium Libraries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # to wait until page loads
@@ -21,7 +23,7 @@ from colorama import Fore, Style
 __version__ = "0.7.2"
 
 
-def loginfo(message, level):
+def loginfo(message):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
 
@@ -129,10 +131,12 @@ class Section():
         loginfo('Scraped Section duration')
 
         self.Lessons = []
+       
         for lesson in section_html.select("ul > li > div"):
             self.Lessons.append(Lesson(lesson))
             loginfo(
                 f"Lesson {len(self.Lessons)} scraped successfully")
+            # bar()
         self.no_of_lessons = len(self.Lessons)
         self.duration = section_html.select_one(
             "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
@@ -158,203 +162,231 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
-        # Get the url of the search query
-        url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
+        with alive_bar(25, title="Scraping Course", bar="smooth") as br:
+            # Get the url of the search query
+            url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 
-        loginfo("Setting Up browser headers and preferences")
-        if self.Preferences['browser_preference'] == "CHROME":
-            # Browser Options
-            option = Options()
-            if self.Preferences['headless'] == True:
-                option.add_argument('headless')
-                loginfo("Headless enabled")
-            option.add_experimental_option(
-                'excludeSwitches', ['enable-logging'])
-            try:
-                browser = webdriver.Chrome(options=option)
-            except ValueError:
-                print(f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+            br.text('Launching Browser')
+            loginfo("Setting Up browser headers and preferences")
+            if self.Preferences['browser_preference'] == "CHROME":
+                # Browser Options
+                option = Options()
+                if self.Preferences['headless'] == True:
+                    option.add_argument('headless')
+                    loginfo("Headless enabled")
+                option.add_experimental_option(
+                    'excludeSwitches', ['enable-logging'])
+                try:
+                    browser = webdriver.Chrome(options=option)
+                except ValueError:
+                    print(f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+                br()
 
-        elif self.Preferences['browser_preference'] == "FIREFOX":
-            fireFoxOptions = webdriver.FirefoxOptions()
-            if self.Preferences['headless'] == True:
-                loginfo("Headless enabled")
-                fireFoxOptions.set_headless()
+            elif self.Preferences['browser_preference'] == "FIREFOX":
+                fireFoxOptions = webdriver.FirefoxOptions()
+                if self.Preferences['headless'] == True:
+                    loginfo("Headless enabled")
+                    fireFoxOptions.set_headless()
+                try:
+                    browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+                except WebDriverException:
+                    print("Geko driver not found. Make sure it is in your path")
+                    exit()
+                br()
+
+            br.text('Loading Udemy Search page')
+            loginfo(
+                "Redirecting to the searchpage")
+            browser.get(url)
+            br()
+
+            br.text('Waiting for search results')
+            # Wait until the search box loads
             try:
-                browser = webdriver.Firefox(firefox_options=fireFoxOptions)
-            except WebDriverException:
-                print("Geko driver not found. Make sure it is in your path")
+                loginfo(
+                    "Waiting for the browser to load the search results. This depends on your network responsiveness")
+                element_present = EC.presence_of_element_located(
+                    (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
+                WebDriverWait(browser, 25).until(element_present)
+            except TimeoutException:
+                print(
+                    "Timed out waiting for page to load or could not find a matching course")
                 exit()
+            loginfo("Search results found")
+            br()
 
-        loginfo(
-            "Redirecting to the searchpage")
-        browser.get(url)
+            br.text('Extracting Page Source')
+            # Get page source
+            content = browser.page_source
+            loginfo("Fetched page source")
+            search_page = BeautifulSoup(content, "lxml")
+            loginfo("Page source parsed")
+            br()
 
-        # Wait until the search box loads
-        try:
-            loginfo(
-                "Waiting for the browser to load the search results. This depends on your network responsiveness")
-            element_present = EC.presence_of_element_located(
-                (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
-            WebDriverWait(browser, 25).until(element_present)
-        except TimeoutException:
-            print(
-                "Timed out waiting for page to load or could not find a matching course")
-            exit()
-        loginfo("Search results found")
+            br.text('Getting Course Link')
+            # Get course link
+            self.link = 'https://udemy.com' + search_page.select_one(
+                'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
+            loginfo("Found course link")
 
-        # Get page source
-        content = browser.page_source
-        loginfo("Fetched page source")
-        search_page = BeautifulSoup(content, "lxml")
-        loginfo("Page source parsed")
+            # Scrape Information on course_page
+            loginfo("Redirecting to Course Page")
+            browser.get(self.link)
+            loginfo("Redirection successful")
+            br()
 
-        # Get course basic metadata
-        self.link = 'https://udemy.com' + search_page.select_one(
-            'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
-        loginfo("Found course link")
+            br.text('Waiting for course page to load')
+            # Wait till the price div loads
+            try:
+                loginfo("Waiting for the entire page to load")
+                element_present = EC.presence_of_element_located(
+                    (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
+                loginfo("Page loading complete")
+                WebDriverWait(browser, 25).until(element_present)
+            except TimeoutException:
+                print("Timed out waiting for page to load")
+                exit()
+            br()
 
-        # Scrape Information on course_page
-        loginfo("Redirecting to Course Page")
-        browser.get(self.link)
-        loginfo("Redirection successful")
+            br.text('Updating page source')
+            # Get the html
+            content = browser.page_source
+            loginfo("Fetched page url")
 
-        # Wait till the price div loads
-        try:
-            loginfo("Waiting for the entire page to load")
-            element_present = EC.presence_of_element_located(
-                (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
-            loginfo("Page loading complete")
-            WebDriverWait(browser, 25).until(element_present)
-        except TimeoutException:
-            print("Timed out waiting for page to load")
-            exit()
+            # Parse HTML
+            course_page = BeautifulSoup(content, "lxml")
+            loginfo("Parsing complete")
+            br()
 
-        # Get the html
-        content = browser.page_source
-        loginfo("Fetched page url")
+            br.text('Extracting Course Information')
+            # Get content information
+            content_info = course_page.select(
+                'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
+            self.duration = content_info[2].replace(" total length", "")
+            loginfo("Course duration scraped")
 
-        # Parse HTML
-        course_page = BeautifulSoup(content, "lxml")
-        loginfo("Parsing complete")
+            self.no_of_lectures = int(content_info[1].replace(" lectures", ""))
+            loginfo("No of Lecutres scraped")
 
-        # Get content information
-        content_info = course_page.select(
-            'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
-        self.duration = content_info[2].replace(" total length", "")
-        loginfo("Course duration scraped")
+            self.no_of_sections = int(content_info[0].replace(
+                " sections", "").replace(" section", ""))
+            loginfo("Number Of Sections scraped")
+            br()
 
-        self.no_of_lectures = int(content_info[1].replace(" lectures", ""))
-        loginfo("No of Lecutres scraped")
+            br.text('Expanded Sections')
+            # check if the show more button for sections exists or not.
+            if self.no_of_sections > 10:
+                browser.execute_script(
+                    """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
+                loginfo(
+                    "Clicked show more button to reveal all the sections")
+            br()
 
-        self.no_of_sections = int(content_info[0].replace(
-            " sections", "").replace(" section", ""))
-        loginfo("Number Of Sections scraped")
+            br.text('Updating page source')
+            # Get the html
+            content = browser.page_source
+            loginfo("Updated page source with revealed sections")
+            browser.close()
+            loginfo("Browser Closed")
 
-        # check if the show more button for sections exists or not.
-        if self.no_of_sections > 10:
-            browser.execute_script(
-                """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
-            loginfo(
-                "Clicked show more button to reveal all the sections")
+            # Parse HTML
+            course_page = BeautifulSoup(content, "lxml")
+            loginfo("Page source parsed")
+            br()
 
-        # Get the html
-        content = browser.page_source
-        loginfo("Updated page source with revealed sections")
-        browser.close()
-        loginfo("Browser Closed")
+            br.text('Extracting course information')
+            # Get the title
+            self.title = course_page.select_one(
+                'h1[class*="udlite-heading-xl clp-lead__title clp-lead__title--small"]').text.replace("\n", "")
+            loginfo("Title Scraped")
+            br()
 
-        # Parse HTML
-        course_page = BeautifulSoup(content, "lxml")
-        loginfo("Page source parsed")
+            # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
+            self.headline = course_page.select_one(
+                "div[data-purpose='lead-headline']").text.replace("\n", "")
+            loginfo("Headline Scraped")
+            br()
 
-        # Get the title
-        self.title = course_page.select_one(
-            'h1[class*="udlite-heading-xl clp-lead__title clp-lead__title--small"]').text.replace("\n", "")
-        loginfo("Title Scraped")
+            clpblock_elements = course_page.select_one(
+                "div[class='clp-lead__badge-ratings-enrollment']")
 
-        # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
-        self.headline = course_page.select_one(
-            "div[data-purpose='lead-headline']").text.replace("\n", "")
-        loginfo("Headline Scraped")
 
-        clpblock_elements = course_page.select_one(
-            "div[class='clp-lead__badge-ratings-enrollment']")
-        loginfo("Step 1 done")
+            # Get the rating
+            self.rating = float(clpblock_elements.select_one(
+                'span[data-purpose="rating-number"]').text)
+            loginfo("Course rating scraped")
+            br()            
+            # Get number of ratings
+            self.no_of_ratings = int(clpblock_elements.select(
+                "span")[-1].text.replace("(", "").replace(" ratings)", "").replace(",", ""))
+            br()
+            # Get the number of students
+            self.student_enrolls = int(course_page.select_one(
+                'div[data-purpose="enrollment"]').text.replace(",", "").replace(" students", ""))
+            loginfo("Enrollments scraped")
+            br()
+            # Get the instructors name
+            self.instructors = []
+            instructors = course_page.select(
+                "a[class='udlite-btn udlite-btn-large udlite-btn-link udlite-heading-md udlite-text-sm udlite-instructor-links'] > span ")
+            if len(instructors) > 1:
+                for x in instructors:
+                    self.instructors.append(x.text)
+            else:
+                self.instructors = instructors[0].text
+            loginfo("Instructor name scraped")
+            br()
+            # Get breadcrumb tags
+            self.tags = []
+            for tag in course_page.select("div[class='topic-menu udlite-breadcrumb'] > a"):
+                self.tags.append(tag.text)
+            loginfo("Tags Scraped")
+            br()
+            # Get course price
+            self.price = float(course_page.select(
+                'div[class*="price-text--price-part--"] > span')[1].text.replace("\u20b9", ""))
+            loginfo("Price scraped")
+            br()
+            # Get course Language
+            self.language = course_page.select_one(
+                "div[class='clp-lead__element-item clp-lead__locale']").text.replace("\n", "")
+            loginfo("Language scraped")
+            br()
+            # Get the pointers present in "What you'll learn part"
+            self.objectives = []
+            for objective in course_page.select("span[class*='what-you-will-learn--objective-item--']"):
+                self.objectives.append(objective.text)
+            loginfo("Objectives scraped")
+            br()
+            # Get the requirements section
+            self.requirements = []
+            for requirement in course_page.select("div[class='ud-component--course-landing-page-udlite--requirements'] > div > ul > li > div > div"):
+                self.requirements.append(requirement.text)
+            loginfo("Requirements scraped")
+            br()
+            # Get the long description section. Each paragraph is concatenated to the description string separated by a "\n" or a new line.
+            self.description = course_page.select_one(
+                "div[data-purpose='course-description']").text
+            # loginfo("Description scraped")
+            br()
+            # Get the information in the target section section
+            self.target_audience = []
+            for a in course_page.select("div[data-purpose='target-audience'] > ul > li"):
+                self.target_audience.append(a.text)
+            loginfo("Target Audience text scraped")
+            br()
+            # Get the banner url of the course
+            # self.banner = str(course_page.select_one(
+            # ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
+            loginfo("Banner URL scraped")
+            br()
 
-        # Get the rating
-        self.rating = float(clpblock_elements.select_one(
-            'span[data-purpose="rating-number"]').text)
-        loginfo("Course rating scraped")
-
-        # Get number of ratings
-        self.no_of_ratings = int(clpblock_elements.select(
-            "span")[-1].text.replace("(", "").replace(" ratings)", "").replace(",", ""))
-
-        # Get the number of students
-        self.student_enrolls = int(course_page.select_one(
-            'div[data-purpose="enrollment"]').text.replace(",", "").replace(" students", ""))
-        loginfo("Enrollments scraped")
-
-        # Get the instructors name
-        self.instructors = []
-        instructors = course_page.select(
-            "a[class='udlite-btn udlite-btn-large udlite-btn-link udlite-heading-md udlite-text-sm udlite-instructor-links'] > span ")
-        if len(instructors) > 1:
-            for x in instructors:
-                self.instructors.append(x.text)
-        else:
-            self.instructors = instructors[0].text
-        loginfo("Instructor name scraped")
-
-        # Get breadcrumb tags
-        self.tags = []
-        for tag in course_page.select("div[class='topic-menu udlite-breadcrumb'] > a"):
-            self.tags.append(tag.text)
-        loginfo("Tags Scraped")
-
-        # Get course price
-        self.price = float(course_page.select(
-            'div[class*="price-text--price-part--"] > span')[1].text.replace("\u20b9", ""))
-        loginfo("Price scraped")
-
-        # Get course Language
-        self.language = course_page.select_one(
-            "div[class='clp-lead__element-item clp-lead__locale']").text.replace("\n", "")
-        loginfo("Language scraped")
-
-        # Get the pointers present in "What you'll learn part"
-        self.objectives = []
-        for objective in course_page.select("span[class*='what-you-will-learn--objective-item--']"):
-            self.objectives.append(objective.text)
-        loginfo("Objectives scraped")
-
-        # Get the requirements section
-        self.requirements = []
-        for requirement in course_page.select("div[class='ud-component--course-landing-page-udlite--requirements'] > div > ul > li > div > div"):
-            self.requirements.append(requirement.text)
-        loginfo("Requirements scraped")
-
-        # Get the long description section. Each paragraph is concatenated to the description string separated by a "\n" or a new line.
-        self.description = course_page.select_one(
-            "div[data-purpose='course-description']").text
-        # loginfo("Description scraped")
-
-        # Get the information in the target section section
-        self.target_audience = []
-        for a in course_page.select("div[data-purpose='target-audience'] > ul > li"):
-            self.target_audience.append(a.text)
-        loginfo("Target Audience text scraped")
-
-        # Get the banner url of the course
-        # self.banner = str(course_page.select_one(
-        # ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
-        loginfo("Banner URL scraped")
-
-        # This is the sections array which will contain Section classes
-        self.Sections = []
-        for section in course_page.select("div[class*='section--panel--']"):
-            self.Sections.append(Section(section))
+            # This is the sections array which will contain Section classes
+            self.Sections = []
+            br.text('Scraping Sections and Lessons')
+            for section in course_page.select("div[class*='section--panel--']"):
+                self.Sections.append(Section(section))
+            br()
 
 
 def course_to_dict(course):
