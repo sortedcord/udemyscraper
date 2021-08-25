@@ -16,8 +16,9 @@ import json
 import logging
 from logging import *
 import getopt
-import sys
+import sys, os
 from colorama import Fore, Style
+from pathlib import Path
 
 __version__ = "0.7.3"
 
@@ -82,7 +83,7 @@ Most Used Commands:
     -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
                         json.
     -e  --debug         Enable Debug Logging. Takes value as 'False', 'True', 'info' and 'debug'.
-                        Check this page for more info - https://www.digitalocean.com/community/tutorials/how-to-use-logging-in-python-3
+                        Check this page for more info - https://do.co/2WpLh8T
         --quiet         Disables the logo and the intro when running the `main.py` file.
     -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
                         quiet mode is disabled. 
@@ -154,6 +155,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
+        'dev' : False
     }):  # Set default preferences when none provided
         self.Preferences = Preferences
 
@@ -177,139 +179,203 @@ class UdemyCourse():
         except NameError:
             def br(message=None):
                 pass
-
         
-        # Get the url of the search query
-        url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
+        #Check if cache exists
+        if Preferences['dev'] == False or os.path.isfile('.udscraper_cache/query.txt') == False:
 
-        br('Launching Browser')
-        loginfo("Setting Up browser headers and preferences")
-        if self.Preferences['browser_preference'] == "CHROME":
-            # Browser Options
-            option = Options()
-            if self.Preferences['headless'] == True:
-                option.add_argument('headless')
-                loginfo("Headless enabled")
-            option.add_experimental_option(
-                'excludeSwitches', ['enable-logging'])
-            try:
-                browser = webdriver.Chrome(options=option)
-            except ValueError:
-                print(
-                    f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+            if Preferences['dev'] == True:
+                os.mkdir('.udscraper_cache')
+
+            # Get the url of the search query
+            url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
+            if Preferences['dev'] == True:
+                with open('.udscraper_cache/query.txt', 'w', encoding="utf-8") as file:
+                    file.write(query)
+
+            br('Launching Browser')
+            loginfo("Setting Up browser headers and preferences")
+            if self.Preferences['browser_preference'] == "CHROME":
+                # Browser Options
+                option = Options()
+                if self.Preferences['headless'] == True:
+                    option.add_argument('headless')
+                    loginfo("Headless enabled")
+                option.add_experimental_option(
+                    'excludeSwitches', ['enable-logging'])
+                try:
+                    browser = webdriver.Chrome(options=option)
+                except ValueError:
+                    print(
+                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+                br()
+
+            elif self.Preferences['browser_preference'] == "FIREFOX":
+                fireFoxOptions = webdriver.FirefoxOptions()
+                if self.Preferences['headless'] == True:
+                    loginfo("Headless enabled")
+                    fireFoxOptions.set_headless()
+                try:
+                    browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+                except WebDriverException:
+                    print("Geko driver not found. Make sure it is in your path")
+                    exit()
+                br()
+
+            br('Loading Udemy Search page')
+            loginfo(
+                "Redirecting to the searchpage")
+            browser.get(url)
             br()
 
-        elif self.Preferences['browser_preference'] == "FIREFOX":
-            fireFoxOptions = webdriver.FirefoxOptions()
-            if self.Preferences['headless'] == True:
-                loginfo("Headless enabled")
-                fireFoxOptions.set_headless()
+            br('Waiting for search results')
+            # Wait until the search box loads
             try:
-                browser = webdriver.Firefox(firefox_options=fireFoxOptions)
-            except WebDriverException:
-                print("Geko driver not found. Make sure it is in your path")
+                loginfo(
+                    "Waiting for the browser to load the search results. This depends on your network responsiveness")
+                element_present = EC.presence_of_element_located(
+                    (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
+                WebDriverWait(browser, 25).until(element_present)
+            except TimeoutException:
+                print(
+                    "Timed out waiting for page to load or could not find a matching course")
+                exit()
+            loginfo("Search results found")
+            br()
+
+            br('Extracting Page Source')
+            # Get page source
+            content = browser.page_source
+            if self.Preferences['dev'] == True:
+                with open('.udscraper_cache/search.html', 'w', encoding="utf-8") as file:
+                        file.write(content)
+            loginfo("Fetched page source")
+
+            #Parse HTML
+            search_page = BeautifulSoup(content, "lxml")
+            loginfo("Page source parsed")
+            br()
+
+            br('Getting Course Link')
+            # Get course link
+            self.link = 'https://udemy.com' + search_page.select_one(
+                'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
+            loginfo("Found course link")
+
+            # Scrape Information on course_page
+            loginfo("Redirecting to Course Page")
+            browser.get(self.link)
+            loginfo("Redirection successful")
+            br()
+
+            br('Waiting for course page to load')
+            # Wait till the price div loads
+            try:
+                loginfo("Waiting for the entire page to load")
+                element_present = EC.presence_of_element_located(
+                    (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
+                loginfo("Page loading complete")
+                WebDriverWait(browser, 25).until(element_present)
+            except TimeoutException:
+                print("Timed out waiting for page to load")
                 exit()
             br()
 
-        br('Loading Udemy Search page')
-        loginfo(
-            "Redirecting to the searchpage")
-        browser.get(url)
-        br()
+            br('Updating page source')
+            # Get the html
+            content = browser.page_source
+            loginfo("Fetched page url")
 
-        br('Waiting for search results')
-        # Wait until the search box loads
-        try:
-            loginfo(
-                "Waiting for the browser to load the search results. This depends on your network responsiveness")
-            element_present = EC.presence_of_element_located(
-                (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
-            WebDriverWait(browser, 25).until(element_present)
-        except TimeoutException:
-            print(
-                "Timed out waiting for page to load or could not find a matching course")
-            exit()
-        loginfo("Search results found")
-        br()
+            # Parse HTML
+            course_page = BeautifulSoup(content, "lxml")
+            loginfo("Parsing complete")
+            br()
 
-        br('Extracting Page Source')
-        # Get page source
-        content = browser.page_source
-        loginfo("Fetched page source")
-        search_page = BeautifulSoup(content, "lxml")
-        loginfo("Page source parsed")
-        br()
+            br('Extracting Course Information')
+            # Get content information
+            content_info = course_page.select(
+                'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
+            self.duration = content_info[2].replace(" total length", "")
+            loginfo("Course duration scraped")
 
-        br('Getting Course Link')
-        # Get course link
-        self.link = 'https://udemy.com' + search_page.select_one(
-            'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
-        loginfo("Found course link")
+            self.no_of_lectures = int(content_info[1].replace(" lectures", ""))
+            loginfo("No of Lecutres scraped")
 
-        # Scrape Information on course_page
-        loginfo("Redirecting to Course Page")
-        browser.get(self.link)
-        loginfo("Redirection successful")
-        br()
+            self.no_of_sections = int(content_info[0].replace(
+                " sections", "").replace(" section", ""))
+            loginfo("Number Of Sections scraped")
+            br()
 
-        br('Waiting for course page to load')
-        # Wait till the price div loads
-        try:
-            loginfo("Waiting for the entire page to load")
-            element_present = EC.presence_of_element_located(
-                (By.XPATH, "//div[starts-with(@class, 'price-text--container--')]"))
-            loginfo("Page loading complete")
-            WebDriverWait(browser, 25).until(element_present)
-        except TimeoutException:
-            print("Timed out waiting for page to load")
-            exit()
-        br()
+            br('Expanded Sections')
+            # check if the show more button for sections exists or not.
+            if self.no_of_sections > 10:
+                browser.execute_script(
+                    """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
+                loginfo(
+                    "Clicked show more button to reveal all the sections")
+            br()
 
-        br('Updating page source')
-        # Get the html
-        content = browser.page_source
-        loginfo("Fetched page url")
+            br('Updating page source')
+            # Get the html
+            content = browser.page_source
+            if self.Preferences['dev'] == True:
+                with open('.udscraper_cache/course.html', 'w', encoding="utf-8") as file:
+                    file.write(content)
 
-        # Parse HTML
-        course_page = BeautifulSoup(content, "lxml")
-        loginfo("Parsing complete")
-        br()
+            loginfo("Updated page source with revealed sections")
+            browser.close()
+            loginfo("Browser Closed")
 
-        br('Extracting Course Information')
-        # Get content information
-        content_info = course_page.select(
-            'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
-        self.duration = content_info[2].replace(" total length", "")
-        loginfo("Course duration scraped")
+            # Parse HTML
+            course_page = BeautifulSoup(content, "lxml")
+            loginfo("Page source parsed")
+            br()
+        
+        else:
+            br('Reading cached search page html')
+            with open('.udscraper_cache/search.html', encoding="utf-8") as f:
+                content = f.read()
+            br()
 
-        self.no_of_lectures = int(content_info[1].replace(" lectures", ""))
-        loginfo("No of Lecutres scraped")
+            #Parse HTML
+            br('Parsing HTML')
+            search_page = BeautifulSoup(content, "lxml")
+            loginfo("Page source parsed")
+            br()
 
-        self.no_of_sections = int(content_info[0].replace(
-            " sections", "").replace(" section", ""))
-        loginfo("Number Of Sections scraped")
-        br()
+            br('Getting Course Link')
+            # Get course link
+            self.link = 'https://udemy.com' + search_page.select_one(
+                'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
+            loginfo("Found course link")
+            br()
 
-        br('Expanded Sections')
-        # check if the show more button for sections exists or not.
-        if self.no_of_sections > 10:
-            browser.execute_script(
-                """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
-            loginfo(
-                "Clicked show more button to reveal all the sections")
-        br()
+            br('Reading cached course page html')
+            # Get the html
+            with open('.udscraper_cache/course.html', encoding="utf-8") as f:
+                content = f.read()
+            loginfo("Fetched page url")
+            br()
 
-        br('Updating page source')
-        # Get the html
-        content = browser.page_source
-        loginfo("Updated page source with revealed sections")
-        browser.close()
-        loginfo("Browser Closed")
+            # Parse HTML
+            course_page = BeautifulSoup(content, "lxml")
+            loginfo("Parsing complete")
+            br()
 
-        # Parse HTML
-        course_page = BeautifulSoup(content, "lxml")
-        loginfo("Page source parsed")
-        br()
+            br('Extracting Course Information')
+            # Get content information
+            content_info = course_page.select(
+                'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
+            self.duration = content_info[2].replace(" total length", "")
+            loginfo("Course duration scraped")
+
+            self.no_of_lectures = int(content_info[1].replace(" lectures", ""))
+            loginfo("No of Lecutres scraped")
+
+            self.no_of_sections = int(content_info[0].replace(
+                " sections", "").replace(" section", ""))
+            loginfo("Number Of Sections scraped")
+            br()
+            
 
         br('Extracting course information')
         # Get the title
@@ -496,6 +562,7 @@ if __name__ == "__main__":
         'quiet': False,
         'time': True,
         'progress': True,
+        'dev' : True
     }
 
     search_query = ""
