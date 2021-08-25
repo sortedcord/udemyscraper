@@ -1,6 +1,8 @@
 import time
 __starttime__ = time.time()
 
+from alive_progress import alive_bar
+
 # Selenium Libraries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # to wait until page loads
@@ -8,8 +10,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -18,12 +19,13 @@ import getopt
 import sys
 from colorama import Fore, Style
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
 
-def loginfo(message, level):
+def loginfo(message):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
+
 
 def quick_display(course):
     print("===================== Fetched Course =====================", "\n")
@@ -83,13 +85,16 @@ Most Used Commands:
                         Check this page for more info - https://www.digitalocean.com/community/tutorials/how-to-use-logging-in-python-3
         --quiet         Disables the logo and the intro when running the `main.py` file.
     -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
-                        quiet mode is disabled.   
+                        quiet mode is disabled. 
+        --progress      Toggle the progressbar. It is enabled by default when run as a script and disabled
+                        when quite mode is enabled.  
 """)
 
 # Section class will contain an array with lesson classes
+
+
 class Lesson():
     def __init__(self, lesson_html):
-
         # Since the structure of previewable
         # lessons is different from that of the
         # ones that are not:
@@ -129,10 +134,13 @@ class Section():
         loginfo('Scraped Section duration')
 
         self.Lessons = []
+
         for lesson in section_html.select("ul > li > div"):
             self.Lessons.append(Lesson(lesson))
             loginfo(
                 f"Lesson {len(self.Lessons)} scraped successfully")
+
+
         self.no_of_lessons = len(self.Lessons)
         self.duration = section_html.select_one(
             "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
@@ -146,7 +154,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-    }):
+    }):  # Set default preferences when none provided
         self.Preferences = Preferences
 
         if self.Preferences['warn'] == True:
@@ -158,9 +166,23 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
+        def br(message=None):
+            if message is None:
+                abar()
+            else:
+                abar.text(message)
+
+        try:
+            abar()
+        except NameError:
+            def br(message=None):
+                pass
+
+        
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 
+        br('Launching Browser')
         loginfo("Setting Up browser headers and preferences")
         if self.Preferences['browser_preference'] == "CHROME":
             # Browser Options
@@ -173,7 +195,9 @@ class UdemyCourse():
             try:
                 browser = webdriver.Chrome(options=option)
             except ValueError:
-                print(f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+                print(
+                    f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+            br()
 
         elif self.Preferences['browser_preference'] == "FIREFOX":
             fireFoxOptions = webdriver.FirefoxOptions()
@@ -185,11 +209,15 @@ class UdemyCourse():
             except WebDriverException:
                 print("Geko driver not found. Make sure it is in your path")
                 exit()
+            br()
 
+        br('Loading Udemy Search page')
         loginfo(
             "Redirecting to the searchpage")
         browser.get(url)
+        br()
 
+        br('Waiting for search results')
         # Wait until the search box loads
         try:
             loginfo(
@@ -202,14 +230,18 @@ class UdemyCourse():
                 "Timed out waiting for page to load or could not find a matching course")
             exit()
         loginfo("Search results found")
+        br()
 
+        br('Extracting Page Source')
         # Get page source
         content = browser.page_source
         loginfo("Fetched page source")
         search_page = BeautifulSoup(content, "lxml")
         loginfo("Page source parsed")
+        br()
 
-        # Get course basic metadata
+        br('Getting Course Link')
+        # Get course link
         self.link = 'https://udemy.com' + search_page.select_one(
             'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
         loginfo("Found course link")
@@ -218,7 +250,9 @@ class UdemyCourse():
         loginfo("Redirecting to Course Page")
         browser.get(self.link)
         loginfo("Redirection successful")
+        br()
 
+        br('Waiting for course page to load')
         # Wait till the price div loads
         try:
             loginfo("Waiting for the entire page to load")
@@ -229,7 +263,9 @@ class UdemyCourse():
         except TimeoutException:
             print("Timed out waiting for page to load")
             exit()
+        br()
 
+        br('Updating page source')
         # Get the html
         content = browser.page_source
         loginfo("Fetched page url")
@@ -237,7 +273,9 @@ class UdemyCourse():
         # Parse HTML
         course_page = BeautifulSoup(content, "lxml")
         loginfo("Parsing complete")
+        br()
 
+        br('Extracting Course Information')
         # Get content information
         content_info = course_page.select(
             'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
@@ -250,14 +288,18 @@ class UdemyCourse():
         self.no_of_sections = int(content_info[0].replace(
             " sections", "").replace(" section", ""))
         loginfo("Number Of Sections scraped")
+        br()
 
+        br('Expanded Sections')
         # check if the show more button for sections exists or not.
         if self.no_of_sections > 10:
             browser.execute_script(
                 """var element = document.querySelector('[data-purpose="show-more"]'); element.click();""")
             loginfo(
                 "Clicked show more button to reveal all the sections")
+        br()
 
+        br('Updating page source')
         # Get the html
         content = browser.page_source
         loginfo("Updated page source with revealed sections")
@@ -267,35 +309,38 @@ class UdemyCourse():
         # Parse HTML
         course_page = BeautifulSoup(content, "lxml")
         loginfo("Page source parsed")
+        br()
 
+        br('Extracting course information')
         # Get the title
         self.title = course_page.select_one(
             'h1[class*="udlite-heading-xl clp-lead__title clp-lead__title--small"]').text.replace("\n", "")
         loginfo("Title Scraped")
+        br()
 
         # Get the headline text. (Kind of like the subtitle which is usually displayed under the tite on the course page)
         self.headline = course_page.select_one(
             "div[data-purpose='lead-headline']").text.replace("\n", "")
         loginfo("Headline Scraped")
+        br()
 
         clpblock_elements = course_page.select_one(
             "div[class='clp-lead__badge-ratings-enrollment']")
-        loginfo("Step 1 done")
 
         # Get the rating
         self.rating = float(clpblock_elements.select_one(
             'span[data-purpose="rating-number"]').text)
         loginfo("Course rating scraped")
-
+        br()
         # Get number of ratings
         self.no_of_ratings = int(clpblock_elements.select(
             "span")[-1].text.replace("(", "").replace(" ratings)", "").replace(",", ""))
-
+        br()
         # Get the number of students
         self.student_enrolls = int(course_page.select_one(
             'div[data-purpose="enrollment"]').text.replace(",", "").replace(" students", ""))
         loginfo("Enrollments scraped")
-
+        br()
         # Get the instructors name
         self.instructors = []
         instructors = course_page.select(
@@ -306,55 +351,60 @@ class UdemyCourse():
         else:
             self.instructors = instructors[0].text
         loginfo("Instructor name scraped")
-
+        br()
         # Get breadcrumb tags
         self.tags = []
         for tag in course_page.select("div[class='topic-menu udlite-breadcrumb'] > a"):
             self.tags.append(tag.text)
         loginfo("Tags Scraped")
-
+        br()
         # Get course price
         self.price = float(course_page.select(
             'div[class*="price-text--price-part--"] > span')[1].text.replace("\u20b9", ""))
         loginfo("Price scraped")
-
+        br()
         # Get course Language
         self.language = course_page.select_one(
             "div[class='clp-lead__element-item clp-lead__locale']").text.replace("\n", "")
         loginfo("Language scraped")
-
+        br()
         # Get the pointers present in "What you'll learn part"
         self.objectives = []
         for objective in course_page.select("span[class*='what-you-will-learn--objective-item--']"):
             self.objectives.append(objective.text)
         loginfo("Objectives scraped")
-
+        br()
         # Get the requirements section
         self.requirements = []
         for requirement in course_page.select("div[class='ud-component--course-landing-page-udlite--requirements'] > div > ul > li > div > div"):
             self.requirements.append(requirement.text)
         loginfo("Requirements scraped")
-
+        br()
         # Get the long description section. Each paragraph is concatenated to the description string separated by a "\n" or a new line.
         self.description = course_page.select_one(
             "div[data-purpose='course-description']").text
         # loginfo("Description scraped")
-
+        br()
         # Get the information in the target section section
         self.target_audience = []
         for a in course_page.select("div[data-purpose='target-audience'] > ul > li"):
             self.target_audience.append(a.text)
         loginfo("Target Audience text scraped")
-
+        br()
         # Get the banner url of the course
         # self.banner = str(course_page.select_one(
         # ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
         loginfo("Banner URL scraped")
+        br()
 
         # This is the sections array which will contain Section classes
         self.Sections = []
+        br('Scraping Sections and Lessons')
         for section in course_page.select("div[class*='section--panel--']"):
+            br(f'Scraping Section {len(self.Sections)+1}')
             self.Sections.append(Section(section))
+            br()
+        br()
 
 
 def course_to_dict(course):
@@ -433,7 +483,7 @@ if __name__ == "__main__":
 
     # Long options
     long_options = ["help", "version", "no-warn",
-                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time"]
+                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time", "progress"]
 
     # Tool Defaults
     Preferences = {
@@ -445,6 +495,7 @@ if __name__ == "__main__":
         'debug': False,
         'quiet': False,
         'time': True,
+        'progress': True,
     }
 
     search_query = ""
@@ -523,10 +574,18 @@ if __name__ == "__main__":
             # Enable quiet mode
             elif currentArgument in ("--quiet"):
                 Preferences['quiet'] = True
+                Preferences['progress'] = False
 
             # Disable time taken
             elif currentArgument in ("-t", "--time"):
                 Preferences['time'] = False
+            
+            # Toggle Progressbar
+            elif currentArgument in ("--progress"):
+                if currentValue.lower() == "true":
+                    Preferences['progress'] = True
+                if currentValue.lower() == "false":
+                    Preferences['progress'] = False
 
     except getopt.error as err:
         # output error, and return with an error code
@@ -551,7 +610,12 @@ if __name__ == "__main__":
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
     course = UdemyCourse(Preferences)
-    course.fetch_course(search_query,)
+
+    if Preferences['quiet'] == False or Preferences['progress'] == True:
+        with alive_bar(title="Scraping Course", bar="smooth") as abar:
+            course.fetch_course(search_query,)
+    else:
+        course.fetch_course(search_query,)
 
     if Preferences['dump_format'] != None:
         if Preferences['dump_format'] == 'json':
