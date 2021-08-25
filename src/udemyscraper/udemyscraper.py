@@ -22,11 +22,10 @@ from colorama import Fore, Style
 __version__ = "0.7.3"
 
 
-
-
 def loginfo(message):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()-__starttime__) + '  ' + message)
+
 
 def quick_display(course):
     print("===================== Fetched Course =====================", "\n")
@@ -86,10 +85,14 @@ Most Used Commands:
                         Check this page for more info - https://www.digitalocean.com/community/tutorials/how-to-use-logging-in-python-3
         --quiet         Disables the logo and the intro when running the `main.py` file.
     -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
-                        quiet mode is disabled.   
+                        quiet mode is disabled. 
+        --progress      Toggle the progressbar. It is enabled by default when run as a script and disabled
+                        when quite mode is enabled.  
 """)
 
 # Section class will contain an array with lesson classes
+
+
 class Lesson():
     def __init__(self, lesson_html):
         # Since the structure of previewable
@@ -131,7 +134,7 @@ class Section():
         loginfo('Scraped Section duration')
 
         self.Lessons = []
-       
+
         for lesson in section_html.select("ul > li > div"):
             self.Lessons.append(Lesson(lesson))
             loginfo(
@@ -150,7 +153,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-    }): # Set default preferences when none provided
+    }):  # Set default preferences when none provided
         self.Preferences = Preferences
 
         if self.Preferences['warn'] == True:
@@ -173,7 +176,6 @@ class UdemyCourse():
         except NameError:
             def br(message=None):
                 pass
-        
 
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
@@ -191,7 +193,8 @@ class UdemyCourse():
             try:
                 browser = webdriver.Chrome(options=option)
             except ValueError:
-                print(f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+                print(
+                    f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
             br()
 
         elif self.Preferences['browser_preference'] == "FIREFOX":
@@ -322,12 +325,11 @@ class UdemyCourse():
         clpblock_elements = course_page.select_one(
             "div[class='clp-lead__badge-ratings-enrollment']")
 
-
         # Get the rating
         self.rating = float(clpblock_elements.select_one(
             'span[data-purpose="rating-number"]').text)
         loginfo("Course rating scraped")
-        br()            
+        br()
         # Get number of ratings
         self.no_of_ratings = int(clpblock_elements.select(
             "span")[-1].text.replace("(", "").replace(" ratings)", "").replace(",", ""))
@@ -477,7 +479,7 @@ if __name__ == "__main__":
 
     # Long options
     long_options = ["help", "version", "no-warn",
-                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time"]
+                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time", "progress"]
 
     # Tool Defaults
     Preferences = {
@@ -489,6 +491,7 @@ if __name__ == "__main__":
         'debug': False,
         'quiet': False,
         'time': True,
+        'progress': True,
     }
 
     search_query = ""
@@ -567,10 +570,18 @@ if __name__ == "__main__":
             # Enable quiet mode
             elif currentArgument in ("--quiet"):
                 Preferences['quiet'] = True
+                Preferences['progress'] = False
 
             # Disable time taken
             elif currentArgument in ("-t", "--time"):
                 Preferences['time'] = False
+            
+            # Toggle Progressbar
+            elif currentArgument in ("--progress"):
+                if currentValue.lower() == "true":
+                    Preferences['progress'] = True
+                if currentValue.lower() == "false":
+                    Preferences['progress'] = False
 
     except getopt.error as err:
         # output error, and return with an error code
@@ -596,13 +607,12 @@ if __name__ == "__main__":
             print(f"Search with query: {search_query}")
     course = UdemyCourse(Preferences)
 
-    if Preferences['quiet'] == False:
+    if Preferences['quiet'] == False or Preferences['progress'] == True:
         with alive_bar(title="Scraping Course", bar="smooth") as abar:
             course.fetch_course(search_query,)
     else:
-            course.fetch_course(search_query,) 
-        
-    
+        course.fetch_course(search_query,)
+
     if Preferences['dump_format'] != None:
         if Preferences['dump_format'] == 'json':
             course_to_json(course, Preferences['output_file'])
