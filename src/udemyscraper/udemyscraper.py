@@ -139,7 +139,8 @@ class Section():
             self.Lessons.append(Lesson(lesson))
             loginfo(
                 f"Lesson {len(self.Lessons)} scraped successfully")
-            # bar()
+
+
         self.no_of_lessons = len(self.Lessons)
         self.duration = section_html.select_one(
             "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
@@ -177,6 +178,7 @@ class UdemyCourse():
             def br(message=None):
                 pass
 
+        
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 
@@ -399,7 +401,9 @@ class UdemyCourse():
         self.Sections = []
         br('Scraping Sections and Lessons')
         for section in course_page.select("div[class*='section--panel--']"):
+            br(f'Scraping Section {len(self.Sections)+1}')
             self.Sections.append(Section(section))
+            br()
         br()
 
 
