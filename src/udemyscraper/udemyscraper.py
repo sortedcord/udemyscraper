@@ -19,8 +19,9 @@ import getopt
 import sys, os
 from colorama import Fore, Style
 from pathlib import Path
+import shutil
 
-__version__ = "0.7.3"
+__version__ = "0.7.4"
 
 
 def loginfo(message):
@@ -180,13 +181,20 @@ class UdemyCourse():
             def br(message=None):
                 pass
         
-        #  If cache is set to clear
-        if Preferences['cache'] == 'clear':
-            os.rmdir('.udscraper_cache/')
+        cache_file = os.path.isfile('.udscraper_cache/query.txt')
+        if Preferences['cache'] == True and cache_file:
+            with open('.udscraper_cache/query.txt') as query_file:
+                old_query = query_file.read()
+            if query != str(old_query):
+                shutil.rmtree('.udscraper_cache/')
+                Preferences['cache'] == True
+                cache_file = os.path.isfile('.udscraper_cache/query.txt')
 
-        
         #Check if cache exists
-        if Preferences['cache'] == False or os.path.isfile('.udscraper_cache/query.txt') == False:
+        if Preferences['cache'] == False or Preferences['cache'] == 'clear' or (Preferences['cache'] == True and cache_file == False):
+            if Preferences['cache'] == 'clear':
+                shutil.rmtree('.udscraper_cache/')
+                Preferences['cache'] == True
 
             if Preferences['cache'] == True:
                 os.mkdir('.udscraper_cache')
@@ -335,7 +343,7 @@ class UdemyCourse():
             loginfo("Page source parsed")
             br()
         
-        else:
+        elif self.Preferences['cache'] == True and os.path.isfile('.udscraper_cache/query.txt'):
             br('Reading cached search page html')
             with open('.udscraper_cache/search.html', encoding="utf-8") as f:
                 content = f.read()
@@ -544,7 +552,6 @@ S:::::::::::::::SS   cc:::::::::::::::c r:::::r           i::::::ip:::::::::::::
 
 # When evoked directly
 if __name__ == "__main__":
-
     # Remove 1st argument from the
     # list of command line arguments
     argumentList = sys.argv[1:]
@@ -575,8 +582,6 @@ if __name__ == "__main__":
     try:
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
-        print(arguments, values)
-
         # checking each argument
         for currentArgument, currentValue in arguments:
 
