@@ -155,7 +155,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-        'dev' : False
+        'cache' : False
     }):  # Set default preferences when none provided
         self.Preferences = Preferences
 
@@ -180,15 +180,20 @@ class UdemyCourse():
             def br(message=None):
                 pass
         
-        #Check if cache exists
-        if Preferences['dev'] == False or os.path.isfile('.udscraper_cache/query.txt') == False:
+        #  If cache is set to clear
+        if Preferences['cache'] == 'clear':
+            os.rmdir('.udscraper_cache/')
 
-            if Preferences['dev'] == True:
+        
+        #Check if cache exists
+        if Preferences['cache'] == False or os.path.isfile('.udscraper_cache/query.txt') == False:
+
+            if Preferences['cache'] == True:
                 os.mkdir('.udscraper_cache')
 
             # Get the url of the search query
             url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
-            if Preferences['dev'] == True:
+            if Preferences['cache'] == True:
                 with open('.udscraper_cache/query.txt', 'w', encoding="utf-8") as file:
                     file.write(query)
 
@@ -245,7 +250,7 @@ class UdemyCourse():
             br('Extracting Page Source')
             # Get page source
             content = browser.page_source
-            if self.Preferences['dev'] == True:
+            if self.Preferences['cache'] == True:
                 with open('.udscraper_cache/search.html', 'w', encoding="utf-8") as file:
                         file.write(content)
             loginfo("Fetched page source")
@@ -317,7 +322,7 @@ class UdemyCourse():
             br('Updating page source')
             # Get the html
             content = browser.page_source
-            if self.Preferences['dev'] == True:
+            if self.Preferences['cache'] == True:
                 with open('.udscraper_cache/course.html', 'w', encoding="utf-8") as file:
                     file.write(content)
 
@@ -545,11 +550,11 @@ if __name__ == "__main__":
     argumentList = sys.argv[1:]
 
     # Options
-    options = "hvnq:b:l:d:o:e:t"
+    options = "hvnq:b:l:d:o:e:tc:"
 
     # Long options
     long_options = ["help", "version", "no-warn",
-                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time", "progress"]
+                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time", "progress", "cache"]
 
     # Tool Defaults
     Preferences = {
@@ -562,7 +567,7 @@ if __name__ == "__main__":
         'quiet': False,
         'time': True,
         'progress': True,
-        'dev' : True
+        'cache' : False
     }
 
     search_query = ""
@@ -653,6 +658,13 @@ if __name__ == "__main__":
                     Preferences['progress'] = True
                 if currentValue.lower() == "false":
                     Preferences['progress'] = False
+            
+            # Enable cache
+            elif currentArgument in ("-c", "--cache"):
+                if currentValue == "":
+                    Preferences['cache'] = True
+                elif currentValue.lower == "clear":
+                    Preferences['cache'] = 'clear'
 
     except getopt.error as err:
         # output error, and return with an error code
