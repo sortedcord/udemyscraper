@@ -41,6 +41,7 @@ def quick_display(course):
 
 
 def display_warn():
+    loginfo("Displaying warning")
     print("""
 Thank You for using udemyscraper
 
@@ -58,6 +59,7 @@ Happy Scraping!
 
 
 def display_help():
+    loginfo("Displaying help")
     print(f"""
 udemyscraper {__version__} (cli)
 Usage: udemyscraper.py [options] command
@@ -169,6 +171,8 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
+        loginfo("Setting Dummy Functions for Bar")
+        loginfo("")
         def br(message=None):
             if message is None:
                 abar()
@@ -178,32 +182,50 @@ class UdemyCourse():
         try:
             abar()
         except NameError:
+            loginfo("Alive bar is not being used")
             def br(message=None):
                 pass
         
+        loginfo("Searching for cache file")
         cache_file = os.path.isfile('.udscraper_cache/query.txt')
+        br('Checking if Cache files exists')
         if Preferences['cache'] == True and cache_file:
+            loginfo("Cache files exists")
             with open('.udscraper_cache/query.txt') as query_file:
+                br('Reading Cache files')
+                loginfo("Reading cache files")
                 old_query = query_file.read()
             if query != str(old_query):
+                br('Flushing cache files as query is different')
+                loginfo("Deleting cache folder")
                 shutil.rmtree('.udscraper_cache/')
                 Preferences['cache'] == True
                 cache_file = os.path.isfile('.udscraper_cache/query.txt')
 
         #Check if cache exists
-        if Preferences['cache'] == False or Preferences['cache'] == 'clear' or (Preferences['cache'] == True and cache_file == False):
+        if Preferences['cache'] == 'clear' or Preferences['cache'] == False or (Preferences['cache'] == True and cache_file == False):
             if Preferences['cache'] == 'clear':
+                br('Flushing cache files')
                 shutil.rmtree('.udscraper_cache/')
+                loginfo("Cache folder deleted")
                 Preferences['cache'] == True
+                br()
+
 
             if Preferences['cache'] == True:
+                br('Created cache files')
                 os.mkdir('.udscraper_cache')
+                loginfo("Created cache folder")
+                br()
 
             # Get the url of the search query
             url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
             if Preferences['cache'] == True:
+                br('Dumping query text')
                 with open('.udscraper_cache/query.txt', 'w', encoding="utf-8") as file:
+                    loginfo("Writing query text file")
                     file.write(query)
+                br()
 
             br('Launching Browser')
             loginfo("Setting Up browser headers and preferences")
@@ -583,6 +605,8 @@ if __name__ == "__main__":
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
         # checking each argument
+        # print(arguments, values)
+        # exit()
         for currentArgument, currentValue in arguments:
 
             # Help argument
@@ -666,9 +690,10 @@ if __name__ == "__main__":
             
             # Enable cache
             elif currentArgument in ("-c", "--cache"):
-                if currentValue == "":
+                print(currentValue, currentValue, currentValue)
+                if str(currentValue) == "":
                     Preferences['cache'] = True
-                elif currentValue.lower == "clear":
+                elif str(currentValue) == "clear":
                     Preferences['cache'] = 'clear'
 
     except getopt.error as err:
