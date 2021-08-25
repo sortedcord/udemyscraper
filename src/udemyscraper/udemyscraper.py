@@ -10,8 +10,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -20,10 +19,10 @@ import getopt
 import sys
 from colorama import Fore, Style
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
-def dummyfunc():
-    pass
+
+
 
 def loginfo(message):
     # Logs the message along with the time taken from the start
@@ -93,7 +92,6 @@ Most Used Commands:
 # Section class will contain an array with lesson classes
 class Lesson():
     def __init__(self, lesson_html):
-
         # Since the structure of previewable
         # lessons is different from that of the
         # ones that are not:
@@ -164,10 +162,23 @@ class UdemyCourse():
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
+        def br(message=None):
+            if message is None:
+                abar()
+            else:
+                abar.text(message)
+
+        try:
+            abar()
+        except NameError:
+            def br(message=None):
+                pass
+        
+
         # Get the url of the search query
         url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
 
-        br.text('Launching Browser')
+        br('Launching Browser')
         loginfo("Setting Up browser headers and preferences")
         if self.Preferences['browser_preference'] == "CHROME":
             # Browser Options
@@ -195,13 +206,13 @@ class UdemyCourse():
                 exit()
             br()
 
-        br.text('Loading Udemy Search page')
+        br('Loading Udemy Search page')
         loginfo(
             "Redirecting to the searchpage")
         browser.get(url)
         br()
 
-        br.text('Waiting for search results')
+        br('Waiting for search results')
         # Wait until the search box loads
         try:
             loginfo(
@@ -216,7 +227,7 @@ class UdemyCourse():
         loginfo("Search results found")
         br()
 
-        br.text('Extracting Page Source')
+        br('Extracting Page Source')
         # Get page source
         content = browser.page_source
         loginfo("Fetched page source")
@@ -224,7 +235,7 @@ class UdemyCourse():
         loginfo("Page source parsed")
         br()
 
-        br.text('Getting Course Link')
+        br('Getting Course Link')
         # Get course link
         self.link = 'https://udemy.com' + search_page.select_one(
             'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
@@ -236,7 +247,7 @@ class UdemyCourse():
         loginfo("Redirection successful")
         br()
 
-        br.text('Waiting for course page to load')
+        br('Waiting for course page to load')
         # Wait till the price div loads
         try:
             loginfo("Waiting for the entire page to load")
@@ -249,7 +260,7 @@ class UdemyCourse():
             exit()
         br()
 
-        br.text('Updating page source')
+        br('Updating page source')
         # Get the html
         content = browser.page_source
         loginfo("Fetched page url")
@@ -259,7 +270,7 @@ class UdemyCourse():
         loginfo("Parsing complete")
         br()
 
-        br.text('Extracting Course Information')
+        br('Extracting Course Information')
         # Get content information
         content_info = course_page.select(
             'span[class*="curriculum--content-length-"]')[0].text.replace("\xa0", " ").split(" • ")
@@ -274,7 +285,7 @@ class UdemyCourse():
         loginfo("Number Of Sections scraped")
         br()
 
-        br.text('Expanded Sections')
+        br('Expanded Sections')
         # check if the show more button for sections exists or not.
         if self.no_of_sections > 10:
             browser.execute_script(
@@ -283,7 +294,7 @@ class UdemyCourse():
                 "Clicked show more button to reveal all the sections")
         br()
 
-        br.text('Updating page source')
+        br('Updating page source')
         # Get the html
         content = browser.page_source
         loginfo("Updated page source with revealed sections")
@@ -295,7 +306,7 @@ class UdemyCourse():
         loginfo("Page source parsed")
         br()
 
-        br.text('Extracting course information')
+        br('Extracting course information')
         # Get the title
         self.title = course_page.select_one(
             'h1[class*="udlite-heading-xl clp-lead__title clp-lead__title--small"]').text.replace("\n", "")
@@ -384,7 +395,7 @@ class UdemyCourse():
 
         # This is the sections array which will contain Section classes
         self.Sections = []
-        br.text('Scraping Sections and Lessons')
+        br('Scraping Sections and Lessons')
         for section in course_page.select("div[class*='section--panel--']"):
             self.Sections.append(Section(section))
         br()
@@ -584,9 +595,14 @@ if __name__ == "__main__":
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
     course = UdemyCourse(Preferences)
-    with alive_bar(title="Scraping Course", bar="smooth") as br:
-        course.fetch_course(search_query,)
 
+    if Preferences['quiet'] == False:
+        with alive_bar(title="Scraping Course", bar="smooth") as abar:
+            course.fetch_course(search_query,)
+    else:
+            course.fetch_course(search_query,) 
+        
+    
     if Preferences['dump_format'] != None:
         if Preferences['dump_format'] == 'json':
             course_to_json(course, Preferences['output_file'])
