@@ -16,7 +16,8 @@ import json
 import logging
 from logging import *
 import getopt
-import sys, os
+import sys
+import os
 from colorama import Fore, Style
 from pathlib import Path
 import shutil
@@ -144,7 +145,6 @@ class Section():
             loginfo(
                 f"Lesson {len(self.Lessons)} scraped successfully")
 
-
         self.no_of_lessons = len(self.Lessons)
         self.duration = section_html.select_one(
             "span[data-purpose='section-content']").text.split(" • ")[1].replace(" ", "")
@@ -158,7 +158,7 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-        'cache' : False
+        'cache': False
     }):  # Set default preferences when none provided
         self.Preferences = Preferences
 
@@ -173,6 +173,7 @@ class UdemyCourse():
     def fetch_course(self, query):
         loginfo("Setting Dummy Functions for Bar")
         loginfo("")
+
         def br(message=None):
             if message is None:
                 abar()
@@ -183,9 +184,10 @@ class UdemyCourse():
             abar()
         except NameError:
             loginfo("Alive bar is not being used")
+
             def br(message=None):
                 pass
-        
+
         loginfo("Searching for cache file")
         cache_file = os.path.isfile('.udscraper_cache/query.txt')
         br('Checking if Cache files exists')
@@ -202,7 +204,7 @@ class UdemyCourse():
                 Preferences['cache'] == True
                 cache_file = os.path.isfile('.udscraper_cache/query.txt')
 
-        #Check if cache exists
+        # Check if cache exists
         if Preferences['cache'] == 'clear' or Preferences['cache'] == False or (Preferences['cache'] == True and cache_file == False):
             if Preferences['cache'] == 'clear':
                 br('Flushing cache files')
@@ -210,7 +212,6 @@ class UdemyCourse():
                 loginfo("Cache folder deleted")
                 Preferences['cache'] == True
                 br()
-
 
             if Preferences['cache'] == True:
                 br('Created cache files')
@@ -282,10 +283,10 @@ class UdemyCourse():
             content = browser.page_source
             if self.Preferences['cache'] == True:
                 with open('.udscraper_cache/search.html', 'w', encoding="utf-8") as file:
-                        file.write(content)
+                    file.write(content)
             loginfo("Fetched page source")
 
-            #Parse HTML
+            # Parse HTML
             search_page = BeautifulSoup(content, "lxml")
             loginfo("Page source parsed")
             br()
@@ -364,14 +365,14 @@ class UdemyCourse():
             course_page = BeautifulSoup(content, "lxml")
             loginfo("Page source parsed")
             br()
-        
+
         elif self.Preferences['cache'] == True and os.path.isfile('.udscraper_cache/query.txt'):
             br('Reading cached search page html')
             with open('.udscraper_cache/search.html', encoding="utf-8") as f:
                 content = f.read()
             br()
 
-            #Parse HTML
+            # Parse HTML
             br('Parsing HTML')
             search_page = BeautifulSoup(content, "lxml")
             loginfo("Page source parsed")
@@ -410,7 +411,6 @@ class UdemyCourse():
                 " sections", "").replace(" section", ""))
             loginfo("Number Of Sections scraped")
             br()
-            
 
         br('Extracting course information')
         # Get the title
@@ -579,11 +579,13 @@ if __name__ == "__main__":
     argumentList = sys.argv[1:]
 
     # Options
-    options = "hvnq:b:l:d:o:e:tc:"
+    options = "q:hvnb:l:d:o:e:tc:"
 
     # Long options
-    long_options = ["help", "version", "no-warn",
-                    "query", "browser", "headless", "dump", "output", "debug", "quiet", "time", "progress", "cache"]
+    long_options = [
+        "query=", "help", "version", "no-warn", "browser=", "headless=", "dump=", 
+        "output=", "debug=", "quiet", "time=", "progress=", "cache="
+    ]
 
     # Tool Defaults
     Preferences = {
@@ -596,7 +598,7 @@ if __name__ == "__main__":
         'quiet': False,
         'time': True,
         'progress': True,
-        'cache' : False
+        'cache': False
     }
 
     search_query = ""
@@ -604,14 +606,15 @@ if __name__ == "__main__":
     try:
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
-        # checking each argument
         # print(arguments, values)
-        # exit()
+        # checking each argument
+
         for currentArgument, currentValue in arguments:
 
             # Help argument
             if currentArgument in ("-h", "--help"):
                 display_help()
+                exit()
 
             # Version argument
             elif currentArgument in ("-v", "--version"):
@@ -680,14 +683,14 @@ if __name__ == "__main__":
             # Disable time taken
             elif currentArgument in ("-t", "--time"):
                 Preferences['time'] = False
-            
+
             # Toggle Progressbar
             elif currentArgument in ("--progress"):
                 if currentValue.lower() == "true":
                     Preferences['progress'] = True
                 if currentValue.lower() == "false":
                     Preferences['progress'] = False
-            
+
             # Enable cache
             elif currentArgument in ("-c", "--cache"):
                 print(currentValue, currentValue, currentValue)
