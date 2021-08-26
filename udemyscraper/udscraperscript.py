@@ -45,8 +45,6 @@ def main():
     try:
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
-        print(arguments, values)
-        print(arguments, values)
         # checking each argument
 
         for currentArgument, currentValue in arguments:
@@ -133,7 +131,6 @@ def main():
 
             # Enable cache
             elif currentArgument in ("-c", "--cache"):
-                print(currentValue, currentValue, currentValue)
                 if str(currentValue) == "":
                     Preferences['cache'] = True
                 elif str(currentValue) == "clear":
