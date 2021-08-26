@@ -446,7 +446,7 @@ class UdemyCourse():
         br()
         # Get the banner url of the course
         self.banner = str(course_page.select_one(
-        ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
+        "span[class*='intro-asset--img-aspect--'] > img").attrs['src'].replace("240x135", "480x270"))
         loginfo("Banner URL scraped")
         br()
 
