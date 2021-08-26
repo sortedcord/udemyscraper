@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
 
+from udemyscraper.utils import *
+
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -41,64 +43,7 @@ def quick_display(course):
     print(f"{course.no_of_lectures} Lessons and {course.no_of_sections} Sections")
 
 
-def display_warn():
-    loginfo("Displaying warning")
-    print("""
-Thank You for using udemyscraper
-
-Before fetching the course information be sure that 
-you have google chrome >= 92.x.x installed on your machine. 
-Support for other chromium based browsers such as brave, edge, 
-opera, vivaldi, etc has not been implemented yet.
-
-This tool is only meant to be used for educational purposes. 
-Please do not abuse it as rate limits might still apply.
-
-Happy Scraping!
-~ Sortedcord
-""")
-
-
-def display_help():
-    loginfo("Displaying help")
-    print(f"""
-udemyscraper {__version__} (cli)
-Usage: udemyscraper.py [options] command
-
-udemyscraper is a free and open source tool, 
-that fetches udemy course information. Get udemy course 
-information and convert it to json, csv or xml file, 
-without authentication.
-
-Most Used Commands:
-
-    -h  --help          Displays information about udemyscraper and its usage
-    -v  --version       Displays the version of the tool
-    -n  --no-warn       Disables the warning when initializing the udemyscourse class
-    -q  --query         You can pass the search query directly. If the search query
-                        is of multiple words then be sure to enclose the entire string
-                        in quotes.
-    -b  --browser       Allows you to select the browser you would like to use for Scraping
-                        Values: "chrome" or "firefox". Defaults to chrome if no argument is passed.
-    -l  --headless      Can be used to disable/enable suppressing of the browser. Can be set to `true`
-                        or `false`. Defaults to `true` if no argument is passed.
-    -d  --dump          Dump the course object to the specified format. Available formats current 
-                        include `json`
-    -o  --output        Output the course object to the specified format. Deafults to 'output.json` for 
-                        json.
-    -e  --debug         Enable Debug Logging. Takes value as 'False', 'True', 'info' and 'debug'.
-                        Check this page for more info - https://do.co/2WpLh8T
-        --quiet         Disables the logo and the intro when running the `main.py` file.
-    -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
-                        quiet mode is disabled. 
-        --progress      Toggle the progressbar. It is enabled by default when run as a script and disabled
-                        when quite mode is enabled.
-    -c  --cache         Can have the value of true, false and clear.  
-""")
-
 # Section class will contain an array with lesson classes
-
-
 class Lesson():
     def __init__(self, lesson_html):
         # Since the structure of previewable
@@ -161,7 +106,13 @@ class UdemyCourse():
         'time': True,
         'cache': False
     }):  # Set default preferences when none provided
-        self.Preferences = Preferences
+        
+        default_values = [True, "CHROME", True, False, False, True, False]
+        default_keys = ['warn', 'browser_preference', 'headless', 'debug', 'quiet', 'time', 'cache']
+        for key in default_keys:
+            if key not in Preferences.keys():
+                Preferences[key] = default_values[default_keys.index(key)]      
+    
 
         if self.Preferences['warn'] == True:
             display_warn()
@@ -206,7 +157,7 @@ class UdemyCourse():
                 cache_file = os.path.isfile('.udscraper_cache/query.txt')
 
         # Check if cache exists
-        if self.Preferences['cache'] == 'clear' or self.Preferences['cache'] == False or (Preferences['cache'] == True and cache_file == False):
+        if self.Preferences['cache'] == 'clear' or self.Preferences['cache'] == False or (self.Preferences['cache'] == True and cache_file == False):
             if self.Preferences['cache'] == 'clear':
                 br('Flushing cache files')
                 shutil.rmtree('.udscraper_cache/')
@@ -507,238 +458,3 @@ class UdemyCourse():
             self.Sections.append(Section(section))
             br()
         br()
-
-
-def course_to_dict(course):
-    # Initialize a new Sections array which will contain coverted dictionaries instead of objects for json serialization
-    new_section_list = []
-
-    for section in course.Sections:
-        # Initialize a new lessons array which will contain coverted dictionaries instead of objects for every section
-        new_lesson_list = []
-
-        for lesson in section.Lessons:
-
-            dict = lesson.__dict__         # Convert the lesson object to a dictionary
-            new_lesson_list.append(dict)   # Add the dictionary to the new list
-
-        # Update the lessons object array with the new lessons dictionary array for this section
-        section.Lessons = new_lesson_list
-        section_dict = section.__dict__  # Convert the section into a dictionary
-
-        # Add the dictionary to the new list
-        new_section_list.append(section_dict)
-
-    # Update the sections object array with the new sections dictionary array
-    course.Sections = new_section_list
-    loginfo("Successfully parsed to a dicitonary")
-    # return the dictionary
-    return course.__dict__
-
-
-def course_to_json(course, output_file='output.json'):
-    # Convert the course to dictionary
-    course = course_to_dict(course)
-
-    # Dump the python object as a json in 'object.json' file. You can change this to whatever you want
-    with open(output_file, 'w') as file:
-        # Convert the course to dictionary and dump.
-        file.write(json.dumps(course))
-        loginfo(f"File course dumped as {output_file}")
-
-
-"""
-   SSSSSSSSSSSSSSS                                          iiii                              tttt
- SS:::::::::::::::S                                        i::::i                          ttt:::t
-S:::::SSSSSS::::::S                                         iiii                           t:::::t
-S:::::S     SSSSSSS                                                                        t:::::t
-S:::::S                ccccccccccccccccrrrrr   rrrrrrrrr  iiiiiiippppp   ppppppppp   ttttttt:::::ttttttt
-S:::::S              cc:::::::::::::::cr::::rrr:::::::::r i:::::ip::::ppp:::::::::p  t:::::::::::::::::t
- S::::SSSS          c:::::::::::::::::cr:::::::::::::::::r i::::ip:::::::::::::::::p t:::::::::::::::::t
-  SS::::::SSSSS    c:::::::cccccc:::::crr::::::rrrrr::::::ri::::ipp::::::ppppp::::::ptttttt:::::::tttttt
-    SSS::::::::SS  c::::::c     ccccccc r:::::r     r:::::ri::::i p:::::p     p:::::p      t:::::t
-       SSSSSS::::S c:::::c              r:::::r     rrrrrrri::::i p:::::p     p:::::p      t:::::t
-            S:::::Sc:::::c              r:::::r            i::::i p:::::p     p:::::p      t:::::t
-            S:::::Sc::::::c     ccccccc r:::::r            i::::i p:::::p    p::::::p      t:::::t    tttttt
-SSSSSSS     S:::::Sc:::::::cccccc:::::c r:::::r           i::::::ip:::::ppppp:::::::p      t::::::tttt:::::t
-S::::::SSSSSS:::::S c:::::::::::::::::c r:::::r           i::::::ip::::::::::::::::p       tt::::::::::::::t
-S:::::::::::::::SS   cc:::::::::::::::c r:::::r           i::::::ip::::::::::::::pp          tt:::::::::::tt
- SSSSSSSSSSSSSSS       cccccccccccccccc rrrrrrr           iiiiiiiip::::::pppppppp              ttttttttttt
-                                                                  p:::::p
-                                                                  p:::::p
-                                                                 p:::::::p
-                                                                 p:::::::p
-                                                                 p:::::::p
-                                                                 ppppppppp
-"""
-
-
-# When evoked directly
-if __name__ == "__main__":
-    # Remove 1st argument from the
-    # list of command line arguments
-    argumentList = sys.argv[1:]
-
-    # Options
-    options = "q:hvnb:l:d:o:e:tc:"
-
-    # Long options
-    long_options = [
-        "query=", "help", "version", "no-warn", "browser=", "headless=", "dump=", 
-        "output=", "debug=", "quiet", "time=", "progress=", "cache="
-    ]
-
-    # Tool Defaults
-    Preferences = {
-        'warn': True,
-        'browser_preference': "CHROME",
-        'headless': True,
-        'dump_format': None,
-        'output_file': "",
-        'debug': False,
-        'quiet': False,
-        'time': True,
-        'progress': True,
-        'cache': False
-    }
-
-    search_query = ""
-
-    try:
-        # Parsing argument
-        arguments, values = getopt.getopt(argumentList, options, long_options)
-        # print(arguments, values)
-        # checking each argument
-
-        for currentArgument, currentValue in arguments:
-
-            # Help argument
-            if currentArgument in ("-h", "--help"):
-                display_help()
-                exit()
-
-            # Version argument
-            elif currentArgument in ("-v", "--version"):
-                print(f"udemyscraper {__version__} (cli)", "\n")
-                exit()
-
-            # Disable warning
-            elif currentArgument in ("-n", "--no-warn"):
-                Preferences['warn'] = False
-
-            # Search query
-            elif currentArgument in ("-q", "--query"):
-                search_query = currentValue
-
-            # Select Browser
-            elif currentArgument in ("-b", "--browser"):
-                if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
-                    Preferences['browser_preference'] = "CHROME"
-                elif currentValue.lower() == "firefox":
-                    Preferences['browser_preference'] = "FIREFOX"
-
-            # Disable/Enable headless
-            elif currentArgument in ("-l", "--headless"):
-                if currentValue.lower() == "true":
-                    Preferences['headless'] = True
-                elif currentValue.lower() == "false":
-                    Preferences['headless'] = False
-                else:
-                    print(
-                        "\n", "headless takes either of the two values: True or False.")
-
-            # Select dump format
-            elif currentArgument in ("-d", "--dump"):
-                if currentValue.lower() == 'json':
-                    Preferences['dump_format'] = "json"
-                    Preferences['output_file'] = 'course.json'
-                elif currentValue.lower() == 'xml':
-                    Preferences['dump_format'] = "xml"
-                    Preferences['output_file'] = 'course.xml'
-                elif currentValue.lower() == 'csv':
-                    Preferences['dump_format'] = "csv"
-                    Preferences['output_file'] = 'course.csv'
-                else:
-                    print(currentValue, " is not a valid dump format.")
-
-            # Specify output file
-            elif currentArgument in ("-o", "--output"):
-                Preferences['output_file'] = currentValue
-
-            # Enable Debug Logging
-            elif currentArgument in ("-e", "--debug"):
-                if currentValue == True:
-                    Preferences['debug'] = True
-                elif currentValue == False:
-                    Preferences['debug'] = False
-                elif currentValue.lower == "info":
-                    Preferences['debug'] = "info"
-                elif currentValue.lower == "debug":
-                    Preferences['debug'] = True
-
-            # Enable quiet mode
-            elif currentArgument in ("--quiet"):
-                Preferences['quiet'] = True
-                Preferences['progress'] = False
-
-            # Disable time taken
-            elif currentArgument in ("-t", "--time"):
-                Preferences['time'] = False
-
-            # Toggle Progressbar
-            elif currentArgument in ("--progress"):
-                if currentValue.lower() == "true":
-                    Preferences['progress'] = True
-                if currentValue.lower() == "false":
-                    Preferences['progress'] = False
-
-            # Enable cache
-            elif currentArgument in ("-c", "--cache"):
-                print(currentValue, currentValue, currentValue)
-                if str(currentValue) == "":
-                    Preferences['cache'] = True
-                elif str(currentValue) == "clear":
-                    Preferences['cache'] = 'clear'
-
-    except getopt.error as err:
-        # output error, and return with an error code
-        print(str(err))
-
-    if Preferences['quiet'] == False:
-        print(Fore.MAGENTA + """
-██╗   ██╗██████╗ ███████╗███╗   ███╗██╗   ██╗    ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗
-██║   ██║██╔══██╗██╔════╝████╗ ████║╚██╗ ██╔╝    ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
-██║   ██║██║  ██║█████╗  ██╔████╔██║ ╚████╔╝     ███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝
-██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║  ╚██╔╝      ╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗
-╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║   ██║       ███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║  ██║
-╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝   ╚═╝       ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝""")
-        print(Style.RESET_ALL)
-
-        print(f"Version: {__version__}")
-        print(f"Using Preferences: {Preferences}")
-
-    if search_query == "":
-        search_query = input("Enter the search query: ")
-    else:
-        if Preferences['quiet'] == False:
-            print(f"Search with query: {search_query}")
-    course = UdemyCourse(Preferences)
-
-    if Preferences['quiet'] == False or Preferences['progress'] == True:
-        with alive_bar(title="Scraping Course", bar="smooth") as abar:
-            course.fetch_course(search_query,)
-    else:
-        course.fetch_course(search_query,)
-
-    if Preferences['dump_format'] != None:
-        if Preferences['dump_format'] == 'json':
-            course_to_json(course, Preferences['output_file'])
-        elif Preferences['dump_format'] == 'csv':
-            print("\n", "WARN: 'CSV' dump format is currently not supported.")
-        elif Preferences['dump_format'] == 'xml':
-            print("\n", "WARN: 'XML' dump format is currently not supported.")
-    else:
-        quick_display(course)
-
-    if Preferences['quiet'] == False or Preferences['time'] == True:
-        print('It took', time.time()-__starttime__, 'seconds.')
