@@ -122,23 +122,18 @@ class UdemyCourse():
         elif self.Preferences['debug'] == "info":
             logging.basicConfig(level=logging.INFO)
 
-    def fetch_course(self, query):
+    def fetch_course(self, query, abar=None):
         loginfo("Setting Dummy Functions for Bar")
         loginfo("")
 
-        def br(message=None):
-            if message is None:
-                abar()
-            else:
-                abar.text(message)
-
-        try:
-            abar()
-        except NameError:
-            loginfo("Alive bar is not being used")
-
-            def br(message=None):
-                pass
+        def br(message=""):
+            try:
+                if message=="":
+                    abar()
+                else:
+                    abar.text(message)
+            except:
+                print("Alive bar is not being used")
 
         loginfo("Searching for cache file")
         cache_file = os.path.isfile('.udscraper_cache/query.txt')

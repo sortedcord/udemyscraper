@@ -46,7 +46,7 @@ def main():
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
         print(arguments, values)
-        # print(arguments, values)
+        print(arguments, values)
         # checking each argument
 
         for currentArgument, currentValue in arguments:
@@ -106,9 +106,9 @@ def main():
 
             # Enable Debug Logging
             elif currentArgument in ("-e", "--debug"):
-                if currentValue == True:
+                if currentValue.lower == "true":
                     Preferences['debug'] = True
-                elif currentValue == False:
+                elif currentValue.lower == "false":
                     Preferences['debug'] = False
                 elif currentValue.lower == "info":
                     Preferences['debug'] = "info"
@@ -166,7 +166,7 @@ def main():
 
     if Preferences['quiet'] == False or Preferences['progress'] == True:
         with alive_bar(title="Scraping Course", bar="smooth") as abar:
-            course.fetch_course(search_query,)
+            course.fetch_course(search_query, abar)
     else:
 
         course.fetch_course(search_query,)

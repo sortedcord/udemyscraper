@@ -134,3 +134,4 @@ docs/InstalIer3.rar
 # Udemyscraper cache
 src\udemyscraper\.udscraper_cache
 .udscraper_cache
+test.py
