@@ -166,9 +166,9 @@ class UdemyCourse():
         if self.Preferences['warn'] == True:
             display_warn()
 
-        if Preferences['debug'] == True:
+        if self.Preferences['debug'] == True:
             logging.basicConfig(level=logging.DEBUG)
-        elif Preferences['debug'] == "info":
+        elif self.Preferences['debug'] == "info":
             logging.basicConfig(level=logging.INFO)
 
     def fetch_course(self, query):
@@ -192,7 +192,7 @@ class UdemyCourse():
         loginfo("Searching for cache file")
         cache_file = os.path.isfile('.udscraper_cache/query.txt')
         br('Checking if Cache files exists')
-        if Preferences['cache'] == True and cache_file:
+        if self.Preferences['cache'] == True and cache_file:
             loginfo("Cache files exists")
             with open('.udscraper_cache/query.txt') as query_file:
                 br('Reading Cache files')
@@ -202,19 +202,19 @@ class UdemyCourse():
                 br('Flushing cache files as query is different')
                 loginfo("Deleting cache folder")
                 shutil.rmtree('.udscraper_cache/')
-                Preferences['cache'] == True
+                self.Preferences['cache'] == True
                 cache_file = os.path.isfile('.udscraper_cache/query.txt')
 
         # Check if cache exists
-        if Preferences['cache'] == 'clear' or Preferences['cache'] == False or (Preferences['cache'] == True and cache_file == False):
-            if Preferences['cache'] == 'clear':
+        if self.Preferences['cache'] == 'clear' or self.Preferences['cache'] == False or (Preferences['cache'] == True and cache_file == False):
+            if self.Preferences['cache'] == 'clear':
                 br('Flushing cache files')
                 shutil.rmtree('.udscraper_cache/')
                 loginfo("Cache folder deleted")
-                Preferences['cache'] == True
+                self.Preferences['cache'] == True
                 br()
 
-            if Preferences['cache'] == True:
+            if self.Preferences['cache'] == True:
                 br('Created cache files')
                 os.mkdir('.udscraper_cache')
                 loginfo("Created cache folder")
@@ -222,7 +222,7 @@ class UdemyCourse():
 
             # Get the url of the search query
             url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
-            if Preferences['cache'] == True:
+            if self.Preferences['cache'] == True:
                 br('Dumping query text')
                 with open('.udscraper_cache/query.txt', 'w', encoding="utf-8") as file:
                     loginfo("Writing query text file")
