@@ -65,7 +65,7 @@ def display_help():
 udemyscraper {__version__} (cli)
 Usage: udemyscraper.py [options] command
 
-udemyscraper is a free and open source tool beautiful soup, 
+udemyscraper is a free and open source tool, 
 that fetches udemy course information. Get udemy course 
 information and convert it to json, csv or xml file, 
 without authentication.
@@ -92,7 +92,8 @@ Most Used Commands:
     -t  --time          Displays the time taken for the entire script to run. Is enabled by default when
                         quiet mode is disabled. 
         --progress      Toggle the progressbar. It is enabled by default when run as a script and disabled
-                        when quite mode is enabled.  
+                        when quite mode is enabled.
+    -c  --cache         Can have the value of true, false and clear.  
 """)
 
 # Section class will contain an array with lesson classes
