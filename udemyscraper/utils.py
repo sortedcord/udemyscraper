@@ -31,7 +31,7 @@ def display_help():
     loginfo("Displaying help")
     print(f"""
 udemyscraper {__version__} (cli)
-Usage: udemyscraper.py [options] command
+Usage: udemyscraper [options] command
 
 udemyscraper is a free and open source tool, 
 that fetches udemy course information. Get udemy course 

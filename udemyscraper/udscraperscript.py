@@ -7,7 +7,7 @@ import sys
 from colorama import Fore, Style
 from udemyscraper.output import *
 
-from udemyscraper import UdemyCourse
+from udemyscraper import *
 from udemyscraper.metadata import __version__
 from udemyscraper.utils import display_help
 
@@ -45,6 +45,7 @@ def main():
     try:
         # Parsing argument
         arguments, values = getopt.getopt(argumentList, options, long_options)
+        print(arguments, values)
         # print(arguments, values)
         # checking each argument
 
@@ -160,12 +161,14 @@ def main():
     else:
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
+    print(Preferences)
     course = UdemyCourse(Preferences)
 
     if Preferences['quiet'] == False or Preferences['progress'] == True:
         with alive_bar(title="Scraping Course", bar="smooth") as abar:
             course.fetch_course(search_query,)
     else:
+
         course.fetch_course(search_query,)
 
     if Preferences['dump_format'] != None:

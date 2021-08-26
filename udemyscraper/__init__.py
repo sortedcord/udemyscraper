@@ -113,7 +113,7 @@ class UdemyCourse():
             if key not in Preferences.keys():
                 Preferences[key] = default_values[default_keys.index(key)]      
     
-
+        self.Preferences = Preferences
         if self.Preferences['warn'] == True:
             display_warn()
 
@@ -445,8 +445,8 @@ class UdemyCourse():
         loginfo("Target Audience text scraped")
         br()
         # Get the banner url of the course
-        # self.banner = str(course_page.select_one(
-        # ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
+        self.banner = str(course_page.select_one(
+        ["div[class*='intro-asset--img-'] > img"]).attrs['src'].replace("240x135", "480x270"))
         loginfo("Banner URL scraped")
         br()
 
