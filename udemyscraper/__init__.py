@@ -133,7 +133,7 @@ class UdemyCourse():
                 else:
                     abar.text(message)
             except:
-                print("Alive bar is not being used")
+                loginfo("Alive bar is not being used")
 
         loginfo("Searching for cache file")
         cache_file = os.path.isfile('.udscraper_cache/query.txt')

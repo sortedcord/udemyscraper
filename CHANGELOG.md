@@ -5,6 +5,31 @@ All notable changes to udemyscraper will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Beta 0.8.0] - Unreleased
+
+### Added
+-  #### **Udemyscraper** can now export multiple courses to csv files!
+  - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
+
+
+### Changes
+- #### **Udemyscraper.py** has been refractured into 5 different files:
+  - `__init__.py` - Contains the code which will run when imported as a library
+  - `metadata.py` - Contains metadata of the package such as the name, version, author, etc. Used by setup.py
+  - `output.py`   - Contains functions for outputting the course information.
+  - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
+  - `utils.py` - Contains utility related functions for udemyscraper.
+  
+
+- #### Now using `setup.py` instead of `setup.cfg`
+- #### Deleted `src` folder which is now replaced by `udemyscraper` folder which is the source directory for all the modules
+- ### **Installation Process**
+  #### Since udemyscraper is now to be used as a package, it is obvious that the installation process has also had major changes.
+
+  Installation process is documented [here](readme.md/#Installation) 
+  
+### Fixed
+- Fixed cache argument bug.
 
 ## [0.7.4] - 2021-08-25
 

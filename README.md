@@ -67,18 +67,18 @@ course.fetch_course()
 
 ## As a Script
 
-In case you do not wish to use the module in your own python file but you just need to dump the data, `udemyscraper.py` file can be directly invoked and can also be executed along with a variety of arguments and options.
+In case you do not wish to use the module in your own python file but you just need to dump the data, udemyscraper can be directly invoked along with a variety of arguments and options.
 
-You can do so by running the udemyscraper.py file along with passing the required arguments.
+You can do so by running the udemyscraper. There is no need to worry about your `PATH` as it is automatically configured by pip on installation.
 
 ```bash
-python3 udemyscraper.py <command>
+udemyscraper
 ```
 
 Here is an example of dumping the data as a json file.
 
 ```bash
-python3 udemyscraper.py -d json -q "German course for beginners"
+udemyscraper -d json -q "German course for beginners"
 ```
 
 ### List of Commands
@@ -123,6 +123,9 @@ You are required to install all of the modules listed in `requirements.txt` file
 ```bash
 pip install -r requirements.txt
 ```
+
+> ### Deprecated as of 0.8.0
+> 
 
 # Browser Setup
 

@@ -7,9 +7,10 @@ import sys
 from colorama import Fore, Style
 from udemyscraper.output import *
 
-from udemyscraper import *
+from udemyscraper import UdemyCourse
 from udemyscraper.metadata import __version__
 from udemyscraper.utils import display_help
+
 
 def main():
     __starttime__ = time.time()
@@ -131,10 +132,14 @@ def main():
 
             # Enable cache
             elif currentArgument in ("-c", "--cache"):
-                if str(currentValue) == "":
+                if currentValue == 'true':
                     Preferences['cache'] = True
-                elif str(currentValue) == "clear":
+                elif currentValue == "clear":
                     Preferences['cache'] = 'clear'
+                elif currentValue == '':
+                    Preferences['cache'] = True
+                elif currentValue == "false":
+                    Preferences['cache'] = False
 
     except getopt.error as err:
         # output error, and return with an error code
@@ -172,7 +177,8 @@ def main():
         if Preferences['dump_format'] == 'json':
             course_to_json(course, Preferences['output_file'])
         elif Preferences['dump_format'] == 'csv':
-            print("\n", "WARN: 'CSV' dump format is currently not supported.")
+            course= [course]
+            course_to_csv(course, Preferences['output_file'])
         elif Preferences['dump_format'] == 'xml':
             print("\n", "WARN: 'XML' dump format is currently not supported.")
     else:
