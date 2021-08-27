@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -  #### **Udemyscraper** can now export multiple courses to csv files!
   - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
+- `udemyscraper.export` submodule for exporting scraped course.
 
 
 ### Changes
@@ -19,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `output.py`   - Contains functions for outputting the course information.
   - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
   - `utils.py` - Contains utility related functions for udemyscraper.
+- #### Now using udemyscraper.export instead of udemyscraper.output.
+  - `quick_display` function has been replaced with `print_course` function.
   
 
 - #### Now using `setup.py` instead of `setup.cfg`

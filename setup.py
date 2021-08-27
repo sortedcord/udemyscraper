@@ -17,7 +17,9 @@ setup(
     project_urls={
         "Bug Tracker": "https://github.com/sortedcord/udemy-web-scraper/issues",
     },
-    packages=['udemyscraper'],
+    package_dir = {
+            'udemyscraper.export': 'udemyscraper/export'},
+    packages=['udemyscraper', 'udemyscraper.export'],
     entry_points = {
         'console_scripts': ['udemyscraper=udemyscraper.udscraperscript:main'],
     },

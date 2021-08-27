@@ -5,12 +5,12 @@ from logging import *
 import getopt
 import sys
 from colorama import Fore, Style
-from udemyscraper.output import *
+
 
 from udemyscraper import UdemyCourse
 from udemyscraper.metadata import __version__
 from udemyscraper.utils import display_help
-
+from udemyscraper.export import export_course
 
 def main():
     __starttime__ = time.time()
@@ -87,17 +87,8 @@ def main():
 
             # Select dump format
             elif currentArgument in ("-d", "--dump"):
-                if currentValue.lower() == 'json':
-                    Preferences['dump_format'] = "json"
-                    Preferences['output_file'] = 'course.json'
-                elif currentValue.lower() == 'xml':
-                    Preferences['dump_format'] = "xml"
-                    Preferences['output_file'] = 'course.xml'
-                elif currentValue.lower() == 'csv':
-                    Preferences['dump_format'] = "csv"
-                    Preferences['output_file'] = 'course.csv'
-                else:
-                    print(currentValue, " is not a valid dump format.")
+                Preferences['dump_format'] = currentValue.lower()
+
 
             # Specify output file
             elif currentArgument in ("-o", "--output"):
@@ -173,16 +164,7 @@ def main():
 
         course.fetch_course(search_query,)
 
-    if Preferences['dump_format'] != None:
-        if Preferences['dump_format'] == 'json':
-            course_to_json(course, Preferences['output_file'])
-        elif Preferences['dump_format'] == 'csv':
-            course= [course]
-            course_to_csv(course, Preferences['output_file'])
-        elif Preferences['dump_format'] == 'xml':
-            print("\n", "WARN: 'XML' dump format is currently not supported.")
-    else:
-        quick_display(course)
+    export_course(course, Preferences['dump_format'], Preferences['output_file'])
 
     if Preferences['quiet'] == False or Preferences['time'] == True:
         print('It took', time.time()-__starttime__, 'seconds.')
