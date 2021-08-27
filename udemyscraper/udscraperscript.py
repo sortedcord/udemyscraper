@@ -72,6 +72,8 @@ def main():
             elif currentArgument in ("-b", "--browser"):
                 if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
                     Preferences['browser_preference'] = "CHROME"
+                elif currentValue.lower() == "edge":
+                    Preferences['browser_preference'] = "EDGE"
                 elif currentValue.lower() == "firefox":
                     Preferences['browser_preference'] = "FIREFOX"
 

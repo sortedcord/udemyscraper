@@ -11,6 +11,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options  # for suppressing the browser
 from selenium import webdriver  # for webdriver
 
+from msedge.selenium_tools import EdgeOptions
+from msedge.selenium_tools import Edge
+
 from udemyscraper.utils import *
 
 from bs4 import BeautifulSoup
@@ -189,8 +192,24 @@ class UdemyCourse():
                     browser = webdriver.Chrome(options=option)
                 except ValueError:
                     print(
-                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
+                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have it installed in your machine.")
                 br()
+            elif self.Preferences['browser_preference'] == "EDGE":
+                option = EdgeOptions()
+                option.use_chromium = True
+                if self.Preferences['headless'] == True:
+                    option.add_argument('headless')
+                    option.add_argument('disable-gpu')
+                    loginfo("Headless enabled")
+
+                option.add_experimental_option('excludeSwitches', ['enable-logging'])
+                try:
+                    browser = Edge(options=option)
+                except ValueError:
+                    print(
+                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have it installed in your machine.")
+                br()
+                
 
             elif self.Preferences['browser_preference'] == "FIREFOX":
                 fireFoxOptions = webdriver.FirefoxOptions()

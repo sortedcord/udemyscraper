@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  #### **Udemyscraper** can now export multiple courses to csv files!
   - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
 - `udemyscraper.export` submodule for exporting scraped course.
-
+- Support for Microsoft Edge (Chromium Based) browser.
 
 ### Changes
 - #### **Udemyscraper.py** has been refractured into 5 different files:
