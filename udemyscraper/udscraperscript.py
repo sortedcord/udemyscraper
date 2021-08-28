@@ -30,7 +30,7 @@ def main():
     # Tool Defaults
     Preferences = {
         'warn': True,
-        'browser': "CHROME",
+        'browser': "chrome",
         'headless': True,
         'dump_format': None,
         'output_file': "",
