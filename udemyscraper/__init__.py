@@ -1,27 +1,17 @@
 import time
 __starttime__ = time.time()
 
-from alive_progress import alive_bar
-
 # Selenium Libraries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # to wait until page loads
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options  # for suppressing the browser
-from selenium import webdriver  # for webdriver
-
-from udemyscraper.utils import *
-
+from udemyscraper.utils import display_warn, set_browser
+import os
 from bs4 import BeautifulSoup
-import json
 import logging
 from logging import *
-import getopt
-import sys
-import os
 from colorama import Fore, Style
-from pathlib import Path
 import shutil
 
 __version__ = "0.7.4"
@@ -177,32 +167,7 @@ class UdemyCourse():
 
             br('Launching Browser')
             loginfo("Setting Up browser headers and preferences")
-            if self.Preferences['browser_preference'] == "CHROME":
-                # Browser Options
-                option = Options()
-                if self.Preferences['headless'] == True:
-                    option.add_argument('headless')
-                    loginfo("Headless enabled")
-                option.add_experimental_option(
-                    'excludeSwitches', ['enable-logging'])
-                try:
-                    browser = webdriver.Chrome(options=option)
-                except ValueError:
-                    print(
-                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have google chrome installed in your machine.")
-                br()
-
-            elif self.Preferences['browser_preference'] == "FIREFOX":
-                fireFoxOptions = webdriver.FirefoxOptions()
-                if self.Preferences['headless'] == True:
-                    loginfo("Headless enabled")
-                    fireFoxOptions.set_headless()
-                try:
-                    browser = webdriver.Firefox(firefox_options=fireFoxOptions)
-                except WebDriverException:
-                    print("Geko driver not found. Make sure it is in your path")
-                    exit()
-                br()
+            browser = set_browser(self.Preferences)
 
             br('Loading Udemy Search page')
             loginfo(

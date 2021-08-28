@@ -1,8 +1,16 @@
 import logging
 import time
 
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.chrome.options import Options  # for suppressing the browser
+from selenium import webdriver  # for webdriver
+
+from msedge.selenium_tools import EdgeOptions
+from msedge.selenium_tools import Edge
+
 from udemyscraper.metadata import __version__
 
+import platform
 
 def loginfo(message):
     # Logs the message along with the time taken from the start
@@ -63,3 +71,66 @@ Most Used Commands:
                         when quite mode is enabled.
     -c  --cache         Can have the value of true, false and clear.  
 """)
+
+
+
+def set_browser(Preferences):
+    if 'chrom' in Preferences['browser']:
+        # Preferences['browser'] Options
+        option = Options()
+        if Preferences['headless'] == True:
+            option.add_argument('headless')
+            loginfo("Headless enabled")
+        option.add_experimental_option(
+            'excludeSwitches', ['enable-logging'])
+        try:
+            browser = webdriver.Chrome(options=option)
+        except ValueError:
+            print(
+                f"{Preferences['browser']} could not be found. Make sure you have it installed in your machine.")
+            exit()
+        
+    elif Preferences['browser'] == "edge":
+        option = EdgeOptions()
+        option.use_chromium = True
+        if Preferences['headless'] == True:
+            option.add_argument('headless')
+            option.add_argument('disable-gpu')
+            loginfo("Headless enabled")
+
+        option.add_experimental_option('excludeSwitches', ['enable-logging'])
+        try:
+            browser = Edge(options=option)
+        except ValueError:
+            print(
+                f"{Preferences['browser']} could not be found. Make sure you have it installed in your machine.")
+        
+    
+    elif Preferences['browser'] == "brave":
+        if platform.system() == "Windows":
+            brave_path = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
+        elif platform.system() == "Linux":
+            brave_path = '/usr/bin/brave-browser'
+        option = webdriver.ChromeOptions()
+        option.binary_location = brave_path
+        if Preferences['headless'] == True:
+            option.add_argument('headless')
+        browser = webdriver.Chrome(chrome_options=option)
+
+    elif Preferences['browser'] == "firefox":
+        fireFoxOptions = webdriver.FirefoxOptions()
+        if Preferences['headless'] == True:
+            loginfo("Headless enabled")
+            fireFoxOptions.set_headless()
+        try:
+            browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+        except WebDriverException:
+            print("Geko driver not found. Make sure it is in your path")
+            exit()
+    else:
+        print(f"{Preferences['browser']} is not a valid browser or is not \
+        implemented yet. Please read the documentation and use the browsers \
+        mentioned there. Exiting")
+        exit()
+
+    return browser
