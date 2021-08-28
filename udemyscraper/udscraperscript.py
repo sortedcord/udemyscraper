@@ -9,7 +9,7 @@ from colorama import Fore, Style
 
 from udemyscraper import UdemyCourse
 from udemyscraper.metadata import __version__
-from udemyscraper.utils import display_help
+from udemyscraper.utils import display_help, loginfo
 from udemyscraper.export import export_course
 
 def main():
@@ -144,14 +144,13 @@ def main():
         print(Style.RESET_ALL)
 
         print(f"Version: {__version__}")
-        print(f"Using Preferences: {Preferences}")
+        loginfo(f"Using Preferences: {Preferences}")
 
     if search_query == "":
         search_query = input("Enter the search query: ")
     else:
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
-    print(Preferences)
     course = UdemyCourse(Preferences)
 
     if Preferences['quiet'] == False or Preferences['progress'] == True:
