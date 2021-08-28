@@ -1,32 +1,17 @@
 import time
 __starttime__ = time.time()
 
-from alive_progress import alive_bar
-
 # Selenium Libraries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # to wait until page loads
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options  # for suppressing the browser
-from selenium import webdriver  # for webdriver
-
-from msedge.selenium_tools import EdgeOptions
-from msedge.selenium_tools import Edge
-
-from udemyscraper.utils import *
-
-import sys
+from udemyscraper.utils import display_warn, set_browser
 import os
-import platform
-
 from bs4 import BeautifulSoup
-import json
 import logging
 from logging import *
-import getopt
 from colorama import Fore, Style
-from pathlib import Path
 import shutil
 
 __version__ = "0.7.4"
@@ -182,58 +167,7 @@ class UdemyCourse():
 
             br('Launching Browser')
             loginfo("Setting Up browser headers and preferences")
-            if self.Preferences['browser_preference'] == "CHROME":
-                # Browser Options
-                option = Options()
-                if self.Preferences['headless'] == True:
-                    option.add_argument('headless')
-                    loginfo("Headless enabled")
-                option.add_experimental_option(
-                    'excludeSwitches', ['enable-logging'])
-                try:
-                    browser = webdriver.Chrome(options=option)
-                except ValueError:
-                    print(
-                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have it installed in your machine.")
-                br()
-            elif self.Preferences['browser_preference'] == "EDGE":
-                option = EdgeOptions()
-                option.use_chromium = True
-                if self.Preferences['headless'] == True:
-                    option.add_argument('headless')
-                    option.add_argument('disable-gpu')
-                    loginfo("Headless enabled")
-
-                option.add_experimental_option('excludeSwitches', ['enable-logging'])
-                try:
-                    browser = Edge(options=option)
-                except ValueError:
-                    print(
-                        f"{self.Preferences['browser_preference']} could not be found. Make sure you have it installed in your machine.")
-                br()
-            
-            elif self.Preferences['browser_preference'] == "BRAVE":
-                if platform.system() == "Windows":
-                    brave_path = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
-                elif platform.system() == "Linux":
-                    brave_path = '/usr/bin/brave-browser'
-                option = webdriver.ChromeOptions()
-                option.binary_location = brave_path
-                if self.Preferences['headless'] == True:
-                    option.add_argument('headless')
-                browser = webdriver.Chrome(chrome_options=option)
-
-            elif self.Preferences['browser_preference'] == "FIREFOX":
-                fireFoxOptions = webdriver.FirefoxOptions()
-                if self.Preferences['headless'] == True:
-                    loginfo("Headless enabled")
-                    fireFoxOptions.set_headless()
-                try:
-                    browser = webdriver.Firefox(firefox_options=fireFoxOptions)
-                except WebDriverException:
-                    print("Geko driver not found. Make sure it is in your path")
-                    exit()
-                br()
+            browser = set_browser(self.Preferences)
 
             br('Loading Udemy Search page')
             loginfo(

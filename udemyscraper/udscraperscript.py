@@ -30,7 +30,7 @@ def main():
     # Tool Defaults
     Preferences = {
         'warn': True,
-        'browser_preference': "CHROME",
+        'browser': "CHROME",
         'headless': True,
         'dump_format': None,
         'output_file': "",
@@ -70,14 +70,7 @@ def main():
 
             # Select Browser
             elif currentArgument in ("-b", "--browser"):
-                if currentValue.lower() == "chrome" or currentValue.lower() == "chromium":
-                    Preferences['browser_preference'] = "CHROME"
-                elif currentValue.lower() == "edge":
-                    Preferences['browser_preference'] = "EDGE"
-                elif currentValue.lower() == "firefox":
-                    Preferences['browser_preference'] = "FIREFOX"
-                elif currentValue.lower() == "brave":
-                    Preferences['browser_preference'] = "BRAVE"
+                Preferences["browser"] = currentValue.lower()
 
             # Disable/Enable headless
             elif currentArgument in ("-l", "--headless"):
