@@ -128,8 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 docs/licecap128-install.exe
-course.json
 docs/InstalIer3.rar
+
 # Udemyscraper cache
 src\udemyscraper\.udscraper_cache
 .udscraper_cache
@@ -139,5 +139,3 @@ CHANGELOG.md
 udemyscraper/udscraperscript.py
 course.json
 course.csv
-.udscraper_cache
-

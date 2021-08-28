@@ -123,7 +123,9 @@ You are required to install all of the modules listed in `requirements.txt` file
 ```bash
 pip install -r requirements.txt
 ```
+
 > ### Deprecated as of 0.8.0
+> 
 
 # Browser Setup
 
