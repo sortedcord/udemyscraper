@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -  #### **Udemyscraper** can now export multiple courses to csv files!
   - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
+-  #### **Udemyscraper** can now export courses to xml files!
+  - `course_to_xml` is function that can be used to export the course object to an xml file with the appropriate tags and format.
 - `udemyscraper.export` submodule for exporting scraped course.
 - Support for Microsoft Edge (Chromium Based) browser.
 - Support for Brave Browser.
