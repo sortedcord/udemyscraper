@@ -53,7 +53,8 @@ setup(
         "tqdm==4.62.2",
         "urllib3==1.26.6",
         "webdriver-manager==3.4.2",
-        "msedge-selenium-tools"
+        "msedge-selenium-tools==3.141.3",
+        "dict2xml==1.7.0"
     ],
     extras_require = {
         "dev": [
