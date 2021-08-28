@@ -7,19 +7,45 @@
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
-> ## 📌 New in 0.7.4
+> ## 📌 New in 0.8.0
 >
-> - ### Added caching for testing
+>### Added
+>-  #### **Udemyscraper** can now export multiple courses to csv files!
+>     - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
+>-  #### **Udemyscraper** can now export courses to xml files!
+>     - `course_to_xml` is function that can be used to export the course object to an xml file with the appropriate tags and format.
+>- `udemyscraper.export` submodule for exporting scraped course.
+>- Support for Microsoft Edge (Chromium Based) browser.
+>- Support for Brave Browser.
 >
->   - Checks if cache files are present in the working directory or not
->   - If cache files are present and caching is set to enabled, it will use the cached files for scraping
->   - Added a clear cache argument that will delete the cache files and generate new ones
->   - Automatically clear cache if query/ course being scraped is different
+>### Changes
+>- #### **Udemyscraper.py** has been refractured into 5 different files:
+>     - `__init__.py` - Contains the code which will run when imported as a library
+>     - `metadata.py` - Contains metadata of the package such as the name, version, author, etc. Used by setup.py
+>     - `output.py`   - Contains functions for outputting the course information.
+>     - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
+>     - `utils.py` - Contains utility related functions for udemyscraper.
+>- #### Now using udemyscraper.export instead of udemyscraper.output.
+>     - `quick_display` function has been replaced with `print_course` function.
+>  
 >
->   | With Cache               | Without Cache               |
->   | ------------------------ | --------------------------- |
->   | ![Cache](docs/cache.gif) | ![Cache](docs/no_cache.gif) |
->   | 3 Seconds                | 17 Seconds                  |
+>- #### Now using `setup.py` instead of `setup.cfg`
+>- #### Deleted `src` folder which is now replaced by `udemyscraper` folder which is the source directory for all the modules
+>- ### **Installation Process**
+>    #### Since udemyscraper is now to be used as a package, it is obvious that the installation process has also had major changes.
+>   Installation process is documented [here](readme.md/#Installation) 
+>
+>- Renamed the `browser_preference` key in Preferences dictionary to `browser`
+>- Relocated browser determination to `utils` as `set_browser` function.
+>  
+>### Fixed
+>- Fixed cache argument bug.
+>- Fixed importing preferences bug.
+>- Fixed Banner Image scraping.
+>- Fixed Progressbar exception handling.
+>- Fixed recognition of chrome as a valid browser.
+>- Preferences will not be printed while using the script.
+
 
 ## Table Of Contents
 
