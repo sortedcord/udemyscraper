@@ -14,6 +14,7 @@ def export_course(course, mode, output=None):
             csv(course, output)
         elif mode == 'xml':
             xml(course, output)
+            print("\n", "WARN: 'XML' dump format is currently not supported.")
         elif mode == "print":
             printc(course)
         elif mode == 'dict' or mode == 'dictionary':
