@@ -136,7 +136,6 @@ src\udemyscraper\.udscraper_cache
 test.py
 scrapyard.py
 CHANGELOG.md
-udemyscraper/udscraperscript.py
 course.json
 course.csv
 course.xml
