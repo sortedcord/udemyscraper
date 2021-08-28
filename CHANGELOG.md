@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
 - `udemyscraper.export` submodule for exporting scraped course.
 - Support for Microsoft Edge (Chromium Based) browser.
+- Support for Brave Browser.
 
 ### Changes
 - #### **Udemyscraper.py** has been refractured into 5 different files:
@@ -30,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   #### Since udemyscraper is now to be used as a package, it is obvious that the installation process has also had major changes.
 
   Installation process is documented [here](readme.md/#Installation) 
+- Renamed the `browser_preference` key in Preferences dictionary to `browser`
+- Relocated browser determination to `utils` as `set_browser` function.
   
 ### Fixed
 - Fixed cache argument bug.
