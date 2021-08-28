@@ -76,6 +76,8 @@ def main():
                     Preferences['browser_preference'] = "EDGE"
                 elif currentValue.lower() == "firefox":
                     Preferences['browser_preference'] = "FIREFOX"
+                elif currentValue.lower() == "brave":
+                    Preferences['browser_preference'] = "BRAVE"
 
             # Disable/Enable headless
             elif currentArgument in ("-l", "--headless"):

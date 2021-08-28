@@ -16,13 +16,15 @@ from msedge.selenium_tools import Edge
 
 from udemyscraper.utils import *
 
+import sys
+import os
+import platform
+
 from bs4 import BeautifulSoup
 import json
 import logging
 from logging import *
 import getopt
-import sys
-import os
 from colorama import Fore, Style
 from pathlib import Path
 import shutil
@@ -209,7 +211,17 @@ class UdemyCourse():
                     print(
                         f"{self.Preferences['browser_preference']} could not be found. Make sure you have it installed in your machine.")
                 br()
-                
+            
+            elif self.Preferences['browser_preference'] == "BRAVE":
+                if platform.system() == "Windows":
+                    brave_path = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe"
+                elif platform.system() == "Linux":
+                    brave_path = '/usr/bin/brave-browser'
+                option = webdriver.ChromeOptions()
+                option.binary_location = brave_path
+                if self.Preferences['headless'] == True:
+                    option.add_argument('headless')
+                browser = webdriver.Chrome(chrome_options=option)
 
             elif self.Preferences['browser_preference'] == "FIREFOX":
                 fireFoxOptions = webdriver.FirefoxOptions()
