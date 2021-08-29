@@ -3,11 +3,11 @@
 ![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
 ![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
-![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.7.4-magenta?style=for-the-badge&logo=udemy&logoColor=white)
+![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.8.1-magenta?style=for-the-badge&logo=udemy&logoColor=white)
 
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
-> ## 📌 New in 0.8.0
+> ## 📌 New in 0.8.x Series
 >
 >### Added
 >-  #### **Udemyscraper** can now export multiple courses to csv files!
@@ -105,6 +105,10 @@ Udemyscraper can export the data to a variety of formats as shown [here](#output
 ![Commands](docs/command.svg)
 
 # Installation
+
+```
+pip install udemyscraper
+```
 
 ## Virtual Environment
 
