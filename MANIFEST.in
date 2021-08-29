@@ -1,0 +1,4 @@
+include *.md
+recursive-include docs *.gif
+recursive-include docs *.png
+recursive-include docs *.svg
