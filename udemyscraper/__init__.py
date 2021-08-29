@@ -89,7 +89,7 @@ class Section():
 class UdemyCourse():
     def __init__(self, Preferences={
         'warn': True,
-        'browser_preference': "CHROME",
+        'browser': "CHROME",
         'headless': True,
         'debug': False,
         'quiet': False,
@@ -98,7 +98,7 @@ class UdemyCourse():
     }):  # Set default preferences when none provided
         
         default_values = [True, "CHROME", True, False, False, True, False]
-        default_keys = ['warn', 'browser_preference', 'headless', 'debug', 'quiet', 'time', 'cache']
+        default_keys = ['warn', 'browser', 'headless', 'debug', 'quiet', 'time', 'cache']
         for key in default_keys:
             if key not in Preferences.keys():
                 Preferences[key] = default_values[default_keys.index(key)]      
