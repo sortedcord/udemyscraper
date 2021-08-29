@@ -13,6 +13,8 @@ setup(
     author = metadata['__author__'],
     author_email = metadata['__author_email__'],
     description= metadata['__description__'],
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url= "https://github.com/sortedcord/udemy-web-scraper",
     project_urls={
         "Bug Tracker": "https://github.com/sortedcord/udemy-web-scraper/issues",
