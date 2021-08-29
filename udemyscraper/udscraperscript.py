@@ -160,6 +160,8 @@ def main():
 
         course.fetch_course(search_query,)
 
+    if Preferences['dump_format'] == "csv":
+        course = [course]
     export_course(course, Preferences['dump_format'], Preferences['output_file'])
 
     if Preferences['quiet'] == False or Preferences['time'] == True:

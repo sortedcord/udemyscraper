@@ -10,11 +10,9 @@ def export_course(course, mode, output=None):
         if mode == 'json':
             json(course, output)
         elif mode == 'csv':
-            course= [course]
             csv(course, output)
         elif mode == 'xml':
             xml(course, output)
-            print("\n", "WARN: 'XML' dump format is currently not supported.")
         elif mode == "print":
             printc(course)
         elif mode == 'dict' or mode == 'dictionary':

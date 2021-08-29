@@ -4,19 +4,19 @@ from udemyscraper.export.dict import course_to_dict
 import csv
 
 def course_to_csv(courses, output_file='output.csv'):
-    if output_file == None:
-        output_file = 'course.json'
-
-    dict_courses_array = []
+    if output_file == '':
+        output_file = 'course.csv'
 
     for course in courses:
-        inline_instructors = ""
-        for instructor in course.instructors:
-            if course.instructors.index(instructor) != len(course.instructors)+1:
-                inline_instructors = inline_instructors + instructor + ", "
-            else:
-                inline_instructors = inline_instructors + instructor
-        course.instructors = inline_instructors
+        print(course)
+        if str(type(course.instructors)) == "<class 'list'>":
+            inline_instructors = ""
+            for instructor in course.instructors:
+                if course.instructors.index(instructor) != len(course.instructors)+1:
+                    inline_instructors = inline_instructors + instructor + ", "
+                else:
+                    inline_instructors = inline_instructors + instructor
+            course.instructors = inline_instructors
 
         inline_tags = ""
         for tag in course.tags:
