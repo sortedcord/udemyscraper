@@ -35,9 +35,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Installation process is documented [here](readme.md/#Installation) 
 - Renamed the `browser_preference` key in Preferences dictionary to `browser`
 - Relocated browser determination to `utils` as `set_browser` function.
+- Removed `requirements.txt`
   
 ### Fixed
 - Fixed cache argument bug.
+- Fixed importing preferences bug.
+- Fixed Banner Image scraping.
+- Fixed Progressbar exception handling.
+- Fixed recognition of chrome as a valid browser.
+- Preferences will not be printed while using the script.
+- Fixed `browser` key error
 
 ## [0.7.4] - 2021-08-25
 
