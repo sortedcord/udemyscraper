@@ -96,7 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Increased timeout limit for page load
 - Removed some redundant code and fixed typos
 
-
+[0.8.1]: https://github.com/sortedcord/udemy-web-scraper/releases/tag/Beta
+[0.8.0]: https://github.com/sortedcord/udemy-web-scraper/pull/34
 [0.7.4]: https://github.com/sortedcord/udemy-web-scraper/pull/32
 [0.7.3]: https://github.com/sortedcord/udemy-web-scraper/pull/29
 [0.7.2]: https://github.com/sortedcord/udemy-web-scraper

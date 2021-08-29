@@ -1,71 +1,73 @@
 ![scraper](docs/logo.png)
 
-![License](https://img.shields.io/badge/LICENSE-GPL--3.0-brightgreen?style=for-the-badge)
-![Python](https://img.shields.io/badge/PYTHON-3.9.6-blue?style=for-the-badge&logo=python&logoColor=white)
-![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
-![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.8.1-magenta?style=for-the-badge&logo=udemy&logoColor=white)
+<div align="center">
+<img src="https://img.shields.io/github/license/sortedcord/udemy-web-scraper" align="center">
+<img src="https://img.shields.io/pypi/pyversions/udemyscraper?logo=python&logoColor=white" align="center">
+<img src="https://img.shields.io/pypi/v/udemyscraper?color=magenta&label=Udemyscraper&logo=udemy&logoColor=white" align="center">
+<img src="https://img.shields.io/pypi/status/udemyscraper?style=flat" align="center">
+</div>
 
+<br>
 
-A Web Scraper built with beautiful soup, that fetches udemy course information.
+<h3 align="center"><strong>⚙ A Web Scraper built with selenium, that fetches all the course info you will ever need.</strong></h4>
+
+<p align="center">
+  <a href="#usage">Usage</a> | 
+  <a href="#installation">Installation</a> | 
+  <a href="#contributing">Contributors</a> |
+  <a href="LICENSE.txt">License</a>
+</p>
+
+<br>
 
 > ## 📌 New in 0.8.x Series
 >
->### Added
->-  #### **Udemyscraper** can now export multiple courses to csv files!
->     - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
->-  #### **Udemyscraper** can now export courses to xml files!
->     - `course_to_xml` is function that can be used to export the course object to an xml file with the appropriate tags and format.
->- `udemyscraper.export` submodule for exporting scraped course.
->- Support for Microsoft Edge (Chromium Based) browser.
->- Support for Brave Browser.
->- Support for Vivaldi.
+> ### Added
 >
->### Changes
->- #### **Udemyscraper.py** has been refractured into 5 different files:
->     - `__init__.py` - Contains the code which will run when imported as a library
->     - `metadata.py` - Contains metadata of the package such as the name, version, author, etc. Used by setup.py
->     - `output.py`   - Contains functions for outputting the course information.
->     - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
->     - `utils.py` - Contains utility related functions for udemyscraper.
->- #### Now using udemyscraper.export instead of udemyscraper.output.
->     - `quick_display` function has been replaced with `print_course` function.
->  
+> - #### **Udemyscraper** can now export multiple courses to csv files!
+>   - `course_to_csv` takes an array as an input and dumps each course to a single csv file.
+> - #### **Udemyscraper** can now export courses to xml files!
+>   - `course_to_xml` is function that can be used to export the course object to an xml file with the appropriate tags and format.
+> - `udemyscraper.export` submodule for exporting scraped course.
+> - Support for Microsoft Edge (Chromium Based) browser.
+> - Support for Brave Browser.
+> - Support for Vivaldi.
 >
->- #### Now using `setup.py` instead of `setup.cfg`
->- #### Deleted `src` folder which is now replaced by `udemyscraper` folder which is the source directory for all the modules
->- ### **Installation Process**
->    #### Since udemyscraper is now to be used as a package, it is obvious that the installation process has also had major changes.
->   Installation process is documented [here](readme.md/#Installation) 
+> ### Changes
 >
->- Renamed the `browser_preference` key in Preferences dictionary to `browser`
->- Relocated browser determination to `utils` as `set_browser` function.
->- Removed `requirements.txt` and `pyproject.toml`
->  
->### Fixed
->- Fixed cache argument bug.
->- Fixed importing preferences bug.
->- Fixed Banner Image scraping.
->- Fixed Progressbar exception handling.
->- Fixed recognition of chrome as a valid browser.
->- Preferences will not be printed while using the script.
->- Fixed `browser` key error
+> - #### **Udemyscraper.py** has been refractured into 5 different files:
+>   - `__init__.py` - Contains the code which will run when imported as a library
+>   - `metadata.py` - Contains metadata of the package such as the name, version, author, etc. Used by setup.py
+>   - `output.py` - Contains functions for outputting the course information.
+>   - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
+>   - `utils.py` - Contains utility related functions for udemyscraper.
+> - #### Now using udemyscraper.export instead of udemyscraper.output.
+>
+>   - `quick_display` function has been replaced with `print_course` function.
+>
+> - #### Now using `setup.py` instead of `setup.cfg`
+> - #### Deleted `src` folder which is now replaced by `udemyscraper` folder which is the source directory for all the modules
+> - ### **Installation Process**
+>
+>   #### Since udemyscraper is now to be used as a package, it is obvious that the installation process has also had major changes.
+>
+>   Installation process is documented [here](readme.md/#Installation)
+>
+> - Renamed the `browser_preference` key in Preferences dictionary to `browser`
+> - Relocated browser determination to `utils` as `set_browser` function.
+> - Removed `requirements.txt` and `pyproject.toml`
+>
+> ### Fixed
+>
+> - Fixed cache argument bug.
+> - Fixed importing preferences bug.
+> - Fixed Banner Image scraping.
+> - Fixed Progressbar exception handling.
+> - Fixed recognition of chrome as a valid browser.
+> - Preferences will not be printed while using the script.
+> - Fixed `browser` key error
 
-
-## Table Of Contents
-
-- [Usage](#usage)
-  - [List of Commands](#list-of-commands)
-- [Installation](#installation)
-- [Browser Setup](#browser-setup)
-  - [Chrome (or chromium)](#chrome-or-chromium)
-  - [Firefox](#firefox)
-  - [Suppressing Browser](#suppressing-browser)
-- [Approach](#approach)
-  - [Why not just use Udemy's API?](#why-not-just-use-the-udemys-api)
-- [Data Tables](#data)
-- [Exporting data](#output-dumping-data)
-- [Contributing](#contributing)
-
+Check out [CHANGELOG](CHANGELOG.md) for more changes and version updates.
 
 # Usage
 
@@ -107,10 +109,18 @@ Udemyscraper can export the data to a variety of formats as shown [here](#output
 
 # Installation
 
-```
+For installing the latest stable version of `Udmyscraper` you can simply install it using pip.
+
+```PowerShell
 pip install udemyscraper
 ```
 
+Or if you like to live on the edge then you can always use the current build in the repo (**Not Recommmended**)-
+
+- Clone the repository-
+  ```PowerShell
+  git clone https://github.com/sortedcord/udemy-web-scraper.git
+  ```
 ## Virtual Environment
 
 Before installing the dependencies it is recommended to setup a virtual environment if you are not using the pypi prebuilt package.
@@ -145,8 +155,8 @@ somerandomname\Scripts\activate
 Dependcies will be automatically installed with pip.
 
 > ### Deprecated as of 0.8.0
+>
 > Earlier there used to be a `requirements.txt` file which you would use to install the dependencies.
-
 
 # Browser Setup
 
@@ -157,7 +167,6 @@ This script works with firefox as well as chromium based browsers. Make sure the
 ## Chrome (or chromium)
 
 To run this script you need to have chrom(ium) installed on the machine as well as the chromedriver binary which can be downloaded from this [page](https://chromedriver.chromium.org/downloads). Make sure that the binary you have installed works on your platform/ architecture and the the driver version corresponds to the version of the browser you have downloaded.
-
 
 To set chrome as default you can pass in an argument while initializing the class though it is set to chrome by default.
 
@@ -172,6 +181,7 @@ udemyscraper -b chrome
 ```
 
 ## Edge
+
 To run this script you need to have Microsoft Edge installed on the machine as well as the msedgedriver which can be downloaded from this [page](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/). Make sure that the binary you have installed works on your platform/ architecture and the the driver version corresponds to the version of the browser you have downloaded.
 
 In order to use edge, you can pass in an argument while initializing the class.
@@ -186,7 +196,6 @@ Or you can pass in a argument while using as a script
 udemyscraper -b edge
 ```
 
-
 ### Using other chromium browsers
 
 With update 0.8.0 you can now use other chromium browsers such as brave and vivaldi along with udemyscraper. The process is similiar to using the other browsers, just that you need to have chromedriver added to the path. Brave works with windows as well as with linux however udemyscraper has not been tested with macOS yet.
@@ -194,7 +203,6 @@ With update 0.8.0 you can now use other chromium browsers such as brave and viva
 ```py
 mycourse = UdemyCourse(browser="brave")
 ```
-
 
 ## Firefox
 
@@ -233,16 +241,6 @@ Or specify the same for `udemyscraper.py`
 ```bash
 udemyscraper -h false
 ```
-
-# Approach
-
-It is fairly easy to webscrape sites, however, there are some sites that are not that scrape-friendly. Scraping sites, in itself is perfectly legal however there have been cases of lawsuits against web scraping, some companies \*cough Amazon \*cough consider web-scraping from its website illegal however, they themselves, web-scrape from other websites. And then there are some sites like udemy, that try to prevent people from scraping their site.
-
-Using BS4 in itself, doesn't give the required results back, so I had to use a browser engine by using selenium to fetch the courses information. Initially, even that didn't work out, but then I realised the courses were being fetch asynchronously so I had to add a bit of delay. So fetching the data can be a bit slow initially.
-
-## Why not just use Udemy's API?
-
-Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future as its a faster and much more efficient, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
 
 # Data
 
@@ -297,12 +295,40 @@ This is the data of the parent class which is the course class itself.
 | `duration` | String  | The duration of the specific lesson                     | `course.Sections[4].Lessons[2].duration` |
 | `type`     | String  | Tells what type of lesson it is. (Video, Article, Quiz) | `course.Sections[4].Lessons[2].type`     |
 
+# Caching
+
+While working on the script it can be quite frustrating to wait for 10 - 20 seconds (it might be slower/faster for you) every time I make a minor change in my code. This can also trigger temporary server side blockage from sending any search requests. To prevent this, I came up with a caching system for udemyscraper.
+
+First, you would need to enable caching-
+
+```PowerShell
+udemyscraper --cache true
+```
+
+```py
+from udemyscraper import UdemyCourse
+
+mycourse = UdemyCourse({'cache':True})
+```
+
+On the first run, it would work the same however, you would notice that it would create a `.udemyscraper_cache` folder. This contains the search query, `search.html` and `course.html`.
+
+When you run the same code again, it would check if this directory exists and if it does then it checks for whether the current query matches the one stored in the cache folder. If it does then it wouldn't use selenium to fetch the HTML, instead it would scrape elements from the local cached HTML files, highly reducing execution time of the script to 2-3 seconds.
+
+| With Cache               | Without Cache               |
+| ------------------------ | --------------------------- |
+| ![Cache](docs/cache.gif) | ![Cache](docs/no_cache.gif) |
+| 3 Seconds                | 17 Seconds                  |
+
+
 # Exporting Data
 
 With update 0.8.0, you can use a unified function for exporting courses: `export_course`. This takes in 3 parameters:
+
 - First is the course object/ array itself.
 - The mode of exporting the data. Can be print, csv, json, xml, etc.
 - (Optional) The name of the file for the data to be exported to.
+
 ## Print Course
 
 You can use this function to print the basic course information in the console itself. The course information is not stored locally in this case.
@@ -338,7 +364,7 @@ export_course(course, "print")
 
 ## Converting to Dictionary
 
-The entire course object is converted into a dictionary by using nested object to dictionary conversion iterations. 
+The entire course object is converted into a dictionary by using nested object to dictionary conversion iterations.
 
 <details>
 
@@ -352,7 +378,7 @@ dictionary_course = exp(course, "dict")
 
 ## Dumping as JSON
 
-Udemyscraper can also convert the entire course into a dictionary, parse it into a json file and then export it to a json file. 
+Udemyscraper can also convert the entire course into a dictionary, parse it into a json file and then export it to a json file.
 
 <details>
 
@@ -363,7 +389,6 @@ export_course(course, "json", "custom_name.json")
 ```
 
 This will export the data to `object.json` file in the same directory. You can also specify the name of the file by passing in the corresponding argument
-
 
 Here is an example of how the file will look like. (The file has been trunacted)
 ![output.json](docs/json.svg)
@@ -394,13 +419,13 @@ This code will export something like this-
 
 ![csv data](docs/csv.gif)
 
-You can do this with as many number of courses you like. But unfortunately, I couldn't figure out any way to export sections and lessons to csv. 
+You can do this with as many number of courses you like. But unfortunately, I couldn't figure out any way to export sections and lessons to csv.
 
 </details>
 
 ## Dumping as XML
 
-Udemyscraper can also convert the entire course into a dictionary, parse it into xml and then export it to an xml file. 
+Udemyscraper can also convert the entire course into a dictionary, parse it into xml and then export it to an xml file.
 
 <details>
 
@@ -412,7 +437,6 @@ export_course(course, "xml", "custom_name.xml")
 
 This will export the data to `object.json` file in the same directory. You can also specify the name of the file by passing in the corresponding argument
 
-
 Here is an example of how the file will look like. (The file has been trunacted)
 ![output.xml](docs/xml.svg)
 
@@ -422,6 +446,16 @@ Here is an example of how the file will look like. (The file has been trunacted)
 
 Jellyfin metadata uses XML structure for its `.nfo` files. For images, we only have one resource which is the poster of the file. It might be possible to write a custom XML structure for jellyfin. Currently in development.
 
+# Approach
+
+It is fairly easy to webscrape sites, however, there are some sites that are not that scrape-friendly. Scraping sites, in itself is perfectly legal however there have been cases of lawsuits against web scraping, some companies \*cough Amazon \*cough consider web-scraping from its website illegal however, they themselves, web-scrape from other websites. And then there are some sites like udemy, that try to prevent people from scraping their site.
+
+Using BS4 in itself, doesn't give the required results back, so I had to use a browser engine by using selenium to fetch the courses information. Initially, even that didn't work out, but then I realised the courses were being fetch asynchronously so I had to add a bit of delay. So fetching the data can be a bit slow initially.
+
+## Why not just use Udemy's API?
+
+Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future as its a faster and much more efficient, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
+
 # Contributing
 
 Issues and PRs as well as discussions are always welcomes, but please make an issue of a feature/code that you would be modifying before starting a PR.
@@ -429,3 +463,9 @@ Issues and PRs as well as discussions are always welcomes, but please make an is
 Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
 
 For further instructions, do read [contributing.md](CONTRIBUTING.md).
+
+Thanks to these contributors who made the project maintained!
+
+| ![](https://github.com/sortedcord.png?size=50) | ![](https://github.com/flyingcakes85.png?size=50) |
+| :--------------------------------------: | :--------------------------------------: |
+|  [Sortedcord](https://www.github.com/sortedcord)  |  [flyingcakes85](https://www.github.com/flyingcakes85)

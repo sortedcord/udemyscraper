@@ -134,6 +134,7 @@ class UdemyCourse():
                 br('Reading Cache files')
                 loginfo("Reading cache files")
                 old_query = query_file.read()
+            # If the cached query doesn't match the current query-
             if query != str(old_query):
                 br('Flushing cache files as query is different')
                 loginfo("Deleting cache folder")
