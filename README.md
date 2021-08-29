@@ -5,6 +5,7 @@
 ![Chromium](https://img.shields.io/badge/CHROMIUM-92.0.3-GREEN?style=for-the-badge&logo=GoogleChrome&logoColor=white)
 ![Udemyscraper](https://img.shields.io/badge/UDEMYSCRAPER-0.8.1-magenta?style=for-the-badge&logo=udemy&logoColor=white)
 
+
 A Web Scraper built with beautiful soup, that fetches udemy course information.
 
 > ## 📌 New in 0.8.x Series
