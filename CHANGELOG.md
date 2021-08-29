@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Installation process is documented [here](readme.md/#Installation) 
 - Renamed the `browser_preference` key in Preferences dictionary to `browser`
 - Relocated browser determination to `utils` as `set_browser` function.
-- Removed `requirements.txt`
+- Removed `requirements.txt` and `pyproject.toml`
   
 ### Fixed
 - Fixed cache argument bug.
