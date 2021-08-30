@@ -1,5 +1,5 @@
-![scraper](docs/logo.png)
-
+<img src="docs/logo.png" align="center">
+<br>
 <div align="center">
 <img src="https://img.shields.io/github/license/sortedcord/udemy-web-scraper" align="center">
 <img src="https://img.shields.io/pypi/pyversions/udemyscraper?logo=python&logoColor=white" align="center">
@@ -117,42 +117,21 @@ pip install udemyscraper
 
 Or if you like to live on the edge then you can always use the current build in the repo (**Not Recommmended**)-
 
-- Clone the repository-
+- Clone it-
   ```PowerShell
-  git clone https://github.com/sortedcord/udemy-web-scraper.git
+  git clone https://github.com/sortedcord/udemy-web-scraper.git && cd udemy-web-scraper
   ```
-## Virtual Environment
-
-Before installing the dependencies it is recommended to setup a virtual environment if you are not using the pypi prebuilt package.
-
-<details>
-
-You can setup a virtual environment on your machine by using the `virtualenv` library and then activating it.
-
-```bash
-pip install virtualenv
-
-virtualenv somerandomname
-
-```
-
-Activating for \*nix
-
-```bash
-source somerandomname/bin/activate
-```
-
-Activating for Windows
-
-```
-somerandomname\Scripts\activate
-```
-
-</details>
-
+- Install it- 
+  ```PowerShell
+  pip install -e .
+  ```
+- Use it- 
+  ```py
+  udemyscraper --version
+  ```
 ## Dependencies Installation
 
-Dependcies will be automatically installed with pip.
+Dependcies will be automatically installed with pip. If you do want to look at all the dependencies of this project you can always check out [setup.py](setup.py) or [Dependecy Graph](https://github.com/sortedcord/udemy-web-scraper/network/dependencies).
 
 > ### Deprecated as of 0.8.0
 >
