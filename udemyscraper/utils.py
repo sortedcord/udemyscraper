@@ -12,6 +12,8 @@ from udemyscraper.metadata import __version__
 
 import platform
 
+from colorama import Fore, Style
+
 def loginfo(message):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()) + '  ' + message)
@@ -72,6 +74,15 @@ Most Used Commands:
     -c  --cache         Can have the value of true, false and clear.  
 """)
 
+def print_logo():
+    print(Fore.MAGENTA + """
+██╗   ██╗██████╗ ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗
+██║   ██║██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
+██║   ██║██║  ██║███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝
+██║   ██║██║  ██║╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗
+╚██████╔╝██████╔╝███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║  ██║
+╚═════╝ ╚═════╝  ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝""")
+    print(Style.RESET_ALL)
 
 
 def set_browser(Preferences):
@@ -128,9 +139,9 @@ def set_browser(Preferences):
             print("Geko driver not found. Make sure it is in your path")
             exit()
     else:
-        print(f"{Preferences['browser']} is not a valid browser or is not \
-        implemented yet. Please read the documentation and use the browsers \
-        mentioned there. Exiting")
+        print(f"""{Preferences['browser']} is not a valid browser or is not
+implemented yet. Please read the documentation and use the browsers
+mentioned there. Exiting""")
         exit()
 
     return browser

@@ -204,7 +204,7 @@ udemyscraper -b firefox
 
 | **Headless Disabled**                 | **Headless Enabled**                   |
 | ------------------------------------- | -------------------------------------- |
-| ![Headless disabled](docs/header.gif) | ![Headless enabled](docs/headless.gif) |
+| ![Headless disabled](docs/gif/header.gif) | ![Headless enabled](docs/gif/headless.gif) |
 | 19 Seconds                            | 12 Seconds                             |
 
 In the above comparison you can clearly see that the image on the right (headless) completed way faster than the one with headless disabled. By suppressing the browser not only do you save time, but you also save system resources.
@@ -296,7 +296,7 @@ When you run the same code again, it would check if this directory exists and if
 
 | With Cache               | Without Cache               |
 | ------------------------ | --------------------------- |
-| ![Cache](docs/cache.gif) | ![Cache](docs/no_cache.gif) |
+| ![Cache](docs/gif/cache.gif) | ![Cache](docs/gif/no_cache.gif) |
 | 3 Seconds                | 17 Seconds                  |
 
 
@@ -396,7 +396,7 @@ export_course([course, course2], "csv")
 
 This code will export something like this-
 
-![csv data](docs/csv.gif)
+![csv data](docs/gif/csv.gif)
 
 You can do this with as many number of courses you like. But unfortunately, I couldn't figure out any way to export sections and lessons to csv.
 
@@ -433,7 +433,7 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 
 ## Why not just use Udemy's API?
 
-Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future as its a faster and much more efficient, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication.
+Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future as its a faster and much more efficient, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication. 
 
 # Contributing
 

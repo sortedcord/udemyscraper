@@ -9,7 +9,7 @@ from colorama import Fore, Style
 
 from udemyscraper import UdemyCourse
 from udemyscraper.metadata import __version__
-from udemyscraper.utils import display_help, loginfo
+from udemyscraper.utils import display_help, loginfo, print_logo
 from udemyscraper.export import export_course
 
 def main():
@@ -134,14 +134,7 @@ def main():
         print(str(err))
 
     if Preferences['quiet'] == False:
-        print(Fore.MAGENTA + """
-    ██╗   ██╗██████╗ ███████╗███╗   ███╗██╗   ██╗    ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗
-    ██║   ██║██╔══██╗██╔════╝████╗ ████║╚██╗ ██╔╝    ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
-    ██║   ██║██║  ██║█████╗  ██╔████╔██║ ╚████╔╝     ███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝
-    ██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║  ╚██╔╝      ╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗
-    ╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║   ██║       ███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║  ██║
-    ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝   ╚═╝       ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝""")
-        print(Style.RESET_ALL)
+        print_logo()
 
         print(f"Version: {__version__}")
         loginfo(f"Using Preferences: {Preferences}")
@@ -157,7 +150,6 @@ def main():
         with alive_bar(title="Scraping Course", bar="smooth") as abar:
             course.fetch_course(search_query, abar)
     else:
-
         course.fetch_course(search_query,)
 
     if Preferences['dump_format'] == "csv":
