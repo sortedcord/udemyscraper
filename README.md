@@ -1,7 +1,7 @@
 <img src="docs/logo.png" align="center">
 <br>
 <div align="center">
-<img src="https://img.shields.io/github/license/sortedcord/udemy-web-scraper" align="center">
+<img src="https://img.shields.io/github/license/sortedcord/udemyscraper" align="center">
 <img src="https://img.shields.io/pypi/pyversions/udemyscraper?logo=python&logoColor=white" align="center">
 <img src="https://img.shields.io/pypi/v/udemyscraper?color=magenta&label=Udemyscraper&logo=udemy&logoColor=white" align="center">
 <img src="https://img.shields.io/pypi/status/udemyscraper?style=flat" align="center">
@@ -119,7 +119,7 @@ Or if you like to live on the edge then you can always use the current build in 
 
 - Clone it-
   ```PowerShell
-  git clone https://github.com/sortedcord/udemy-web-scraper.git && cd udemy-web-scraper
+  git clone https://github.com/sortedcord/udemyscraper.git && cd udemyscraper
   ```
 - Install it- 
   ```PowerShell
@@ -131,7 +131,7 @@ Or if you like to live on the edge then you can always use the current build in 
   ```
 ## Dependencies Installation
 
-Dependcies will be automatically installed with pip. If you do want to look at all the dependencies of this project you can always check out [setup.py](setup.py) or [Dependecy Graph](https://github.com/sortedcord/udemy-web-scraper/network/dependencies).
+Dependcies will be automatically installed with pip. If you do want to look at all the dependencies of this project you can always check out [setup.py](setup.py) or [Dependecy Graph](https://github.com/sortedcord/udemyscraper/network/dependencies).
 
 > ### Deprecated as of 0.8.0
 >
@@ -439,7 +439,7 @@ Even I thought of that after some digging around as I did not know that such an 
 
 Issues and PRs as well as discussions are always welcomes, but please make an issue of a feature/code that you would be modifying before starting a PR.
 
-Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
+Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemyscraper/projects/1) what the current progress is.
 
 For further instructions, do read [contributing.md](CONTRIBUTING.md).
 

@@ -15,9 +15,9 @@ setup(
     description= metadata['__description__'],
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url= "https://github.com/sortedcord/udemy-web-scraper",
+    url= "https://github.com/sortedcord/udemyscraper",
     project_urls={
-        "Bug Tracker": "https://github.com/sortedcord/udemy-web-scraper/issues",
+        "Bug Tracker": "https://github.com/sortedcord/udemyscraper/issues",
     },
     package_dir = {
             'udemyscraper.export': 'udemyscraper/export'},
