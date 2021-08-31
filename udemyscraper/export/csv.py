@@ -3,7 +3,7 @@ from udemyscraper.export.dict import course_to_dict
 
 import csv
 
-def course_to_csv(courses, output_file='output.csv'):
+def course_to_csv(courses, output_file='course.csv'):
     if output_file == '' or output_file == None:
         output_file = 'course.csv'
 

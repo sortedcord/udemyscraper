@@ -24,7 +24,7 @@ def main():
     # Long options
     long_options = [
         "query=", "help", "version", "no-warn", "browser=", "headless=", "dump=", 
-        "output=", "debug=", "quiet", "time=", "progress=", "cache="
+        "output=", "debug=", "quiet", "time=", "progress=", "cache=", "cache_dir=",
     ]
 
     # Tool Defaults
@@ -38,7 +38,8 @@ def main():
         'quiet': False,
         'time': True,
         'progress': True,
-        'cache': False
+        'cache': False,
+        'cache_dir': '.udscraper_cache',
     }
 
     search_query = ""
@@ -128,6 +129,10 @@ def main():
                     Preferences['cache'] = True
                 elif currentValue == "false":
                     Preferences['cache'] = False
+            
+            #Change Cache directory
+            elif currentArgument in ("--cache_dir"):
+                Preferences['cache_dir'] = currentValue
 
     except getopt.error as err:
         # output error, and return with an error code
