@@ -133,6 +133,8 @@ docs/InstalIer3.rar
 # Udemyscraper cache
 src\udemyscraper\.udscraper_cache
 .udscraper_cache
+.udscraper_cache_test
+
 test.py
 scrapyard.py
 CHANGELOG.md
