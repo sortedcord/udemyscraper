@@ -50,6 +50,3 @@ def test_udemyscraper_cache():
 
     #clear cache
     shutil.rmtree('.udscraper_cache/')
-
-
-
