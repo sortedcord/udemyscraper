@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 - Renamed repository to udemyscraper.
 
+### Added
+- Tests for module, exporting and scripts.
+
 ## [0.8.1] - 2021-08-29
 
 ### Changes
