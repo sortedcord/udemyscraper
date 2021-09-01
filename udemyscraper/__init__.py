@@ -14,7 +14,7 @@ from logging import *
 from colorama import Fore, Style
 import shutil
 
-__version__ = "0.7.4"
+from udemyscraper.utils import __illegal_dir__
 
 
 def loginfo(message):
@@ -104,6 +104,10 @@ class UdemyCourse():
             if key not in Preferences.keys():
                 Preferences[key] = default_values[default_keys.index(key)]      
     
+        # Check if the dir name is an illegal name.
+        if Preferences['cache_dir'].upper() in __illegal_dir__:
+            Preferences['cache_dir'] = '.udscraper_cache'
+
         self.Preferences = Preferences
         if self.Preferences['warn'] == True:
             display_warn()
