@@ -1,5 +1,7 @@
 import time
 
+import os
+
 from alive_progress import alive_bar
 from logging import *
 import getopt
@@ -149,17 +151,41 @@ def main():
     else:
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
-    course = UdemyCourse(Preferences)
+    
 
-    if Preferences['quiet'] == False or Preferences['progress'] == True:
-        with alive_bar(title="Scraping Course", bar="smooth") as abar:
-            course.fetch_course(search_query, abar)
+    if '.txt' in search_query and os.path.isfile(search_query):
+        with open(search_query) as query_file:
+            search_query = []
+            for query in query_file.readlines():
+                query = query.replace("\n", "")
+                search_query.append(query)
+            
     else:
-        course.fetch_course(search_query,)
+        search_query = [search_query]
+    courses = []
+    for query in search_query:
+        
+        course = UdemyCourse(Preferences)
+
+        if Preferences['quiet'] == False or Preferences['progress'] == True:
+            with alive_bar(title="Scraping Course", bar="smooth") as abar:
+                course.fetch_course(query, abar)
+        else:
+            course.fetch_course(query,)
+        courses.append(course)
+    
+
 
     if Preferences['dump_format'] == "csv":
-        course = [course]
-    export_course(course, Preferences['dump_format'], Preferences['output_file'])
+        course = courses
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
+
+    elif Preferences['dump_format'] in ['json', 'xml'] and 'list' in str(type(course)):
+        os.mkdir('UdemyBulkExport')
+        for course, query in courses, search_query:
+            export_course(course, Preferences['dump_format'], f"UdemyBulkExport/ {query}")
+    else:
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
 
     if Preferences['quiet'] == False or Preferences['time'] == True:
         print('It took', time.time()-__starttime__, 'seconds.')
