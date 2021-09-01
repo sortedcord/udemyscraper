@@ -1,4 +1,4 @@
-<img src="docs/logo.png" align="center">
+<img src="https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/logo.png" align="center">
 <br>
 <div align="center">
 <img src="https://img.shields.io/github/license/sortedcord/udemy-web-scraper" align="center">
@@ -105,7 +105,7 @@ Udemyscraper can export the data to a variety of formats as shown [here](#output
 
 ### List of Commands
 
-![Commands](docs/command.svg)
+![Commands](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/command.svg)
 
 # Installation
 
@@ -204,7 +204,7 @@ udemyscraper -b firefox
 
 | **Headless Disabled**                 | **Headless Enabled**                   |
 | ------------------------------------- | -------------------------------------- |
-| ![Headless disabled](docs/gif/header.gif) | ![Headless enabled](docs/gif/headless.gif) |
+| ![Headless disabled](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/header.gif) | ![Headless enabled](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/headless.gif) |
 | 19 Seconds                            | 12 Seconds                             |
 
 In the above comparison you can clearly see that the image on the right (headless) completed way faster than the one with headless disabled. By suppressing the browser not only do you save time, but you also save system resources.
@@ -296,7 +296,7 @@ When you run the same code again, it would check if this directory exists and if
 
 | With Cache               | Without Cache               |
 | ------------------------ | --------------------------- |
-| ![Cache](docs/gif/cache.gif) | ![Cache](docs/gif/no_cache.gif) |
+| ![Cache](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/cache.gif) | ![Cache](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/no_cache.gif) |
 | 3 Seconds                | 17 Seconds                  |
 
 
@@ -370,7 +370,7 @@ export_course(course, "json", "custom_name.json")
 This will export the data to `object.json` file in the same directory. You can also specify the name of the file by passing in the corresponding argument
 
 Here is an example of how the file will look like. (The file has been trunacted)
-![output.json](docs/json.svg)
+![output.json](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/json.svg)
 
 </details>
 
@@ -396,7 +396,7 @@ export_course([course, course2], "csv")
 
 This code will export something like this-
 
-![csv data](docs/gif/csv.gif)
+![csv data](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/csv.gif)
 
 You can do this with as many number of courses you like. But unfortunately, I couldn't figure out any way to export sections and lessons to csv.
 
@@ -417,7 +417,7 @@ export_course(course, "xml", "custom_name.xml")
 This will export the data to `object.json` file in the same directory. You can also specify the name of the file by passing in the corresponding argument
 
 Here is an example of how the file will look like. (The file has been trunacted)
-![output.xml](docs/xml.svg)
+![output.xml](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/xml.svg)
 
 </details>
 

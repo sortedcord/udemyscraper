@@ -61,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - | With Cache               | Without Cache               |
   | ------------------------ | --------------------------- |
-  | ![Cache](docs/gif/cache.gif) | ![Cache](docs/gif/no_cache.gif) |
+  | ![Cache](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/cache.gif) | ![Cache](https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/gif/no_cache.gif) |
   | 3 Seconds                | 17 Seconds                  |
 
 
