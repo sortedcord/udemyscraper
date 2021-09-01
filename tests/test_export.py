@@ -14,27 +14,25 @@ def main():
 
 
 def test_export_default():
-    course = main() #Get course
-
     for format in formats:
+        course = main() #Get course
         if format == "csv":
             course = [course]
 
-        export_course(course, formats)
+        export_course(course, format)
         assert os.path.isfile(f'course.{format}')
-        shutil.rmtree(f'course.{format}')
+        os.remove(f'course.{format}')
 
 
 def test_export_custom():
-    course = main() #Get course
-
     for format in formats:
+        course = main() #Get course
         if format == "csv":
             course = [course]
 
-        export_course(course, formats, f"mycustomexport.{format}")
-        assert os.path.isfile(f'course.{format}')
-        shutil.rmtree(f'course.{format}')
+        export_course(course, format, f"mycustomexport.{format}")
+        assert os.path.isfile(f'mycustomexport.{format}')
+        os.remove(f'mycustomexport.{format}')
 
 
 
