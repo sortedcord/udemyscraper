@@ -123,7 +123,7 @@ Or if you like to live on the edge then you can always use the current build in 
   ```
 - Install it- 
   ```PowerShell
-  pip install -e .
+  pip install -e .[dev]
   ```
 - Use it- 
   ```py
