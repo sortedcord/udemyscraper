@@ -178,7 +178,14 @@ def main():
 
     if Preferences['dump_format'] == "csv":
         course = courses
-    export_course(course, Preferences['dump_format'], Preferences['output_file'])
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
+
+    elif Preferences['dump_format'] in ['json', 'xml'] and 'list' in str(type(course)):
+        os.mkdir('UdemyBulkExport')
+        for course, query in courses, search_query:
+            export_course(course, Preferences['dump_format'], f"UdemyBulkExport/ {query}")
+    else:
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
 
     if Preferences['quiet'] == False or Preferences['time'] == True:
         print('It took', time.time()-__starttime__, 'seconds.')
