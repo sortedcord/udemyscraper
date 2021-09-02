@@ -20,6 +20,10 @@
 
 <br>
 
+### **NOTE**: Development on udemyscraper will be paused till mid October as I may not get time to manage the project. Pull requests and issues are still welcomed and all will be resolved when I continue development. The 0.8.2 update pull request will also stay unmerged as im being rate limited by udemy for large ammounts of requests...
+
+<br>
+
 > ## 📌 New in 0.8.x Series
 >
 > ### Added
