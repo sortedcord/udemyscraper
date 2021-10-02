@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Tests for module, exporting and scripts.
+- Added bulk export of courses with script.
+
+### Bug Fixes
+- Exporting to xml always defaults to course.xml filename.
+- 'TypeError': 'module' object is not callable
 
 ## [0.8.1] - 2021-08-29
 

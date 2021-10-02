@@ -20,7 +20,7 @@
 
 <br>
 
-> ## 📌 New in 0.8.x Series
+> ## 📌 New in 0.8.x/2
 >
 > ### Added
 >
@@ -32,6 +32,8 @@
 > - Support for Microsoft Edge (Chromium Based) browser.
 > - Support for Brave Browser.
 > - Support for Vivaldi.
+> - Tests for module, exporting and scripts.
+> - Added bulk export of courses with script.
 >
 > ### Changes
 >
@@ -41,6 +43,7 @@
 >   - `output.py` - Contains functions for outputting the course information.
 >   - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
 >   - `utils.py` - Contains utility related functions for udemyscraper.
+> - #### Renamed repository to udemyscraper.
 > - #### Now using udemyscraper.export instead of udemyscraper.output.
 >
 >   - `quick_display` function has been replaced with `print_course` function.
@@ -66,6 +69,8 @@
 > - Fixed recognition of chrome as a valid browser.
 > - Preferences will not be printed while using the script.
 > - Fixed `browser` key error
+> - Exporting to xml always defaults to course.xml filename.
+> - 'TypeError': 'module' object is not callable
 
 Check out [CHANGELOG](CHANGELOG.md) for more changes and version updates.
 
@@ -100,6 +105,13 @@ Here is an example of exporting the data as a json file.
 ```bash
 udemyscraper -d json -q "German course for beginners"
 ```
+
+You can also use a `.txt` file containing 1 query per line.
+
+```bash
+udemyscraper -q "queries.txt"
+```
+
 
 Udemyscraper can export the data to a variety of formats as shown [here](#output-dumping-data)
 
