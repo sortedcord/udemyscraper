@@ -1,2 +1,4 @@
+echo off
+
 udemyscraper --version
-udemyscraper -q "learn python" --quiet --cache_dir ".udscraper_cache_test" --dump "json"
+udemyscraper -q "How to invest" --quiet --cache_dir ".udscraper_cache_test" --dump "json"
