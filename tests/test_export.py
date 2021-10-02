@@ -1,5 +1,6 @@
 from udemyscraper import UdemyCourse
 from udemyscraper.export import export_course
+from udemyscraper.utils import random_search_query
 
 global formats
 formats = ['xml', 'json', 'csv']
@@ -7,9 +8,10 @@ formats = ['xml', 'json', 'csv']
 import os, shutil
 
 
+
 def main():
     course = UdemyCourse({'cache':True, 'cache_dir':'.udscraper_cache_test'})
-    course.fetch_course("learn python")
+    course.fetch_course(random_search_query())
     return course
 
 

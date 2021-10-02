@@ -11,7 +11,6 @@ import os
 from bs4 import BeautifulSoup
 import logging
 from logging import *
-from colorama import Fore, Style
 import shutil
 
 from udemyscraper.utils import __illegal_dir__
@@ -98,14 +97,14 @@ class UdemyCourse():
         'cache_dir' : '.udscraper_cache'
     }):  # Set default preferences when none provided
         
-        default_values = [True, "chrome", True, False, False, True, False]
-        default_keys = ['warn', 'browser', 'headless', 'debug', 'quiet', 'time', 'cache']
+        default_values = [True, "chrome", True, False, False, True, False, ".udscraper_cache"]
+        default_keys = ['warn', 'browser', 'headless', 'debug', 'quiet', 'time', 'cache', 'cache_dir']
         for key in default_keys:
             if key not in Preferences.keys():
                 Preferences[key] = default_values[default_keys.index(key)]      
-    
+
         # Check if the dir name is an illegal name.
-        if Preferences['cache_dir'].upper() in __illegal_dir__:
+        if Preferences['cache_dir'] in __illegal_dir__:
             Preferences['cache_dir'] = '.udscraper_cache'
 
         self.Preferences = Preferences

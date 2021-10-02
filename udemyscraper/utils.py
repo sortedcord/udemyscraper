@@ -14,6 +14,13 @@ import platform
 
 from colorama import Fore, Style
 
+from random import randint
+
+__illegal_dir__ = ["CON", "PRN", "AUX", 'NUL', 'COM1', 'COM2', 
+                    'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 
+                    'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 
+                    'LPT8', 'LPT9']
+
 def loginfo(message):
     # Logs the message along with the time taken from the start
     logging.info(str(time.time()) + '  ' + message)
@@ -146,7 +153,16 @@ mentioned there. Exiting""")
 
     return browser
 
-__illegal_dir__ = ["CON", "PRN", "AUX", 'NUL', 'COM1', 'COM2', 
-                    'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 
-                    'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 
-                    'LPT8', 'LPT9']
+def random_search_query():
+    query_list = [
+        'Learn how to invest in stocks',
+        'Good artist drawings',
+        'How to learn blender',
+        "How to meake money easily",
+        "Chemistry research",
+        "Oauth 2.0",
+        "Python for data science",
+        "How to use unreal engine",
+        "Unity Level Management"
+    ]
+    return query_list[randint(0,len(query_list)-1)]
