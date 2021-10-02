@@ -1,10 +1,11 @@
 import time
 
+import os
+
 from alive_progress import alive_bar
 from logging import *
 import getopt
 import sys
-from colorama import Fore, Style
 
 
 from udemyscraper import UdemyCourse
@@ -24,7 +25,7 @@ def main():
     # Long options
     long_options = [
         "query=", "help", "version", "no-warn", "browser=", "headless=", "dump=", 
-        "output=", "debug=", "quiet", "time=", "progress=", "cache="
+        "output=", "debug=", "quiet", "time=", "progress=", "cache=", "cache_dir=",
     ]
 
     # Tool Defaults
@@ -38,10 +39,11 @@ def main():
         'quiet': False,
         'time': True,
         'progress': True,
-        'cache': False
+        'cache': False,
+        'cache_dir': '.udscraper_cache',
     }
 
-    search_query = ""
+    search_query = "" # What udscraper will search for in the serarch bar
 
     try:
         # Parsing argument
@@ -84,7 +86,7 @@ def main():
 
             # Select dump format
             elif currentArgument in ("-d", "--dump"):
-                Preferences['dump_format'] = currentValue.lower()
+                Preferences['dump_format'] = currentValue
 
 
             # Specify output file
@@ -113,9 +115,9 @@ def main():
 
             # Toggle Progressbar
             elif currentArgument in ("--progress"):
-                if currentValue.lower() == "true":
+                if currentValue == "true":
                     Preferences['progress'] = True
-                if currentValue.lower() == "false":
+                if currentValue == "false":
                     Preferences['progress'] = False
 
             # Enable cache
@@ -128,11 +130,17 @@ def main():
                     Preferences['cache'] = True
                 elif currentValue == "false":
                     Preferences['cache'] = False
+            
+            #Change Cache directory
+            elif currentArgument in ("--cache_dir"):
+                Preferences['cache_dir'] = currentValue
 
     except getopt.error as err:
         # output error, and return with an error code
+        # if there is some error with system args
         print(str(err))
 
+    # Logo and others will be printed as long as quiet mode is turned off
     if Preferences['quiet'] == False:
         print_logo()
 
@@ -144,17 +152,44 @@ def main():
     else:
         if Preferences['quiet'] == False:
             print(f"Search with query: {search_query}")
-    course = UdemyCourse(Preferences)
-
-    if Preferences['quiet'] == False or Preferences['progress'] == True:
-        with alive_bar(title="Scraping Course", bar="smooth") as abar:
-            course.fetch_course(search_query, abar)
+    
+    # Check if the given search query is a valid file or not
+    if '.txt' in search_query and os.path.isfile(search_query):
+        with open(search_query) as query_file:
+            search_query = [] # Convert search query to a list
+            # Read the query file
+            for query in query_file.readlines():
+                query = query.replace("\n", "")
+                search_query.append(query)
+            
     else:
-        course.fetch_course(search_query,)
+        search_query = [search_query]
+    courses = []
+
+    for query in search_query:
+        
+        course = UdemyCourse(Preferences)
+
+        if Preferences['quiet'] == False or Preferences['progress'] == True:
+            with alive_bar(title="Scraping Course", bar="smooth") as abar:
+                course.fetch_course(query, abar)
+        else:
+            course.fetch_course(query,)
+        courses.append(course)
+    
+
+    time.sleep(5)
 
     if Preferences['dump_format'] == "csv":
-        course = [course]
-    export_course(course, Preferences['dump_format'], Preferences['output_file'])
+        course = courses
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
+
+    elif Preferences['dump_format'] == 'json' or Preferences['dump_format'] == 'xml' and 'list' in str(type(course)):
+        os.mkdir('UdemyBulkExport')
+        for course, query in courses, search_query:
+            export_course(course, Preferences['dump_format'], f"UdemyBulkExport/ {query}")
+    else:
+        export_course(course, Preferences['dump_format'], Preferences['output_file'])
 
     if Preferences['quiet'] == False or Preferences['time'] == True:
         print('It took', time.time()-__starttime__, 'seconds.')

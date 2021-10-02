@@ -3,8 +3,8 @@ from udemyscraper.export.dict import course_to_dict
 
 import json
 
-def course_to_json(course, output_file='output.json'):
-    if output_file == None:
+def course_to_json(course, output_file='course.json'):
+    if output_file is None or output_file == '':
         output_file = 'course.json'
     # Convert the course to dictionary
     course = course_to_dict(course)

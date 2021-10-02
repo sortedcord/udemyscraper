@@ -3,14 +3,13 @@ from udemyscraper.export.dict import course_to_dict
 
 import csv
 
-def course_to_csv(courses, output_file='output.csv'):
+def course_to_csv(courses, output_file='course.csv'):
     if output_file == '' or output_file == None:
         output_file = 'course.csv'
 
     dict_courses_array = []
 
     for course in courses:
-        print(course)
         if str(type(course.instructors)) == "<class 'list'>":
             inline_instructors = ""
             for instructor in course.instructors:

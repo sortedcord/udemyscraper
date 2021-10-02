@@ -11,10 +11,9 @@ import os
 from bs4 import BeautifulSoup
 import logging
 from logging import *
-from colorama import Fore, Style
 import shutil
 
-__version__ = "0.7.4"
+from udemyscraper.utils import __illegal_dir__
 
 
 def loginfo(message):
@@ -94,15 +93,20 @@ class UdemyCourse():
         'debug': False,
         'quiet': False,
         'time': True,
-        'cache': False
+        'cache': False,
+        'cache_dir' : '.udscraper_cache'
     }):  # Set default preferences when none provided
         
-        default_values = [True, "chrome", True, False, False, True, False]
-        default_keys = ['warn', 'browser', 'headless', 'debug', 'quiet', 'time', 'cache']
+        default_values = [True, "chrome", True, False, False, True, False, ".udscraper_cache"]
+        default_keys = ['warn', 'browser', 'headless', 'debug', 'quiet', 'time', 'cache', 'cache_dir']
         for key in default_keys:
             if key not in Preferences.keys():
                 Preferences[key] = default_values[default_keys.index(key)]      
-    
+
+        # Check if the dir name is an illegal name.
+        if Preferences['cache_dir'] in __illegal_dir__:
+            Preferences['cache_dir'] = '.udscraper_cache'
+
         self.Preferences = Preferences
         if self.Preferences['warn'] == True:
             display_warn()
@@ -126,11 +130,11 @@ class UdemyCourse():
                 loginfo("Alive bar is not being used")
 
         loginfo("Searching for cache file")
-        cache_file = os.path.isfile('.udscraper_cache/query.txt')
+        cache_file = os.path.isfile(f"{self.Preferences['cache_dir']}/query.txt")
         br('Checking if Cache files exists')
         if self.Preferences['cache'] == True and cache_file:
             loginfo("Cache files exists")
-            with open('.udscraper_cache/query.txt') as query_file:
+            with open(f'{self.Preferences["cache_dir"]}/query.txt') as query_file:
                 br('Reading Cache files')
                 loginfo("Reading cache files")
                 old_query = query_file.read()
@@ -138,22 +142,22 @@ class UdemyCourse():
             if query != str(old_query):
                 br('Flushing cache files as query is different')
                 loginfo("Deleting cache folder")
-                shutil.rmtree('.udscraper_cache/')
+                shutil.rmtree(f'{self.Preferences["cache_dir"]}/')
                 self.Preferences['cache'] == True
-                cache_file = os.path.isfile('.udscraper_cache/query.txt')
+                cache_file = os.path.isfile(f'{self.Preferences["cache_dir"]}/query.txt')
 
         # Check if cache exists
         if self.Preferences['cache'] == 'clear' or self.Preferences['cache'] == False or (self.Preferences['cache'] == True and cache_file == False):
             if self.Preferences['cache'] == 'clear':
                 br('Flushing cache files')
-                shutil.rmtree('.udscraper_cache/')
+                shutil.rmtree(f'{self.Preferences["cache_dir"]}/')
                 loginfo("Cache folder deleted")
                 self.Preferences['cache'] == True
                 br()
 
             if self.Preferences['cache'] == True:
                 br('Created cache files')
-                os.mkdir('.udscraper_cache')
+                os.mkdir(f'{self.Preferences["cache_dir"]}')
                 loginfo("Created cache folder")
                 br()
 
@@ -161,7 +165,7 @@ class UdemyCourse():
             url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
             if self.Preferences['cache'] == True:
                 br('Dumping query text')
-                with open('.udscraper_cache/query.txt', 'w', encoding="utf-8") as file:
+                with open(f'{self.Preferences["cache_dir"]}/query.txt', 'w', encoding="utf-8") as file:
                     loginfo("Writing query text file")
                     file.write(query)
                 br()
@@ -195,7 +199,7 @@ class UdemyCourse():
             # Get page source
             content = browser.page_source
             if self.Preferences['cache'] == True:
-                with open('.udscraper_cache/search.html', 'w', encoding="utf-8") as file:
+                with open(f'{self.Preferences["cache_dir"]}/search.html', 'w', encoding="utf-8") as file:
                     file.write(content)
             loginfo("Fetched page source")
 
@@ -267,7 +271,7 @@ class UdemyCourse():
             # Get the html
             content = browser.page_source
             if self.Preferences['cache'] == True:
-                with open('.udscraper_cache/course.html', 'w', encoding="utf-8") as file:
+                with open(f'{self.Preferences["cache_dir"]}/course.html', 'w', encoding="utf-8") as file:
                     file.write(content)
 
             loginfo("Updated page source with revealed sections")
@@ -279,9 +283,9 @@ class UdemyCourse():
             loginfo("Page source parsed")
             br()
 
-        elif self.Preferences['cache'] == True and os.path.isfile('.udscraper_cache/query.txt'):
+        elif self.Preferences['cache'] == True and os.path.isfile(f'{self.Preferences["cache_dir"]}/query.txt'):
             br('Reading cached search page html')
-            with open('.udscraper_cache/search.html', encoding="utf-8") as f:
+            with open(f'{self.Preferences["cache_dir"]}/search.html', encoding="utf-8") as f:
                 content = f.read()
             br()
 
@@ -300,7 +304,7 @@ class UdemyCourse():
 
             br('Reading cached course page html')
             # Get the html
-            with open('.udscraper_cache/course.html', encoding="utf-8") as f:
+            with open(f'{self.Preferences["cache_dir"]}/course.html', encoding="utf-8") as f:
                 content = f.read()
             loginfo("Fetched page url")
             br()

@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/logo.png" align="center">
 <br>
 <div align="center">
-<img src="https://img.shields.io/github/license/sortedcord/udemy-web-scraper" align="center">
+<img src="https://img.shields.io/github/license/sortedcord/udemyscraper" align="center">
 <img src="https://img.shields.io/pypi/pyversions/udemyscraper?logo=python&logoColor=white" align="center">
 <img src="https://img.shields.io/pypi/v/udemyscraper?color=magenta&label=Udemyscraper&logo=udemy&logoColor=white" align="center">
 <img src="https://img.shields.io/pypi/status/udemyscraper?style=flat" align="center">
@@ -20,9 +20,8 @@
 
 <br>
 
-<br>
 
-> ## 📌 New in 0.8.x Series
+> ## 📌 New in 0.8.x/2 Series
 >
 > ### Added
 >
@@ -34,6 +33,8 @@
 > - Support for Microsoft Edge (Chromium Based) browser.
 > - Support for Brave Browser.
 > - Support for Vivaldi.
+> - Tests for module, exporting and scripts.
+> - Added bulk export of courses with script.
 >
 > ### Changes
 >
@@ -43,6 +44,7 @@
 >   - `output.py` - Contains functions for outputting the course information.
 >   - `udscraperscript.py` -Is the script file which will run when you want to use udemyscraper as a script.
 >   - `utils.py` - Contains utility related functions for udemyscraper.
+> - #### Renamed repository to udemyscraper.
 > - #### Now using udemyscraper.export instead of udemyscraper.output.
 >
 >   - `quick_display` function has been replaced with `print_course` function.
@@ -68,6 +70,8 @@
 > - Fixed recognition of chrome as a valid browser.
 > - Preferences will not be printed while using the script.
 > - Fixed `browser` key error
+> - Exporting to xml always defaults to course.xml filename.
+> - 'TypeError': 'module' object is not callable
 
 Check out [CHANGELOG](CHANGELOG.md) for more changes and version updates.
 
@@ -103,6 +107,13 @@ Here is an example of exporting the data as a json file.
 udemyscraper -d json -q "German course for beginners"
 ```
 
+You can also use a `.txt` file containing 1 query per line.
+
+```bash
+udemyscraper -q "queries.txt"
+```
+
+
 Udemyscraper can export the data to a variety of formats as shown [here](#output-dumping-data)
 
 ### List of Commands
@@ -121,7 +132,7 @@ Or if you like to live on the edge then you can always use the current build in 
 
 - Clone it-
   ```PowerShell
-  git clone https://github.com/sortedcord/udemy-web-scraper.git && cd udemy-web-scraper
+  git clone https://github.com/sortedcord/udemyscraper.git && cd udemyscraper
   ```
 - Install it- 
   ```PowerShell
@@ -133,7 +144,7 @@ Or if you like to live on the edge then you can always use the current build in 
   ```
 ## Dependencies Installation
 
-Dependcies will be automatically installed with pip. If you do want to look at all the dependencies of this project you can always check out [setup.py](setup.py) or [Dependecy Graph](https://github.com/sortedcord/udemy-web-scraper/network/dependencies).
+Dependcies will be automatically installed with pip. If you do want to look at all the dependencies of this project you can always check out [setup.py](setup.py) or [Dependecy Graph](https://github.com/sortedcord/udemyscraper/network/dependencies).
 
 > ### Deprecated as of 0.8.0
 >
@@ -441,7 +452,7 @@ Even I thought of that after some digging around as I did not know that such an 
 
 Issues and PRs as well as discussions are always welcomes, but please make an issue of a feature/code that you would be modifying before starting a PR.
 
-Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemy-web-scraper/projects/1) what the current progress is.
+Currently there are lots of features I would like to add to this script. You can check [this page](https://github.com/sortedcord/udemyscraper/projects/1) what the current progress is.
 
 For further instructions, do read [contributing.md](CONTRIBUTING.md).
 

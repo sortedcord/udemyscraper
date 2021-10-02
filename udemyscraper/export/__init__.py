@@ -15,7 +15,7 @@ def export_course(course, mode, output=None):
             xml(course, output)
         elif mode == "print":
             printc(course)
-        elif mode == 'dict' or mode == 'dictionary':
+        elif 'dict' in mode:
             return dict(course)
         else:
             print(f"{mode} is not a valid export method")

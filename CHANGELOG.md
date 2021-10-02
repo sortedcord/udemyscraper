@@ -5,6 +5,19 @@ All notable changes to udemyscraper will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.2] - Unreleased
+
+### Changes
+- Renamed repository to udemyscraper.
+
+### Added
+- Tests for module, exporting and scripts.
+- Added bulk export of courses with script.
+
+### Bug Fixes
+- Exporting to xml always defaults to course.xml filename.
+- 'TypeError': 'module' object is not callable
+
 ## [0.8.1] - 2021-08-29
 
 ### Changes
@@ -96,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Increased timeout limit for page load
 - Removed some redundant code and fixed typos
 
+[0.8.2]: https://github.com/sortedcord/udemy-web-scraper/pull/39
 [0.8.1]: https://github.com/sortedcord/udemy-web-scraper/releases/tag/Beta
 [0.8.0]: https://github.com/sortedcord/udemy-web-scraper/pull/34
 [0.7.4]: https://github.com/sortedcord/udemy-web-scraper/pull/32
