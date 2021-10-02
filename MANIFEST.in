@@ -3,3 +3,11 @@ include LICENSE
 recursive-include docs *.gif
 recursive-include docs *.png
 recursive-include docs *.svg
+include LICENSE.txt
+include tests/test_export.py
+include tests/test_module.py
+include tests/test_script.bat
+include tests/test_script.py
+include *.txt
+recursive-include tests *.bat
+recursive-include tests *.py
