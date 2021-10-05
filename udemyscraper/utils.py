@@ -31,11 +31,6 @@ def display_warn():
     print("""
 Thank You for using udemyscraper
 
-Before fetching the course information be sure that 
-you have google chrome >= 92.x.x installed on your machine. 
-Support for other chromium based browsers such as brave, edge, 
-opera, vivaldi, etc has not been implemented yet.
-
 This tool is only meant to be used for educational purposes. 
 Please do not abuse it as rate limits might still apply.
 
