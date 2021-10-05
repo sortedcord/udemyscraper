@@ -20,7 +20,6 @@ import json
 
 CLIENT_ID = "I8F0l2zmaIVsiAIQOHBx3U6AQRphttzWBSvxqdv0"
 CLIENT_SECRET = "s3bQyAOOAiQopg0slfF6pYQKki3N2smNBp7qHhBJFyNFlcuEAHBQzOBaTANEkglsnKEELtEcBuvQf60SsHPkdo2luRis5rehLozbtOqAhQzLSvAEuUgnzZIUlyL0xut5"
-API_URL = "https://www.udemy.com/api-2.0/search-courses/?q=python"
 
 
 def get_basic_info(query):
