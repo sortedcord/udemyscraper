@@ -15,6 +15,28 @@ import shutil
 
 from udemyscraper.utils import __illegal_dir__
 
+import requests
+import json
+
+CLIENT_ID = "I8F0l2zmaIVsiAIQOHBx3U6AQRphttzWBSvxqdv0"
+CLIENT_SECRET = "s3bQyAOOAiQopg0slfF6pYQKki3N2smNBp7qHhBJFyNFlcuEAHBQzOBaTANEkglsnKEELtEcBuvQf60SsHPkdo2luRis5rehLozbtOqAhQzLSvAEuUgnzZIUlyL0xut5"
+API_URL = "https://www.udemy.com/api-2.0/search-courses/?q=python"
+
+
+def get_basic_info(query):
+    r=requests.get("https://www.udemy.com/api-2.0/courses/?search=Python", headers={
+        "Accept": "application/json, text/plain, */*",
+        "Authorization": "Basic SThGMGwyem1hSVZzaUFJUU9IQngzVTZBUVJwaHR0eldCU3Z4cWR2MDpzM2JReUFPT0FpUW9wZzBzbGZGNnBZUUtraTNOMnNtTkJwN3FIaEJKRnlORmxjdUVBSEJRek9CYVRBTkVrZ2xzbktFRUx0RWNCdXZRZjYwU3NIUGtkbzJsdVJpczVyZWhMb3pidE9xQWhRekxTdkFFdVVnbnpaSVVseUwweHV0NQ==",
+        "Content-Type": "application/json;charset=utf-8"
+        })
+    response = r.json()
+    title = response['results'][0]['title']
+    url = 'https://udemy.com' + response['results'][0]['url']
+    _id = response['results'][0]['id']
+    return title, url, _id
+    
+
+
 
 def loginfo(message):
     # Logs the message along with the time taken from the start
@@ -161,8 +183,7 @@ class UdemyCourse():
                 loginfo("Created cache folder")
                 br()
 
-            # Get the url of the search query
-            url = "https://www.udemy.com/courses/search/?src=ukw&q=" + query
+            # Dump search query
             if self.Preferences['cache'] == True:
                 br('Dumping query text')
                 with open(f'{self.Preferences["cache_dir"]}/query.txt', 'w', encoding="utf-8") as file:
@@ -170,49 +191,11 @@ class UdemyCourse():
                     file.write(query)
                 br()
 
+            self.title, self.link, self.id = get_basic_info(query)
+
             br('Launching Browser')
             loginfo("Setting Up browser headers and preferences")
             browser = set_browser(self.Preferences)
-
-            br('Loading Udemy Search page')
-            loginfo(
-                "Redirecting to the searchpage")
-            browser.get(url)
-            br()
-
-            br('Waiting for search results')
-            # Wait until the search box loads
-            try:
-                loginfo(
-                    "Waiting for the browser to load the search results. This depends on your network responsiveness")
-                element_present = EC.presence_of_element_located(
-                    (By.XPATH, "//div[starts-with(@class, 'course-directory--container--')]"))
-                WebDriverWait(browser, 25).until(element_present)
-            except TimeoutException:
-                print(
-                    "Timed out waiting for page to load or could not find a matching course")
-                exit()
-            loginfo("Search results found")
-            br()
-
-            br('Extracting Page Source')
-            # Get page source
-            content = browser.page_source
-            if self.Preferences['cache'] == True:
-                with open(f'{self.Preferences["cache_dir"]}/search.html', 'w', encoding="utf-8") as file:
-                    file.write(content)
-            loginfo("Fetched page source")
-
-            # Parse HTML
-            search_page = BeautifulSoup(content, "lxml")
-            loginfo("Page source parsed")
-            br()
-
-            br('Getting Course Link')
-            # Get course link
-            self.link = 'https://udemy.com' + search_page.select_one(
-                'div[class="course-list--container--3zXPS"] > div > a[tabindex="0"]')['href']
-            loginfo("Found course link")
 
             # Scrape Information on course_page
             loginfo("Redirecting to Course Page")
