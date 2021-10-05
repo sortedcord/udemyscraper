@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/sortedcord/udemyscraper/master/docs/beta_logo.png" align="center">
+<img src="https://raw.githubusercontent.com/sortedcord/udemyscraper/affiliate-api/docs/beta_logo.png" align="center">
 <br>
 <div align="center">
 <img src="https://img.shields.io/github/license/sortedcord/udemyscraper" align="center">
