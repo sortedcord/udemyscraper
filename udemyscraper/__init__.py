@@ -18,8 +18,8 @@ from udemyscraper.utils import __illegal_dir__
 import requests
 import json
 
-CLIENT_ID = "I8F0l2zmaIVsiAIQOHBx3U6AQRphttzWBSvxqdv0"
-CLIENT_SECRET = "s3bQyAOOAiQopg0slfF6pYQKki3N2smNBp7qHhBJFyNFlcuEAHBQzOBaTANEkglsnKEELtEcBuvQf60SsHPkdo2luRis5rehLozbtOqAhQzLSvAEuUgnzZIUlyL0xut5"
+CLIENT_ID = "ENTER_YOUR_CLIENT_ID"
+CLIENT_SECRET = "dQw4w9WgXcQ"
 
 
 def get_basic_info(query):
