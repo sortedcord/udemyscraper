@@ -446,7 +446,7 @@ Using BS4 in itself, doesn't give the required results back, so I had to use a b
 
 ## Why not just use Udemy's API?
 
-Even I thought of that after some digging around as I did not know that such an API existed. However, this requires you to have a udemy account already. I might add the use of this Api in the future as its a faster and much more efficient, but right now, I would like to keep things simple. Moreover, this kind of front-end webscraping does not require authentication. 
+Idk, u tell me, would it still be called a web scraper then?
 
 # Contributing
 
