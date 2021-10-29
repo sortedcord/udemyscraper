@@ -20,6 +20,7 @@
 
 <br>
 
+### **NOTE** I won't be actively working on this project anymore. But feel free to fork and extend it. It was fun making this project and I learnt a lot of stuff, but ig it's time to move on now ... Will be archiving this on May 5th 2022. 
 
 > ## 📌 New in 0.8.x/2 Series
 >
