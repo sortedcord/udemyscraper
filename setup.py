@@ -47,7 +47,7 @@ setup(
         "fake-useragent==0.1.11",
         "getopt2==0.0.3",
         "idna==3.2",
-        "lxml==4.6.3",
+        "lxml==4.6.5",
         "pyee==8.2.2",
         "pyquery==1.4.3",
         "requests==2.26.0",
