@@ -45,7 +45,6 @@ setup(
         "crayons==0.4.0",
         "cssselect==1.1.0",
         "fake-useragent==0.1.11",
-        "getopt2==0.0.3",
         "idna==3.2",
         "lxml==4.6.5",
         "pyee==8.2.2",
